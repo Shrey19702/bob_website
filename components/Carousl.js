@@ -76,11 +76,7 @@ const Carousl = ()=>{
     return(
       
         <Carousel breakPoints={breakPoints}>
-          {/* {items.map((item) => (
-            <Item key={item}>
-                {item}
-            </Item>
-          ))} */}
+        
           {
               products.map(x=>(
                   <Item>
