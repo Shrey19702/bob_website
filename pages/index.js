@@ -2,7 +2,7 @@ import Heropage from "../components/Heropage"
 import Feature from "../components/Feature"
 import Category from "../components/Category"
 import Products from "../components/Products"
-import Carousel from "../components/Carousel"
+import Carousl from "../components/Carousl"
 export default function Home() {
   return (
     <>
@@ -10,7 +10,7 @@ export default function Home() {
       <Products/>
       <Category/>
       <Feature/>
-      <Carousel/>
+      <Carousl/>
     </>
   )
 }
