@@ -1,12 +1,11 @@
-import Document, { Html, Head, Main, NextScript } from "next/document";
-
+import Document, {Html, Head, Main, NextScript} from 'next/document'
+import Script from 'next/script'
 class MyDocument extends Document {
     render() {
         return (
             <Html>
                 <Head>
-                    
-                <script src="https://kit.fontawesome.com/c80561e6bf.js" crossorigin="anonymous"></script>
+                    <Script src="https://kit.fontawesome.com/c80561e6bf.js"/>
                 </Head>
                 <body>
                     <Main />
@@ -17,4 +16,4 @@ class MyDocument extends Document {
     }
 }
 
-export default MyDocument;
+export default MyDocument
