@@ -3,7 +3,7 @@ import React from 'react'
 
 function Heropage() {
   return (
-    <div className=" bg-no-repeat bg-cover bg-center h-screen w-[99vw] bg-[url('../public/HeroImg.jpg')]">
+    <div className=" bg-no-repeat bg-cover bg-center h-screen w-[100%] bg-[url('../public/HeroImg.jpg')]">
 
       <div className='heroTitle '></div>
     </div>

@@ -21,7 +21,7 @@ a {
 }
 
 body::-webkit-scrollbar {
-  width: 1vw;
+  width: 1.25vh;
 }
  
 body::-webkit-scrollbar-track {

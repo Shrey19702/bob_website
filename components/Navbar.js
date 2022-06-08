@@ -5,11 +5,9 @@ import Cart from './Svgs'
 import Head from 'next/head'
 
 const navigation = [
-  { name: 'Furniture', href: '#', current: true },
-  { name: 'Team', href: '#', current: false },
-  { name: 'Projects', href: '#', current: false },
-  { name: 'Calendar', href: '#', current: false },
- 
+  { name: 'Home', href: '#', current: true },
+  { name: 'Categories', href: '#', current: false },
+  { name: 'Blog', href: '#', current: false },
 ]
 
 function classNames(...classes) {
@@ -23,8 +21,8 @@ export default function Navbar() {
         <>
           <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
             <div className="relative flex items-center justify-between h-16">
+              {/* Mobile menu button*/}
               <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
-                {/* Mobile menu button*/}
                 <Disclosure.Button className="inline-flex items-center justify-center p-2 rounded-md text-white hover:text-white hover:bg-[#F473B9] focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
                   <span className="sr-only">Open main menu</span>
                   {open ? (
@@ -34,6 +32,7 @@ export default function Navbar() {
                   )}
                 </Disclosure.Button>
               </div>
+              {/* Left side of navbar */}
               <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex-shrink-0 flex items-center">
                   <img
@@ -48,6 +47,7 @@ export default function Navbar() {
                   />
                 </div>
                 <div className="hidden sm:block sm:ml-6">
+                  {/* navigation elements */}
                   <div className="flex space-x-4">
                     {navigation.map((item) => (
                       <a
@@ -65,43 +65,31 @@ export default function Navbar() {
                   </div>
                 </div>
               </div>
+
+              <div className=''></div>
+
+              {/* right side of navbar */}
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 <button
                   type="button"
-                  className="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                  className="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none"
                 >
-                  <span className="sr-only">View notifications</span>
-                  {/* <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-  <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-</svg> */}
+                  <span className="sr-only">User's Cart</span>
                   <Cart />
-
-                  
                 </button>
-                {/* <button
-                  type="button"
-                  className="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
-                >
-                  <span className="sr-only">View notifications</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-  <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-</svg>
-
-                  
-                </button> */}
-                <i className="fa-solid fa-cart-shopping"></i>
                 {/* Profile dropdown */}
                 <Menu as="div" className="ml-3 z-20 relative">
                   <div>
-                    {/* <Menu.Button className="bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                    <Menu.Button className="bg-gray-800 flex text-sm rounded-full focus:outline-none">
                       <span className="sr-only">Open user menu</span>
                       <img
                         className="h-8 w-8 rounded-full"
                         src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                         alt=""
                       />
-                    </Menu.Button> */}
+                    </Menu.Button>
                   </div>
+                  {/* user pages */}
                   <Transition
                     as={Fragment}
                     enter="transition ease-out duration-100"
@@ -148,7 +136,7 @@ export default function Navbar() {
               </div>
             </div>
           </div>
-
+          {/* for mobile type  */}
           <Disclosure.Panel className="sm:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1">
               {navigation.map((item) => (

@@ -117,7 +117,8 @@ export const EmblaCarousel = () => {
   }, [emblaApi])
 
   return (
-    <div className="embla overflow-hidden h-[60vh] py-12 relative bg-white">
+    <div className="embla overflow-hidden h-[65vh] py-12 relative bg-white">
+      <h2 className=" text-3xl text-center font-extrabold text-gray-900">Trending Products</h2>
       <button className="embla__prev bg-lime-600 h-12 w-12 rounded-full text-gray-100 absolute top-1/3 left-3 z-10 " onClick={scrollPrev}>
         Prev
       </button>
