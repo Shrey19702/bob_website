@@ -16,7 +16,7 @@ function classNames(...classes) {
 
 export default function Navbar() {
   return (
-    <Disclosure as="nav" className="z-50 bg-transparent fixed w-full">
+    <Disclosure as="nav" className="z-50 bg-white shadow-md fixed w-full">
       {({ open }) => (
         <>
           <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
@@ -36,15 +36,15 @@ export default function Navbar() {
               <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex-shrink-0 flex items-center">
                   <img
-                    className="block lg:hidden h-8 w-auto"
-                    src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg"
+                    className="block h-16 w-auto"
+                    src="/logo.png"
                     alt="Workflow"
                   />
-                  <img
+                  {/* <img
                     className="hidden lg:block h-8 w-auto"
                     src="https://tailwindui.com/img/logos/workflow-logo-indigo-500-mark-white-text.svg"
                     alt="Workflow"
-                  />
+                  /> */}
                 </div>
                 <div className="hidden sm:block sm:ml-6">
                   {/* navigation elements */}
@@ -54,7 +54,7 @@ export default function Navbar() {
                         key={item.name}
                         href={item.href}
                         className={classNames(
-                          item.current ? ' bg-yellow-700 text-white' : 'text-white hover:bg-yellow-700 hover:text-white',
+                          item.current ? ' bg-yellow-700 text-stone-900' :  'text-stone-900 hover:bg-yellow-700 hover text-stone-900',
                           'px-3 py-2 rounded-md text-lg font-medium'
                         )}
                         aria-current={item.current ? 'page' : undefined}
