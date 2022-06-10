@@ -1,16 +1,19 @@
 import '../styles/globals.css'
 import Layout from '../components/Layout'
 import Head from 'next/head'
+import { SessionProvider } from "next-auth/react"
 
 function MyApp({ Component, pageProps }) {
   return (
     <>
-    <Head>
+      <Head>
         <title>BoB the Builder</title>
       </Head>
-    <Layout>
-      <Component {...pageProps} />
-    </Layout>
+      <SessionProvider session={ pageProps.session }>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </SessionProvider>
     </>
     
   )
