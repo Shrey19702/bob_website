@@ -22,9 +22,9 @@ const Footer = () => {
         </div>
         {/* logo links contact */}
         <div className="mx-6 text-center md:text-left h-fit">
-          <div className="grid grid-1 md:grid-cols-2 lg:grid-cols-3 text-center h-fit">
+          <div className="flex flex-row justify-around items-center text-center h-fit flex-wrap w-full px-8">
             {/* LOGO */}
-            <div className="py-8 h-fit">
+            <div className="py-8 h-fit w-1/3 min-w-[320px]">
               <div className="
                   uppercase
                   font-semibold
@@ -41,7 +41,7 @@ const Footer = () => {
               </p>
             </div>
             {/* links */}
-            <div className="py-8 h-fit" >
+            <div className="py-8 h-fit w-1/3 min-w-[320px]" >
               {/* Useful links */}
               <h6 className="uppercase font-semibold mb-4 flex justify-center ">Useful links</h6>
               <div className="grid grid-cols-2 grid-rows-3">
@@ -66,7 +66,7 @@ const Footer = () => {
               </div>  
             </div>
             {/* contact */}
-            <div className="py-8 h-fit">
+            <div className="py-8 h-fit w-1/3 min-w-[320px]">
               <h6 className="uppercase font-semibold mb-4 flex justify-center ">Contact</h6>
               <p className="flex items-center justify-center  mb-4">
                 <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="home"

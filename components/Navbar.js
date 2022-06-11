@@ -43,7 +43,7 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
   
   const changeNavbarColor = () =>{
-      if(window.scrollY >= (window.innerHeight-64)){
+      if( (window.location.pathname!=='/') || (window.scrollY >= (window.innerHeight-64)) ){
         setColorchange(true);
       }
       else{
@@ -52,8 +52,16 @@ export default function Navbar() {
   };
 
   if (typeof window !== "undefined") {
-      window.addEventListener('scroll', changeNavbarColor);
+    
+    window.addEventListener('scroll', changeNavbarColor);
   }
+
+  useEffect(()=>{
+    if (typeof window !== "undefined") {
+      console.log(window.location.pathname);
+      changeNavbarColor();
+    }
+  })
 
   return (
     <div>
