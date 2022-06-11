@@ -10,7 +10,7 @@ export default function Home() {
       <Heropage/>
       <EmblaCarousel/>
       <Category/>
-      <Feature/>
+      {/* <Feature/> */}
       <Blog/>
       <Products/>
     </>
