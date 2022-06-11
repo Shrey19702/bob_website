@@ -2,13 +2,8 @@ import { Fragment, useEffect, useState, useRef} from 'react'
 import { Disclosure, Menu, Transition, Popover, Dialog  } from '@headlessui/react'
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
 import Cart from './Svgs'
-<<<<<<< HEAD
-import Head from 'next/head'
-import Link from 'next/link'
-=======
 
 import { useSession, signIn, signOut, getProviders } from 'next-auth/react'
->>>>>>> a6338c388bf8a9eda5f1a302205d4e38f4b24365
 
 const navigation = [
   { name: 'Home', href: '#', current: true },
@@ -244,42 +239,6 @@ export default function Navbar() {
                     className=" transition bg-zinc-200 p-2 rounded-full text-gray-800 hover:text-gray-900 hover:bg-zinc-100 focus:outline-none"
                     onClick={()=>{setOpen(true)}}
                   >
-<<<<<<< HEAD
-                    <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-2 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-                      <Menu.Item>
-                        {({ active }) => (
-                          <Link href="/profile">
-                          <a className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-800')}>
-                            Your Profile
-                          </a>
-                          </Link>
-                          
-                        )}
-                      </Menu.Item>
-                      <Menu.Item>
-                        {({ active }) => (
-                          <a
-                            href="#"
-                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-800')}
-                          >
-                            Settings
-                          </a>
-                        )}
-                      </Menu.Item>
-                      <Menu.Item>
-                        {({ active }) => (
-                          <a
-                            href="#"
-                            className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
-                          >
-                            Sign out
-                          </a>
-                        )}
-                      </Menu.Item>
-                    </Menu.Items>
-                  </Transition>
-                </Menu>
-=======
                     <span className="sr-only">User's Cart</span>
                     <Cart />
                   </button>
@@ -287,7 +246,6 @@ export default function Navbar() {
                   <Userlogin/>
 
                 </div>
->>>>>>> a6338c388bf8a9eda5f1a302205d4e38f4b24365
               </div>
             </div>
             {/* for mobile type  */}
