@@ -1,8 +1,8 @@
 
 const Footer = () => {
     return ( 
-        <footer className="text-center lg:text-left bg-gray-100 text-gray-600">
-        <div className="flex justify-center items-center lg:justify-start p-6 border-b border-gray-300">
+        <footer className="text-center lg:text-left bg-gray-100 text-gray-600 h-[34vh]">
+        <div className="flex justify-center items-center lg:justify-start p-6 border-b border-gray-300 h-[5vh]">
           <div className="mr-12 hidden lg:block">
             <span>Get connected with us on social networks:</span>
           </div>
@@ -36,9 +36,9 @@ const Footer = () => {
           
           </div>
         </div>
-        <div className="mx-6 py-10 text-center md:text-left">
+        <div className="mx-6 text-center md:text-left">
           <div className="grid grid-1 md:grid-cols-2 lg:grid-cols-3 text-center">
-            <div className="">
+            <div className="mt-8">
               <h6 className="
                   uppercase
                   font-semibold
@@ -123,7 +123,7 @@ const Footer = () => {
             </div>
           </div>
         </div>
-        <div className="text-center p-6 bg-gray-200">
+        <div className="text-center p-2 bg-gray-200 ">
           <span>© 2022 Copyright:</span>
           <a className="text-gray-600 font-semibold" href="#">Baby on Board</a>
         </div>
