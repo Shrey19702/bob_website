@@ -325,7 +325,7 @@ function Userlogin() {
             <Menu.Item>
               {({ active }) => (
                 <a
-                  href="/profile"
+                  href="/random"
                   className={(active ? 'bg-gray-100 ' : ' ')+ 'block px-4 py-2 text-sm text-gray-800'}
                 >
                   Your Profile
