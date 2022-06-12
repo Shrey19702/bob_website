@@ -6,7 +6,7 @@ const Blog = ()=>{
             <div className="flex flex-wrap  mx-4">
 
               <div className="w-full flex justify-center items-center lg:w-1/2 px-4 mb-14 lg:mb-0">
-                <img className="block md:w-6/12 lg:w-9/12 rounded-md" src="https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg" alt=""/>
+                <img className="block md:w-6/12 lg:w-9/12 rounded-md" src="./main.jpg" alt=""/>
               </div>
               <div className="w-full lg:w-1/2 px-4">
                 <div className="max-w-lg mx-auto">
