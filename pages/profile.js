@@ -1,7 +1,7 @@
 const Profile=()=>{
     return(
     <>
-    <div className="w-full h-[100vh] bg-cover  bg-[url('/profile_bg.png')]" >
+    <div className="w-full bg-cover  bg-[url('/profile_bg.png')]" >
         <div className="container mx-auto p-5 ">
             <div className="md:flex no-wrap md:-mx-2 mt-36 mb-14 justify-center">
             
