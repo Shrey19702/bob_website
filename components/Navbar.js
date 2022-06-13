@@ -315,6 +315,11 @@ function Userlogin() {
       ();
   },[]);
 
+  // const img_error = ()=>{
+  //   console.log(this.src);
+
+  // }
+
   if (session) { //user logged in
     return (
     <>
@@ -327,6 +332,10 @@ function Userlogin() {
             className=" h-11 w-11 rounded-full pointer-events-none"
             src={session.user.image}
             alt="User Image"
+            onError={({ currentTarget }) => {
+              currentTarget.onerror = null;
+              currentTarget.src='/UserOnError.png';
+            }}
           />
         </Menu.Button>
         {/*  user pages  */}
@@ -384,7 +393,7 @@ function Userlogin() {
           <>
             <Popover.Button className='focus-visible:outline-none'>
               <div className=' z-20 relative bg-gray-200 hover:bg-gray-100 h-11 w-11 flex justify-center items-center text-sm rounded-full focus:outline-none '>
-                <i class="material-icons text-3xl">person_add</i>
+                <i className="material-icons text-3xl">person_add</i>
                 {/* <img
                   className=" h-11 w-11 rounded-full"
                   src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
