@@ -5,7 +5,7 @@ class MyDocument extends Document {
         return (
             <Html>
                 <Head>
-                    <script src="https://kit.fontawesome.com/c80561e6bf.js"/>
+                    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
                 </Head>
                 <body>
                     <Main />

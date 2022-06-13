@@ -8,11 +8,12 @@ export default function Home() {
   return (
     <>
       <Heropage/>
-      <EmblaCarousel/>
-      <Category/>
-      {/* <Feature/> */}
-      <Blog/>
-      <Products/>
+      <div className="z-10 bg-slate-600">
+        <EmblaCarousel/>
+        <Category/>
+        <Blog/>
+        <Products/>
+      </div>
     </>
   )
 }

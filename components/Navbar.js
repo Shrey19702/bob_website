@@ -6,9 +6,9 @@ import Cart from './Svgs'
 import { useSession, signIn, signOut, getProviders } from 'next-auth/react'
 
 const navigation = [
-  { name: 'Home', href: '#', current: true },
-  { name: 'Categories', href: '#', current: false },
-  { name: 'Blog', href: '#', current: false },
+  { name: 'Home', href: '/', current: true },
+  { name: 'Categories', href: '#collection', current: false },
+  { name: 'Blogs', href: '/blogs', current: false },
 ]
 
 const products = [
@@ -39,9 +39,10 @@ const products = [
 export default function Navbar() {
   //colorchange: true->white, false->transparent
   const [colorChange, setColorchange] = useState(false);
+  //Cart's open close 
   const [open, setOpen] = useState(false);
-
-   const [sum,setSum] = useState(0);
+  //cart's sum adder
+  const [sum,setSum] = useState(0);
   
   const changeNavbarColor = () =>{
       if( (window.location.pathname!=='/') || (window.scrollY >= (window.innerHeight-64)) ){
@@ -51,7 +52,6 @@ export default function Navbar() {
         setColorchange(false);
       }
   };
-
 
   if (typeof window !== "undefined") {
     
@@ -66,15 +66,12 @@ export default function Navbar() {
 
     }
 
-    let rand = 0;
+    let adder = 0;
     products.map(x=>(
-      rand +=parseFloat((x.price.slice(1,x.price.length)))
+      adder +=parseFloat((x.price.slice(1,x.price.length)))
     ))
-    setSum(rand.toFixed(2));
+    setSum(adder.toFixed(2));
   })
-
- 
-  
 
   return (
     <div>
@@ -205,6 +202,7 @@ export default function Navbar() {
             </div>
         </Dialog>
       </Transition.Root>
+
       {/* Navbar */}
       <Disclosure as="nav" className={` z-30 ${colorChange?'bg-white shadow-md':'bg-transparent'} fixed w-full transition-all`}>
         {({ open }) => (
@@ -225,11 +223,13 @@ export default function Navbar() {
                 {/* Left side of navbar */}
                 <div className="flex-1 flex items-center justify-start sm:items-stretch ml-8 sm:m-0">
                   <div className="flex-shrink-0 flex items-center">
-                    <img
-                      className="block h-16 w-auto pointer-events-none"
-                      src="/logo.png"
-                      alt="LOGO"
-                    />
+                    <a href="./">
+                      <img
+                        className="block h-16 w-auto pointer-events-none"
+                        src="/logo.png"
+                        alt="LOGO"
+                      />
+                    </a>
                     {/* <img
                       className="hidden lg:block h-8 w-auto"
                       src="https://tailwindui.com/img/logos/workflow-logo-indigo-500-mark-white-text.svg"
@@ -343,7 +343,7 @@ function Userlogin() {
             <Menu.Item>
               {({ active }) => (
                 <a
-                  href="/random"
+                  href="/profile"
                   className={(active ? 'bg-gray-100 ' : ' ')+ 'block px-4 py-2 text-sm text-gray-800'}
                 >
                   Your Profile
@@ -383,12 +383,13 @@ function Userlogin() {
         {() => (
           <>
             <Popover.Button className='focus-visible:outline-none'>
-              <div className=' z-20 relative bg-gray-800 flex text-sm rounded-full ring-2 ring-white focus:outline-none '>
-                <img
+              <div className=' z-20 relative bg-gray-200 hover:bg-gray-100 h-11 w-11 flex justify-center items-center text-sm rounded-full focus:outline-none '>
+                <i class="material-icons text-3xl">person_add</i>
+                {/* <img
                   className=" h-11 w-11 rounded-full"
                   src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                   alt=""
-                />
+                /> */}
               </div>
             </Popover.Button>
             <Transition

@@ -1,12 +1,11 @@
 const Hello = () => {
-
-    let x = 'Facebook ID = '+process.env.FACEBOOK_ID;
-    console.log(x);
-
     return (
-        <h1 className=" p-80">
-            Hello
-        </h1> 
+        <>
+            <h1 className=" p-80">
+                Hello
+                <i class="material-icons">person_add</i>
+            </h1> 
+        </>
     );
 }
  
