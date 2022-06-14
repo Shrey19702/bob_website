@@ -1,17 +1,17 @@
 import connectDB from "../../../utils/connectDB";
-import Blog from "../../../models/blogModel";
+import Cart from "../../../models/cartModel";
 
 connectDB();
 
-const createBlog = async (req, res) => {
+const createCart = async (req, res) => {
   if (req.method == "POST") {
     try {
-      let newBlog = await Blog.create(req.body);
-      if (newBlog) {
+      let newCart = await Cart.create(req.body);
+      if (newCart) {
         res.status(201).json({
           success: true,
-          message: "Succesful creation of Blog",
-          body: newBlog,
+          message: "Succesful creation of Cart",
+          body: newCart,
         });
       } else {
         res.status(400).json({
@@ -27,4 +27,4 @@ const createBlog = async (req, res) => {
     }
   }
 };
-export default createBlog
+export default createCart

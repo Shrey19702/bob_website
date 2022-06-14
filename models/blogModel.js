@@ -1,18 +1,18 @@
 import mongoose from "mongoose"
-import { stringify } from "postcss"
+import { Stringify } from "postcss"
 
 const blogSchema = new mongoose.Schema({
 title : {
-    type: string,
+    type: String,
     required:true
 },
 content:{
-    type: string,
+    type: String,
     required: true,
 
 },
 blogPic:{
-    type: string,
+    type: String,
     required: true,
 },
 postTime : {
@@ -22,8 +22,12 @@ nLikes : {
     type: Number,
 },
 author : { 
-      UserId : string,
-      ProfilePic : string, 
-      Name : string
+      UserId : String,
+      ProfilePic : String, 
+      Name : String
 }
 })
+
+let Blog = mongoose.models.blog ||mongoose.model('blog', blogSchema)
+
+export default Blog
