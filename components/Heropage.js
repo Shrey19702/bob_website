@@ -2,10 +2,10 @@ import React, { useState, useEffect, useCallback } from "react";
 import useEmblaCarousel from 'embla-carousel-react'
 
 const media1 = '/heroImg.jpg';
-const media2 = '/heroImg.jpg';
-const media3 = '/heroImg.jpg';
+const media2 = '/heroImg1.jpeg';
+const media3 = '/heroImg2.jpeg';
 const media4 = '/heroImg.jpg';
-const media5 = '/heroImg.jpg';
+const media5 = '/heroImg1.jpeg';
 const media = [media1, media2, media3, media4, media5];
 const mediaByIndex = index => media[index % media.length];
 
