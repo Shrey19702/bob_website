@@ -1,22 +1,26 @@
 import mongoose, { mongo } from "mongoose";
 
 const cartSchema = new mongoose.Schema({
-    userID:{
+    userId:{    //user ordering this product
       type:String,
-    
     },
-    
-    selectedProductsToBuy:{
-        type:Array,
-        required:true
-    },
-
-    total:{
-        type:Number,
-        default:0
+    products: [{    //array of products with their quantity and net price 
+        productId: String,
+        name: String,
+        quantity:{
+            type: Number,
+            required: true,
+            min: [1, 'Quantity can not be less then 1.'],
+            default: 1
+        },
+        price: Number
+    }],
+    bill: {     //total cost of all the products to buy
+        type: Number,
+        required: true,
+        default: 0
     }
-
-})
+});
 
 let Cart = mongoose.model.cart || mongoose.model('cart',cartSchema);
-export default Cart
+export default Cart;

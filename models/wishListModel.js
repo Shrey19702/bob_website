@@ -1,12 +1,11 @@
-import mongoose from "mongoose"
-
+import mongoose from "mongoose";
 
 const wishListSchema = new mongoose.Schema({
- wishedProducts:{
-    type:Array
- }
-})
+ Products:[    //array of productId's of user wishlist 
+   {productId:String}
+]
+});
 
-let WishList = mongoose.models.wishList ||mongoose.model('wishList', wishListSchema)
+let WishList = mongoose.models.wishList || mongoose.model('wishList', wishListSchema);
 
-export default WishList
+export default WishList;

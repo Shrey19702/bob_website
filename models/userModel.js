@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema({
     name: {
@@ -9,7 +9,8 @@ const userSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
-        unique:true
+        unique:true,
+        lowercase:true
     },
 
     role:{
@@ -20,11 +21,13 @@ const userSchema = new mongoose.Schema({
     avatar :{
         type:String,
         default : ''
-    }
+    },
+},
+{
+    timestamps:true
+}
+);
 
+let User = mongoose.models.user ||mongoose.model('user', userSchema);
 
-})
-
-let User = mongoose.models.user ||mongoose.model('user', userSchema)
-
-export default User
+export default User;
