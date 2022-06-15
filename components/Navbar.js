@@ -1,84 +1,129 @@
-import { Fragment, useEffect, useState, useRef} from 'react'
-import { Disclosure, Menu, Transition, Popover, Dialog  } from '@headlessui/react'
-import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline'
-import Cart from './Svgs'
+import { Fragment, useEffect, useState, useRef } from "react";
+import {
+  Disclosure,
+  Menu,
+  Transition,
+  Popover,
+  Dialog,
+} from "@headlessui/react";
+import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
+import Cart from "./Svgs";
 
-import { useSession, signIn, signOut, getProviders } from 'next-auth/react'
+import { useSession, signIn, signOut, getProviders } from "next-auth/react";
+
+
+ const cgList = [
+  { title: 'Fashion',
+    sub:[
+      'Infants',
+      'Girls',
+      'Boys',
+      'Footwear'
+    ]
+  },
+  { title :'Nursery & Gears',
+    sub:[
+      'Bottle&Feeder',
+      'Rattle Teether',
+      'Prams',
+      'Bather',
+      'Folding Bath Table',
+      'Bedding  with Mosquitoes Net',
+      'Baby Cradle-RockStar',
+       'Baby Activity Walker'
+    ]
+  },
+  {
+          title:'Cribs & cots',
+          sub:[]
+  },
+  {
+    title:'Kits',
+    sub:[
+      'Gift Packs',
+      'Baby Shower'
+    ]
+  }
+ ]
+    
+
 
 const navigation = [
-  { name: 'Home', href: '/', current: true },
-  { name: 'Categories', href: '#collection', current: false },
-  { name: 'Blogs', href: '/blogs', current: false },
-]
+  { name: "Home", href: "/", current: true },
+  // { name: 'Categories'
+
+  //    ,href: '#collection', current: false },
+  { name: "Blogs", href: "/blogs", current: false },
+];
 
 const products = [
   {
     id: 1,
-    name: 'Bunk Bed',
-    href: '#',
-    color: 'Salmon',
-    price: '$780.50',
+    name: "Bunk Bed",
+    href: "#",
+    color: "Salmon",
+    price: "$780.50",
     quantity: 1,
-    imageSrc: './main.jpg',
-    imageAlt: 'Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.',
+    imageSrc: "./main.jpg",
+    imageAlt:
+      "Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.",
   },
   {
     id: 2,
-    name: 'Bunk Bed',
-    href: '#',
-    color: 'Salmon',
-    price: '$90.00',
+    name: "Bunk Bed",
+    href: "#",
+    color: "Salmon",
+    price: "$90.00",
     quantity: 1,
-    imageSrc: './main.jpg',
-    imageAlt: 'Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.',
+    imageSrc: "./main.jpg",
+    imageAlt:
+      "Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.",
   },
   // More products...
-]
-
+];
 
 export default function Navbar() {
   //colorchange: true->white, false->transparent
   const [colorChange, setColorchange] = useState(false);
-  //Cart's open close 
+  //Cart's open close
   const [open, setOpen] = useState(false);
   //cart's sum adder
-  const [sum,setSum] = useState(0);
-  
-  const changeNavbarColor = () =>{
-      if( (window.location.pathname!=='/') || (window.scrollY >= (window.innerHeight-64)) ){
-        setColorchange(true);
-      }
-      else{
-        setColorchange(false);
-      }
+  const [sum, setSum] = useState(0);
+
+  const changeNavbarColor = () => {
+    if (
+      window.location.pathname !== "/" ||
+      window.scrollY >= window.innerHeight - 64
+    ) {
+      setColorchange(true);
+    } else {
+      setColorchange(false);
+    }
   };
 
   if (typeof window !== "undefined") {
-    
-    window.addEventListener('scroll', changeNavbarColor);
+    window.addEventListener("scroll", changeNavbarColor);
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     if (typeof window !== "undefined") {
       console.log(window.location.pathname);
-      changeNavbarColor(); 
-       
-
+      changeNavbarColor();
     }
 
     let adder = 0;
-    products.map(x=>(
-      adder +=parseFloat((x.price.slice(1,x.price.length)))
-    ))
+    products.map(
+      (x) => (adder += parseFloat(x.price.slice(1, x.price.length)))
+    );
     setSum(adder.toFixed(2));
-  })
+  });
 
   return (
     <div>
       {/* Cart */}
       <Transition.Root show={open} as="div">
         <Dialog as="div" className="relative z-40" onClose={setOpen}>
-            <Transition.Child
+          <Transition.Child
             as={Fragment}
             enter="ease-in-out duration-500"
             enterFrom="opacity-0"
@@ -86,132 +131,161 @@ export default function Navbar() {
             leave="ease-in-out duration-500"
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
-            >
+          >
             <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
-            </Transition.Child>
+          </Transition.Child>
 
-            <div className="fixed inset-0 overflow-hidden">
+          <div className="fixed inset-0 overflow-hidden">
             <div className="absolute inset-0 overflow-hidden">
-                <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
+              <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
                 <Transition.Child
-                    as={Fragment}
-                    enter="transform transition ease-in-out duration-500 sm:duration-700"
-                    enterFrom="translate-x-full"
-                    enterTo="translate-x-0"
-                    leave="transform transition ease-in-out duration-500 sm:duration-700"
-                    leaveFrom="translate-x-0"
-                    leaveTo="translate-x-full"
+                  as={Fragment}
+                  enter="transform transition ease-in-out duration-500 sm:duration-700"
+                  enterFrom="translate-x-full"
+                  enterTo="translate-x-0"
+                  leave="transform transition ease-in-out duration-500 sm:duration-700"
+                  leaveFrom="translate-x-0"
+                  leaveTo="translate-x-full"
                 >
-                    <Dialog.Panel className="pointer-events-auto w-screen max-w-md">
+                  <Dialog.Panel className="pointer-events-auto w-screen max-w-md">
                     <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
-                        <div className="flex-1 overflow-y-auto py-6 px-4 sm:px-6">
+                      <div className="flex-1 overflow-y-auto py-6 px-4 sm:px-6">
                         <div className="flex items-start justify-between">
-                            <Dialog.Title className="text-lg font-medium text-gray-900"> Shopping cart </Dialog.Title>
-                            <div className="ml-3 flex h-7 items-center">
+                          <Dialog.Title className="text-lg font-medium text-gray-900">
+                            {" "}
+                            Shopping cart{" "}
+                          </Dialog.Title>
+                          <div className="ml-3 flex h-7 items-center">
                             <button
-                                type="button"
-                                className="-m-2 p-2 text-gray-400 cursor-pointer hover:text-gray-500"
-                                onClick={() => setOpen(false)}
+                              type="button"
+                              className="-m-2 p-2 text-gray-400 cursor-pointer hover:text-gray-500"
+                              onClick={() => setOpen(false)}
                             >
-                                <span className="sr-only">Close panel</span>
-                                <XIcon className="h-6 w-6 cursor-pointer" aria-hidden="true" />
+                              <span className="sr-only">Close panel</span>
+                              <XIcon
+                                className="h-6 w-6 cursor-pointer"
+                                aria-hidden="true"
+                              />
                             </button>
-                            </div>
+                          </div>
                         </div>
 
                         <div className="mt-8">
-                            <div className="flow-root">
-                            <ul role="list" className="-my-6 divide-y divide-gray-200">
-                                {products.map((product) => {
-                                    
-                                   return(
-                                   
-                                <li key={product.id} className="flex py-6">
+                          <div className="flow-root">
+                            <ul
+                              role="list"
+                              className="-my-6 divide-y divide-gray-200"
+                            >
+                              {products.map((product) => {
+                                return (
+                                  <li key={product.id} className="flex py-6">
                                     <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                                    <img
+                                      <img
                                         src={product.imageSrc}
                                         alt={product.imageAlt}
                                         className="h-full w-full object-cover object-center"
-                                    />
+                                      />
                                     </div>
 
                                     <div className="ml-4 flex flex-1 flex-col">
-                                    <div>
+                                      <div>
                                         <div className="flex justify-between text-base font-medium text-gray-900">
-                                        <h3>
-                                            <a href={product.href}> {product.name} </a>
-                                        </h3>
-                                        <p className="ml-4">{product.price}</p>
+                                          <h3>
+                                            <a href={product.href}>
+                                              {" "}
+                                              {product.name}{" "}
+                                            </a>
+                                          </h3>
+                                          <p className="ml-4">
+                                            {product.price}
+                                          </p>
                                         </div>
-                                        <p className="mt-1 text-sm text-gray-500">{product.color}</p>
-                                    </div>
-                                    <div className="flex flex-1 items-end justify-between text-sm">
-                                        <p className="text-gray-500">Qty {product.quantity}</p>
+                                        <p className="mt-1 text-sm text-gray-500">
+                                          {product.color}
+                                        </p>
+                                      </div>
+                                      <div className="flex flex-1 items-end justify-between text-sm">
+                                        <p className="text-gray-500">
+                                          Qty {product.quantity}
+                                        </p>
 
                                         <div className="flex">
-                                        <button
+                                          <button
                                             type="button"
                                             className="font-medium text-indigo-600 hover:text-indigo-500"
-                                        >
+                                          >
                                             Remove
-                                        </button>
+                                          </button>
                                         </div>
+                                      </div>
                                     </div>
-                                    </div>
-                                </li>
-                                   )
-
-                            })}
+                                  </li>
+                                );
+                              })}
                             </ul>
-                            </div>
+                          </div>
                         </div>
-                        </div>
+                      </div>
 
-                        <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
+                      <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
                         <div className="flex justify-between text-base font-medium text-gray-900">
-                            <p>Subtotal</p>
-                            <p>${sum}</p>
+                          <p>Subtotal</p>
+                          <p>${sum}</p>
                         </div>
-                        <p className="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
+                        <p className="mt-0.5 text-sm text-gray-500">
+                          Shipping and taxes calculated at checkout.
+                        </p>
                         <div className="mt-6">
-                            <a
+                          <a
                             href="#"
                             className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
-                            >
+                          >
                             Checkout
-                            </a>
+                          </a>
                         </div>
                         <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
-                            <p>
-                            or{' '}
+                          <p>
+                            or{" "}
                             <button
-                                type="button"
-                                className="font-medium text-indigo-600 hover:text-indigo-500"
-                                onClick={() => setOpen(false)}
+                              type="button"
+                              className="font-medium text-indigo-600 hover:text-indigo-500"
+                              onClick={() => setOpen(false)}
                             >
-                                Continue Shopping<span aria-hidden="true"> &rarr;</span>
+                              Continue Shopping
+                              <span aria-hidden="true"> &rarr;</span>
                             </button>
-                            </p>
+                          </p>
                         </div>
-                        </div>
+                      </div>
                     </div>
-                    </Dialog.Panel>
+                  </Dialog.Panel>
                 </Transition.Child>
-                </div>
+              </div>
             </div>
-            </div>
+          </div>
         </Dialog>
       </Transition.Root>
 
       {/* Navbar */}
-      <Disclosure as="nav" className={` z-30 ${colorChange?'bg-white shadow-md':'bg-transparent'} fixed w-full transition-all`}>
+      <Disclosure
+        as="nav"
+        className={` z-30 ${
+          colorChange ? "bg-white shadow-md" : "bg-transparent"
+        } fixed w-full transition-all`}
+      >
         {({ open }) => (
           <>
             <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
               <div className="relative flex items-center justify-between h-16">
                 {/* Mobile menu button*/}
                 <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
-                  <Disclosure.Button className={`inline-flex items-center justify-center p-2 rounded-md ${colorChange? 'text-gray-800 focus:ring-black' :'text-white focus:ring-white'} focus:outline-none focus:ring-2 focus:ring-inset `}>
+                  <Disclosure.Button
+                    className={`inline-flex items-center justify-center p-2 rounded-md ${
+                      colorChange
+                        ? "text-gray-800 focus:ring-black"
+                        : "text-white focus:ring-white"
+                    } focus:outline-none focus:ring-2 focus:ring-inset `}
+                  >
                     <span className="sr-only">Open main menu</span>
                     {open ? (
                       <XIcon className="block h-6 w-6" aria-hidden="true" />
@@ -244,33 +318,79 @@ export default function Navbar() {
                           key={item.name}
                           href={item.href}
                           className={
-                            (item.current ? ' bg-zinc-100 text-gray-800 ' :  'text-gray-800 hover:bg-zinc-200 ')+
-                            'px-3 py-2 rounded-md text-lg font-medium transition'
+                            (item.current
+                              ? " bg-zinc-100 text-gray-800 "
+                              : "text-gray-800 hover:bg-zinc-200 ") +
+                            "px-3 py-2 rounded-md text-lg font-medium transition"
                           }
-                          aria-current={item.current ? 'page' : undefined}
+                          aria-current={item.current ? "page" : undefined}
                         >
                           {item.name}
                         </a>
                       ))}
+
+
+
+
+
+                      <div className="group relative inline-block hover:block py-3 ">
+                        <a href="#" className=""> Categories</a>
+                        <div className="hidden absolute bg-white min-w-[500px] shadow-lg py-12 px-16 z-10 group-hover:block" >
+                          <div className="grid grid-row-3 gap-8">
+                            {
+                              cgList.map(x=>(
+                                <div className="flex items-center justify-center flex-col">
+                                    <a href="#"><h1 className="text-lg text-slate-500">{x.title}</h1></a>
+                                    {
+                                      x.sub.map(y=>(
+                                        <a href="#" className="c"><h3>{y}</h3></a>
+                                      ))
+                                    }
+                                </div>
+                                    
+                              ))
+                            }    
+                           
+
+                          </div>
+                         
+
+                        </div>
+                      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                      
                     </div>
                   </div>
                 </div>
 
-                <div className=''></div>
+                <div className=""></div>
 
                 {/* right side of navbar */}
                 <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                   <button
                     type="button"
                     className=" transition bg-zinc-200 p-2 rounded-full text-gray-800 hover:text-gray-900 hover:bg-zinc-100 focus:outline-none"
-                    onClick={()=>{setOpen(true)}}
+                    onClick={() => {
+                      setOpen(true);
+                    }}
                   >
                     <span className="sr-only">User's Cart</span>
                     <Cart />
                   </button>
-                  
-                  <Userlogin/>
 
+                  <Userlogin />
                 </div>
               </div>
             </div>
@@ -283,10 +403,14 @@ export default function Navbar() {
                     as="a"
                     href={item.href}
                     className={
-                      (item.current ? ('bg-gray-900 text-white') : (colorChange? 'text-gray-900 hover:bg-gray-900 hover:text-gray-100' :'text-white hover:bg-gray-900 hover:text-gray-200'))
-                      +' block px-3 py-2 rounded-md text-base font-medium'
+                      (item.current
+                        ? "bg-gray-900 text-white"
+                        : colorChange
+                        ? "text-gray-900 hover:bg-gray-900 hover:text-gray-100"
+                        : "text-white hover:bg-gray-900 hover:text-gray-200") +
+                      " block px-3 py-2 rounded-md text-base font-medium"
                     }
-                    aria-current={item.current ? 'page' : undefined}
+                    aria-current={item.current ? "page" : undefined}
                   >
                     {item.name}
                   </Disclosure.Button>
@@ -297,102 +421,109 @@ export default function Navbar() {
         )}
       </Disclosure>
     </div>
-  )
+  );
 }
 
 function Userlogin() {
-  const { data: session , status } = useSession()
+  const { data: session, status } = useSession();
   const [providers, setProviders] = useState();
 
-  useEffect( 
-    ()=>{
-      (
-        async()=>{
-          const curr_providers = await getProviders();
-          setProviders(curr_providers);
-        }
-      )
-      ();
-  },[]);
+  useEffect(() => {
+    (async () => {
+      const curr_providers = await getProviders();
+      setProviders(curr_providers);
+    })();
+  }, []);
 
   // const img_error = ()=>{
   //   console.log(this.src);
 
   // }
 
-  if (session) { //user logged in
+  if (session) {
+    //user logged in
     return (
-    <>
-      {/* Profile dropdown */}
+      <>
+        {/* Profile dropdown */}
 
-      <Menu as="div" className="ml-3 z-20 relative">
-        <Menu.Button className=" z-20 relative bg-gray-800 flex text-sm rounded-full ring-2 ring-white focus:outline-none">
-          <span className="sr-only">Open user menu</span>
-          <img
-            className=" h-11 w-11 rounded-full pointer-events-none"
-            src={session.user.image}
-            alt="User Image"
-            onError={({ currentTarget }) => {
-              currentTarget.onerror = null;
-              currentTarget.src='/UserOnError.png';
-            }}
-          />
-        </Menu.Button>
-        {/*  user pages  */}
-        <Transition
-          as={Fragment}
-          enter="transition ease-out duration-100"
-          enterFrom="transform opacity-0 scale-95"
-          enterTo="transform opacity-100 scale-100"
-          leave="transition ease-in duration-75"
-          leaveFrom="transform opacity-100 scale-100"
-          leaveTo="transform opacity-0 scale-95"
-        >
-          <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-2 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
-            <Menu.Item>
-              {({ active }) => (
-                <a
-                  href="/profile"
-                  className={(active ? 'bg-gray-100 ' : ' ')+ 'block px-4 py-2 text-sm text-gray-800'}
-                >
-                  Your Profile
-                </a>
-              )}
-            </Menu.Item>
-            <Menu.Item>
-              {({ active }) => (
-                <a
-                  href="#"
-                  className={(active ? 'bg-gray-100 ' : ' ')+ 'block px-4 py-2 text-sm text-gray-800'}
-                >
-                  Settings
-                </a>
-              )}
-            </Menu.Item>
-            <Menu.Item>
-              {({ active }) => (
-                <a
-                  onClick={() => signOut()}
-                  className={(active ? 'bg-gray-100 ' : ' ')+ 'block px-4 py-2 text-sm text-gray-700 cursor-pointer'}
-                >
-                  Sign out
-                </a>
-              )}
-            </Menu.Item>
-          </Menu.Items>
-        </Transition>
-      </Menu>
-    </>
-    )
+        <Menu as="div" className="ml-3 z-20 relative">
+          <Menu.Button className=" z-20 relative bg-gray-800 flex text-sm rounded-full ring-2 ring-white focus:outline-none">
+            <span className="sr-only">Open user menu</span>
+            <img
+              className=" h-11 w-11 rounded-full pointer-events-none"
+              src={session.user.image}
+              alt="User Image"
+              onError={({ currentTarget }) => {
+                currentTarget.onerror = null;
+                currentTarget.src = "/UserOnError.png";
+              }}
+            />
+          </Menu.Button>
+          {/*  user pages  */}
+          <Transition
+            as={Fragment}
+            enter="transition ease-out duration-100"
+            enterFrom="transform opacity-0 scale-95"
+            enterTo="transform opacity-100 scale-100"
+            leave="transition ease-in duration-75"
+            leaveFrom="transform opacity-100 scale-100"
+            leaveTo="transform opacity-0 scale-95"
+          >
+            <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-2 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+              <Menu.Item>
+                {({ active }) => (
+                  <a
+                    href="/profile"
+                    className={
+                      (active ? "bg-gray-100 " : " ") +
+                      "block px-4 py-2 text-sm text-gray-800"
+                    }
+                  >
+                    Your Profile
+                  </a>
+                )}
+              </Menu.Item>
+              <Menu.Item>
+                {({ active }) => (
+                  <a
+                    href="#"
+                    className={
+                      (active ? "bg-gray-100 " : " ") +
+                      "block px-4 py-2 text-sm text-gray-800"
+                    }
+                  >
+                    Settings
+                  </a>
+                )}
+              </Menu.Item>
+              <Menu.Item>
+                {({ active }) => (
+                  <a
+                    onClick={() => signOut()}
+                    className={
+                      (active ? "bg-gray-100 " : " ") +
+                      "block px-4 py-2 text-sm text-gray-700 cursor-pointer"
+                    }
+                  >
+                    Sign out
+                  </a>
+                )}
+              </Menu.Item>
+            </Menu.Items>
+          </Transition>
+        </Menu>
+      </>
+    );
   }
-  return ( //user not logged in
+  return (
+    //user not logged in
     <>
       {/* No user logged in */}
       <Popover className="relative z-20 ml-3">
         {() => (
           <>
-            <Popover.Button className='focus-visible:outline-none'>
-              <div className=' z-20 relative bg-gray-200 hover:bg-gray-100 h-11 w-11 flex justify-center items-center text-sm rounded-full focus:outline-none '>
+            <Popover.Button className="focus-visible:outline-none">
+              <div className=" z-20 relative bg-gray-200 hover:bg-gray-100 h-11 w-11 flex justify-center items-center text-sm rounded-full focus:outline-none ">
                 <i className="material-icons text-3xl">person_add</i>
                 {/* <img
                   className=" h-11 w-11 rounded-full"
@@ -413,15 +544,17 @@ function Userlogin() {
               <Popover.Panel className="absolute left-1/2 z-10 mt-3 w-screen max-w-xs sm:max-w-sm -translate-x-full transform px-4 sm:px-0 ">
                 <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
                   <div className="relative grid gap-2 bg-white py-4 px-4">
-                    {providers && Object.values(providers)
-                      .map(provider => (
-                          <div key={provider.name}>
-                              <button onClick={() => signIn(provider.id)} className=' text-center sm:text-left w-full rounded-lg px-4 py-4 transition duration-150 ease-in-out hover:bg-gray-100 focus:outline-none ' >
-                                Sign In with{' '} {provider.name}
-                              </button>
-                          </div>
-                      ))
-                    }
+                    {providers &&
+                      Object.values(providers).map((provider) => (
+                        <div key={provider.name}>
+                          <button
+                            onClick={() => signIn(provider.id)}
+                            className=" text-center sm:text-left w-full rounded-lg px-4 py-4 transition duration-150 ease-in-out hover:bg-gray-100 focus:outline-none "
+                          >
+                            Sign In with {provider.name}
+                          </button>
+                        </div>
+                      ))}
                   </div>
                 </div>
               </Popover.Panel>
@@ -430,5 +563,5 @@ function Userlogin() {
         )}
       </Popover>
     </>
-  )
+  );
 }
