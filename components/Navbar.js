@@ -34,8 +34,8 @@ import { useSession, signIn, signOut, getProviders } from "next-auth/react";
     ]
   },
   {
-          title:'Cribs & cots',
-          sub:[]
+    title:'Cribs & cots',
+    sub:[]
   },
   {
     title:'Kits',
@@ -45,8 +45,6 @@ import { useSession, signIn, signOut, getProviders } from "next-auth/react";
     ]
   }
  ]
-    
-
 
 const navigation = [
   { name: "Home", href: "/", current: true },
@@ -107,7 +105,7 @@ export default function Navbar() {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      console.log(window.location.pathname);
+      // console.log(window.location.pathname);
       changeNavbarColor();
     }
 
@@ -328,54 +326,29 @@ export default function Navbar() {
                           {item.name}
                         </a>
                       ))}
-
-
-
-
-
-                      <div className="group relative inline-block hover:block py-3 ">
-                        <a href="#" className=""> Categories</a>
-                        <div className="hidden absolute bg-white min-w-[500px] shadow-lg py-12 px-16 z-10 group-hover:block" >
-                          <div className="grid grid-row-3 gap-8">
-                            {
-                              cgList.map(x=>(
-                                <div className="flex items-center justify-center flex-col">
-                                    <a href="#"><h1 className="text-lg text-slate-500">{x.title}</h1></a>
-                                    {
-                                      x.sub.map(y=>(
-                                        <a href="#" className="c"><h3>{y}</h3></a>
-                                      ))
-                                    }
-                                </div>
-                                    
-                              ))
-                            }    
-                           
-
-                          </div>
-                         
-
+                      {/* categories */}
+                      {/* <div className="group relative inline-block hover:block py-3 "> */}
+                        <a className="text-gray-800 peer hover:bg-zinc-200 px-3 py-2 rounded-md text-lg font-medium transition cursor-pointer">
+                          <span>Categories</span>
+                        </a>
+                        <div className={` hover:grid peer-hover:grid hover:grid-row-${cgList.length-1} overflow-y-scroll max-h-[95vh] w-7/12 gap-8 hidden absolute left-0 top-[54px] w-full bg-gray-50 rounded-md shadow-lg py-8 px-10`} >
+                          {cgList.map(x=>(
+                            <div key={x.title} className="flex items-center justify-between flex-wrap">
+                              <a href="#" className=" transition w-full text-white p-4 bg-[#fe98b2] opacity-95 hover:opacity-100 rounded-lg "><span className="text-xl">{x.title}</span></a>
+                              {
+                                x.sub.map(y=>(
+                                  <a href="#" className=" max-w-[50%] transition flex-grow text-white bg-sky-500 hover:opacity-90 rounded-md text-center p-2 m-2" key={y} ><span>{y}</span></a>
+                                ))
+                              }
+                            </div>
+                                  
+                          ))}
                         </div>
-                      </div>
+                      {/* </div> */}
 
-
-
-
-
-
-
-
-
-
-
-
-
-                      
                     </div>
                   </div>
                 </div>
-
-                <div className=""></div>
 
                 {/* right side of navbar */}
                 <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
@@ -415,6 +388,19 @@ export default function Navbar() {
                     {item.name}
                   </Disclosure.Button>
                 ))}
+                 <Disclosure.Button
+                    key={'Category'}
+                    as="a"
+                    href='#'
+                    className={
+                      (colorChange
+                        ? "text-gray-900 hover:bg-gray-900 hover:text-gray-100"
+                        : "text-white hover:bg-gray-900 hover:text-gray-200") +
+                      " block px-3 py-2 rounded-md text-base font-medium"
+                    }
+                  >
+                    Category
+                  </Disclosure.Button>
               </div>
             </Disclosure.Panel>
           </>
@@ -547,9 +533,9 @@ function Userlogin() {
                     {providers &&
                       Object.values(providers).map((provider) => (
                         <div key={provider.name}>
-                          <button
-                            onClick={() => signIn(provider.id)}
-                            className=" text-center sm:text-left w-full rounded-lg px-4 py-4 transition duration-150 ease-in-out hover:bg-gray-100 focus:outline-none "
+                          <button 
+                            onClick={() => signIn(provider.id, { callbackUrl: 'http://localhost:3000/api/auth/login-verify'})}
+                            className=' text-center sm:text-left w-full rounded-lg px-4 py-4 transition duration-150 ease-in-out hover:bg-gray-100 focus:outline-none ' 
                           >
                             Sign In with {provider.name}
                           </button>

@@ -1,4 +1,5 @@
-const mongoose = require("mongoose");
+// import mongoose from "mongoose";
+import {connect} from "mongoose";
 
 const connection={};
 
@@ -8,15 +9,15 @@ const connectDB =  async function(){
         return;
     }
     try{
-        const db = await mongoose.connect(process.env.MONGO_URI, {
-            // useNewUrlParser: true,
-            // useUnifiedTopology: true,
+        const db = await connect(process.env.MONGO_URI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
         });
         connection.isConnected = db.connections[0].readyState;
         console.log('mongodb connection sucessfull ');    
     }
     catch(error){
-        console.log('error in connecting to mongodb :',error);
+        console.error('error in connecting to mongodb :',error);
     }
 }
 

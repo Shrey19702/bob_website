@@ -15,7 +15,7 @@ const EmblaCarousel = ({ slides }) => {
   const [viewportRef, embla] = useEmblaCarousel({
     loop: true,
     // dragFree: true
-    speed: 2
+    speed: 4
   });
   const [prevBtnEnabled, setPrevBtnEnabled] = useState(false);
   const [nextBtnEnabled, setNextBtnEnabled] = useState(false);
@@ -67,22 +67,22 @@ const EmblaCarousel = ({ slides }) => {
     embla.on("scroll", onScroll);
     embla.on("resize", onScroll);
 
-    const intervalId = setInterval(() => {
-        scrollNext();
-    }, 7000);
-    return () => clearInterval(intervalId);
+    // const intervalId = setInterval(() => {
+    //     scrollNext();
+    // }, 7000);
+    // return () => clearInterval(intervalId);
 
   }, [embla, onSelect, onScroll]);
 
   return (
     <>
         {/* <div className="h-full w-full bg-transparent z-10 absolute"></div> */}
-        <div className="embla relative bg-gray-100 pt-16 max-w-full mx-auto">
+        <div className="embla relative bg-gray-100 max-w-full mx-auto">
         <div className="embla__viewport overflow-hidden w-full" ref={viewportRef}>
             <div className="embla__container flex select-none -ml-3">
             {slides.map((index) => (
                 <div className="embla__slide relative min-w-[100vw]" key={index}>
-                <div className="embla__slide__inner relative w-full h-[calc(100vh-64px)] flex items-center justify-center overflow-hidden">
+                <div className="embla__slide__inner relative w-full h-[100vh] flex items-center justify-center overflow-hidden">
                     <div
                     className="embla__slide__parallax absolute top-0 right-0 bottom-0 left-0"
                     style={{ transform: `translateX(${parallaxValues[index]}%)` }}
