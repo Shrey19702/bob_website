@@ -331,13 +331,13 @@ export default function Navbar() {
                         <a className="text-gray-800 peer hover:bg-zinc-200 px-3 py-2 rounded-md text-lg font-medium transition cursor-pointer">
                           <span>Categories</span>
                         </a>
-                        <div className={` hover:grid peer-hover:grid hover:grid-row-${cgList.length-1} overflow-y-scroll max-h-[95vh] w-7/12 gap-8 hidden absolute left-0 top-[54px] w-full bg-gray-50 rounded-md shadow-lg py-8 px-10`} >
+                        <div className={` hover:grid peer-hover:grid hover:grid-row-${cgList.length-1} overflow-y-auto max-h-[95vh] w-7/12 gap-2 hidden absolute left-0 top-[54px] bg-gray-50 rounded-md shadow-lg py-8 px-10`} >
                           {cgList.map(x=>(
-                            <div key={x.title} className="flex items-center justify-between flex-wrap">
-                              <a href="#" className=" transition w-full text-white p-4 bg-[#fe98b2] opacity-95 hover:opacity-100 rounded-lg "><span className="text-xl">{x.title}</span></a>
+                            <div key={x.title} className="flex items-center  flex-wrap">
+                              <a href="#" className=" transition w-full text-black p-2 font-bold opacity-95 hover:opacity-100 rounded-lg "><span className="text-xl">{x.title}</span></a>
                               {
                                 x.sub.map(y=>(
-                                  <a href="#" className=" max-w-[50%] transition flex-grow text-white bg-sky-500 hover:opacity-90 rounded-md text-center p-2 m-2" key={y} ><span>{y}</span></a>
+                                  <a href="#" className=" max-w-[50%] transition text-white hover:opacity-90 rounded-3xl text-center bg-sky-300 px-3 py-2 m-2" key={y} ><span>{y}</span></a>
                                 ))
                               }
                             </div>

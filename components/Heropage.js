@@ -89,7 +89,7 @@ const EmblaCarousel = ({ slides }) => {
                     >
                     <img
                         onLoad={autorun}
-                        className="embla__slide__img absolute block top-1/2 left-1/2 w-auto min-h-full min-w-full translate-x-[-50%] translate-y-[-50%] "
+                        className=" object-cover embla__slide__img absolute block top-1/2 left-1/2 w-auto min-h-full min-w-full translate-x-[-50%] translate-y-[-50%] "
                         src={mediaByIndex(index)}
                         alt="A cool cat."
                     />
