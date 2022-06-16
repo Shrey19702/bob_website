@@ -1,5 +1,5 @@
 import { useSession, signIn, signOut } from "next-auth/react"
-import Gethref from "./api/auth/Gethref"
+// import Gethref from "./api/auth/Gethref"
 
 export default function Component() {
   const { data: session , status } = useSession()
@@ -7,6 +7,7 @@ export default function Component() {
     return (
     <>
         <div className=" p-96">
+            {/* <p>{process.env.CurrentHost}</p> */}
             <p>{status}</p>
             <div>
                 <p>{session.user.email}</p>
@@ -20,15 +21,19 @@ export default function Component() {
     </>
     )
   }
+  else{
+    console.log(process.env.BASE_URL);
+  }
   return (
     <>
-        <p><Gethref/></p>
-        <p>{status}</p>
+        {/* <p><Gethref/></p> */}
+
         <div className="p-96 bg-green-300">
             Not signed in
             <br />
             <button className=" bg-slate-300 p-6 border-black border-4" onClick={() => signIn()}>Sign in</button>
         </div>
+        <p>{process.env.BASE_URL}</p>
     </>
   )
 }

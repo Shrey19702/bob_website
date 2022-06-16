@@ -1,6 +1,9 @@
 import mongoose from "mongoose";
 
 const OrderSchema = new mongoose.Schema({
+    completion: {
+        type:String     //3 options (Canclled)/(Delivered)/(Order Placed)
+    },
     userId: {   //user ordering this product
         type: String,
     },

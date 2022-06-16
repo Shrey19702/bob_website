@@ -9,7 +9,11 @@ const ProductSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    category:{  //the category it belongs to (fashion, funrniture..)
+    collections:{    //the collection it belongs to (fashion, funrniture..)
+        type: String,
+        required: true
+    },
+    category:{  //the category it belongs to (footwear, ..)
         type: String,
         required: true
     },
@@ -44,6 +48,11 @@ const ProductSchema = new mongoose.Schema({
         size: [
             {
                 size:String,    //size of the product (dimensions/clothes size) 
+            }
+        ],
+        age: [
+            {
+                age:String,     //age to differentiate (synomyn of size ) 
             }
         ]
     })
