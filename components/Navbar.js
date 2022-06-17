@@ -6,7 +6,7 @@ import {
   Popover,
   Dialog,
 } from "@headlessui/react";
-import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
+import {MenuIcon, XIcon } from "@heroicons/react/outline";
 import Cart from "./Svgs";
 
 import { useSession, signIn, signOut, getProviders } from "next-auth/react";
@@ -534,7 +534,7 @@ function Userlogin() {
                       Object.values(providers).map((provider) => (
                         <div key={provider.name}>
                           <button 
-                            onClick={() => signIn(provider.id, { callbackUrl: 'http://localhost:3000/api/auth/login-verify'})}
+                            onClick={() => signIn(provider.id, { callbackUrl: `${process.env.BASE_URL}api/auth/login-verify`})}
                             className=' text-center sm:text-left w-full rounded-lg px-4 py-4 transition duration-150 ease-in-out hover:bg-gray-100 focus:outline-none ' 
                           >
                             Sign In with {provider.name}

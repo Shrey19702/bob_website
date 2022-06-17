@@ -21,6 +21,7 @@ const EmblaCarousel = ({ slides }) => {
   const [prevBtnEnabled, setPrevBtnEnabled] = useState(false);
   const [nextBtnEnabled, setNextBtnEnabled] = useState(false);
   const [parallaxValues, setParallaxValues] = useState([]);
+  const [intervalId, setIntervalId] = useState(0);  //for autoplay
 
   const scrollPrev = useCallback(() => embla && embla.scrollPrev(), [embla]);
   const scrollNext = useCallback(() => embla && embla.scrollNext(), [embla]);
@@ -56,8 +57,18 @@ const EmblaCarousel = ({ slides }) => {
     setParallaxValues(styles);
   }, [embla, setParallaxValues]);
 
-  const autorun = ()=>{
-    console.log(".................#testing#..............");
+  const autorun_start = ()=>{
+    const newIntervalId = setInterval(() => {
+      scrollNext();
+    }, 5000);
+    setIntervalId(newIntervalId);
+  }
+  const autorun_stop = ()=>{
+    if (intervalId) {
+      clearInterval(intervalId);
+      setIntervalId(0);
+      return;
+    }
   }
 
   useEffect(() => {
@@ -89,7 +100,8 @@ const EmblaCarousel = ({ slides }) => {
                     style={{ transform: `translateX(${parallaxValues[index]}%)` }}
                     >
                     <img
-                        onLoad={autorun}
+                        onMouseEnter={autorun_start}
+                        onMouseLeave={autorun_stop}
                         className=" object-cover embla__slide__img absolute block top-1/2 left-1/2 w-auto min-h-full min-w-full translate-x-[-50%] translate-y-[-50%] "
                         src={mediaByIndex(index)}
                         alt="A cool cat."
