@@ -4,18 +4,18 @@ import User from '../../../models/userModel';
 
 connectDB();
 
-const addToWishlist = async (req, res) => {
-    if (req.method == 'POST') {
+const removeFromWishlist = async (req, res) => {
+    if (req.method == 'DELETE') {
         const session = await getSession({ req });
         if(session){    //user is logged in
             try{
                 let f_user = await User.findOne({email: session.user.email});
                 if(f_user){
-                    f_user.wishlist.push(req.body.productId);
+                    f_user.wishlist.pop();
                     await f_user.save();
                     res.status(201).json({
                         success:true,
-                        message: "item added to user's wishlist"
+                        message: "item removed from user's wishlist"
                     })
                 }
                 else{
@@ -46,4 +46,4 @@ const addToWishlist = async (req, res) => {
         })
     }
 }
-export default addToWishlist;
+export default removeFromWishlist;
