@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
-import useEmblaCarousel from 'embla-carousel-react'
-import Image from 'next/image'
+import useEmblaCarousel from 'embla-carousel-react';
+import Image from 'next/image';
+import logoImg from '../public/logo_img.png'; 
 
 const media1 = '/heroImg.jpg';
 const media2 = '/heroImg1.jpeg';
@@ -126,8 +127,9 @@ const slides = Array.from(Array(SLIDE_COUNT).keys());
 function Heropage() {
   return (
     <div className="h-screen w-[100%]">
-      <div className="absolute mt-24 left-32 z-10"><Image src="/logo_img.png"width={400}
-        height={200} /></div>
+      <div className="absolute w-72 top-[6%] left-0 z-10">
+        <Image src={logoImg} alt="Logo image"/>
+      </div>
      
       <EmblaCarousel slides={slides} />
       <div className='mt-8 heroTitle text-4xl z-0 selection:text-pink-200 lg:text-5xl absolute top-[30%] w-full text-center lg:text-left px-5 lg:pl-36 text-gray-100 font-[Luckiest Guy] '> 

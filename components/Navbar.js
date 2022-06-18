@@ -1,50 +1,9 @@
 import { Fragment, useEffect, useState, useRef } from "react";
-import {
-  Disclosure,
-  Menu,
-  Transition,
-  Popover,
-  Dialog,
-} from "@headlessui/react";
+import {Disclosure,  Menu,  Transition,  Popover,  Dialog,} from "@headlessui/react";
 import {MenuIcon, XIcon } from "@heroicons/react/outline";
 import Cart from "./Svgs";
 
 import { useSession, signIn, signOut, getProviders } from "next-auth/react";
-
-
- const cgList = [
-  { title: 'Fashion',
-    sub:[
-      'Infants',
-      'Girls',
-      'Boys',
-      'Footwear'
-    ]
-  },
-  { title :'Nursery & Gears',
-    sub:[
-      'Bottle&Feeder',
-      'Rattle Teether',
-      'Prams',
-      'Bather',
-      'Folding Bath Table',
-      'Bedding  with Mosquitoes Net',
-      'Baby Cradle-RockStar',
-       'Baby Activity Walker'
-    ]
-  },
-  {
-    title:'Cribs & cots',
-    sub:[]
-  },
-  {
-    title:'Kits',
-    sub:[
-      'Gift Packs',
-      'Baby Shower'
-    ]
-  }
- ]
 
 const navigation = [
   { name: "Home", href: "/", current: true },
@@ -88,6 +47,8 @@ export default function Navbar() {
   //cart's sum adder
   const [sum, setSum] = useState(0);
 
+  const [cgList, setcgList] = useState(null);
+
   const changeNavbarColor = () => {
     if (
       window.location.pathname !== "/" ||
@@ -104,6 +65,16 @@ export default function Navbar() {
   }
 
   useEffect(() => {
+    (async ()=>{
+      if(cgList==null){ //fetch data only if not fetched before
+        let response = await fetch(`${process.env.BASE_URL}api/collections/getAllCollections`,{   //fetch all the collections
+          method: "GET"
+        })
+        let CategoriesData = await response.json();
+        setcgList(CategoriesData.body);
+      }
+    })();
+
     if (typeof window !== "undefined") {
       // console.log(window.location.pathname);
       changeNavbarColor();
@@ -114,6 +85,8 @@ export default function Navbar() {
       (x) => (adder += parseFloat(x.price.slice(1, x.price.length)))
     );
     setSum(adder.toFixed(2));
+
+    return () => {};
   });
 
   return (
@@ -327,25 +300,25 @@ export default function Navbar() {
                         </a>
                       ))}
                       {/* categories */}
-                      {/* <div className="group relative inline-block hover:block py-3 "> */}
-                        <a className="text-gray-800 peer hover:bg-zinc-200 px-3 py-2 rounded-md text-lg font-medium transition cursor-pointer">
-                          <span>Categories</span>
-                        </a>
-                        <div className={` hover:grid peer-hover:grid hover:grid-row-${cgList.length-1} overflow-y-auto max-h-[95vh] w-7/12 gap-2 hidden absolute left-0 top-[54px] bg-gray-50 rounded-md shadow-lg py-8 px-10`} >
+                      <a className="text-gray-800 peer hover:bg-zinc-200 px-3 py-2 rounded-md text-lg font-medium transition cursor-pointer">
+                        <span>Categories</span>
+                      </a>
+                      {cgList?
+                        (<div className={` hover:grid peer-hover:grid hover:grid-row-${cgList.length-1} overflow-y-auto max-h-[95vh] w-7/12 gap-2 hidden absolute left-0 top-[54px] bg-gray-50 rounded-md shadow-lg py-8 px-10`} >
                           {cgList.map(x=>(
-                            <div key={x.title} className="flex items-center  flex-wrap">
-                              <a href="#" className=" transition w-full text-black p-2 font-bold opacity-95 hover:opacity-100 rounded-lg "><span className="text-xl">{x.title}</span></a>
+                            <div key={x.name} className="flex items-center  flex-wrap">
+                              <a href="#" className=" transition w-full text-black p-2 font-bold opacity-95 hover:opacity-100 rounded-lg "><span className="text-xl">{x.name}</span></a>
                               {
-                                x.sub.map(y=>(
+                                x.categories.map(y=>(
                                   <a href="#" className=" max-w-[50%] transition text-white hover:opacity-90 rounded-3xl text-center bg-sky-300 px-3 py-2 m-2" key={y} ><span>{y}</span></a>
                                 ))
                               }
                             </div>
-                                  
-                          ))}
-                        </div>
-                      {/* </div> */}
-
+                        ))}
+                        </div>)  
+                        : ( <div>Loading...</div> )
+                      }
+                        
                     </div>
                   </div>
                 </div>

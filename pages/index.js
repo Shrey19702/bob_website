@@ -12,12 +12,10 @@ export default function Home() {
   return (
     <>
       <Heropage/>
-      <div className="z-10 bg-slate-600">
-        <EmblaCarousel/>
-        <Category/>
-        <Blog/>
-        <Products/>
-      </div>
+      <EmblaCarousel/>
+      <Category/>
+      <Blog/>
+      <Products/>
     </>
   )
 }
