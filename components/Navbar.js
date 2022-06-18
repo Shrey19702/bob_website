@@ -2,7 +2,7 @@ import { Fragment, useEffect, useState, useRef } from "react";
 import {Disclosure,  Menu,  Transition,  Popover,  Dialog,} from "@headlessui/react";
 import {MenuIcon, XIcon } from "@heroicons/react/outline";
 import Cart from "./Svgs";
-
+import Image from "next/image";
 import { useSession, signIn, signOut, getProviders } from "next-auth/react";
 
 const navigation = [
@@ -47,7 +47,7 @@ export default function Navbar() {
   //cart's sum adder
   const [sum, setSum] = useState(0);
 
-  const [cgList, setcgList] = useState(null);
+  const [cgList, setcgList] = useState(null); //list of categories
 
   const changeNavbarColor = () => {
     if (
@@ -404,14 +404,16 @@ function Userlogin() {
     return (
       <>
         {/* Profile dropdown */}
-
         <Menu as="div" className="ml-3 z-20 relative">
           <Menu.Button className=" z-20 relative bg-gray-800 flex text-sm rounded-full ring-2 ring-white focus:outline-none">
             <span className="sr-only">Open user menu</span>
-            <img
+            <Image
               className=" h-11 w-11 rounded-full pointer-events-none"
+              loader={({src})=>{return session.user.image}}
               src={session.user.image}
               alt="User Image"
+              width={44}
+              height={44}
               onError={({ currentTarget }) => {
                 currentTarget.onerror = null;
                 currentTarget.src = "/UserOnError.png";

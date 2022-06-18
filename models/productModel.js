@@ -17,6 +17,10 @@ const ProductSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    trending:{
+        type: Boolean,
+        default: false
+    },
     images:[    //array of image links of the product
         {link:String}
     ],

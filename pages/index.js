@@ -21,7 +21,7 @@ export default function Home() {
       <EmblaCarousel/>
       <Category/>
       <Blog/>
-      <Products/>
+      <Products name="Products" />
     </>
   )
 }
