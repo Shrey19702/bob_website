@@ -23,6 +23,10 @@ const createProduct = async (req, res)=>{
         }
         catch(error){
             console.error("error occured in creating product :", error);
+            res.status(400).json({
+                success: false,
+                message: "error occured in creating product"
+            })
         }
     }
     else{
