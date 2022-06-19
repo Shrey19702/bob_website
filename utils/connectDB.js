@@ -9,7 +9,7 @@ const connectDB =  async function(){
         return;
     }
     try{
-        console.log(process.env.MONGO_URI)
+        // console.log(process.env.MONGO_URI)
         const db = await connect(process.env.MONGO_URI, {
             // useNewUrlParser: true,
             // useUnifiedTopology: true,
