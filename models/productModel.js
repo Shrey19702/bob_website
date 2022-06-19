@@ -23,12 +23,11 @@ const ProductSchema = new mongoose.Schema({
         type:String,
         required:true,
     },
-    images:[    //array of image links of the product
-        {
-            src:String,
-            alt:String
+    image:{
+        type:String,
+        required:true
         }
-    ],
+    ,
     colors:[
         {
             color:String,
