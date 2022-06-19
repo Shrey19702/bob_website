@@ -9,9 +9,10 @@ const connectDB =  async function(){
         return;
     }
     try{
+        console.log(process.env.MONGO_URI)
         const db = await connect(process.env.MONGO_URI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
+            // useNewUrlParser: true,
+            // useUnifiedTopology: true,
         });
         connection.isConnected = db.connections[0].readyState;
         console.log('mongodb connection sucessfull ');    
