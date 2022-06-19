@@ -3,9 +3,7 @@ import { StarIcon } from '@heroicons/react/solid'
 import { RadioGroup } from '@headlessui/react'
 import Products from '../../models/productModel'
 import connectDB from '../../utils/connectDB'
-// import img from '../../public/main.jpg'
 connectDB();
-
 
 const reviews = { href: null, average: 4, totalCount: 117 }
 
@@ -13,28 +11,22 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-
-
-
-
-
 export default function products({ f_product }) {
 
   f_product = JSON.parse(f_product);
-  // console.log(f_product, typeof (f_product));
-
+  // console.log(f_product);
 
   const createBreadcrumbs = (product) => {
     let breadcrumb = [];
     breadcrumb.push({
       id: 1,
       name: product.collections,
-      href: `/${product.collections}`
+      href: `/${product.collections.replace(/\s+/g, '-')}`  //replace whitespace with dash
     })
     breadcrumb.push({
       id: 2,
       name: product.category,
-      href: `/${product.collection}#${product.category}`
+      href: `/${product.collections.replace(/\s+/g, '-')}#${product.category.replace(/\s+/g, '-')}`
     })
     breadcrumb.push({
       id: 3,
@@ -185,11 +177,11 @@ export default function products({ f_product }) {
                   <div className="flex items-center space-x-3">
                     {f_product.colors.map((color) => (
                       <RadioGroup.Option
-                        key={color.name}
-                        value={color}
+                        key={color.color}
+                        value={color.color}
                         className={({ active, checked }) =>
                           classNames(
-                            color.selectedClass,
+                            ` bg-${color}-400 `,
                             active && checked ? 'ring ring-offset-1' : '',
                             !active && checked ? 'ring-2' : '',
                             '-m-0.5 relative p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none'
