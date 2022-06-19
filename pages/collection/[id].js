@@ -55,9 +55,6 @@ const product = {
   details:
     'The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.',
 }
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
-}
 
 var breadcrumbs = [
   { id: 1, name: 'Collections', href: null },
@@ -65,8 +62,8 @@ var breadcrumbs = [
 ];
 
 export default function Category() {
-  const [selectedColor, setSelectedColor] = useState(product.colors[0])
-  const [selectedSize, setSelectedSize] = useState(product.sizes[2])
+  // const [selectedColor, setSelectedColor] = useState(product.colors[0])
+  // const [selectedSize, setSelectedSize] = useState(product.sizes[2])
 
   return (
     <div className="bg-white">

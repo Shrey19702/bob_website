@@ -5,29 +5,6 @@ const ProductSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    description: {  //lines describing the product
-        type: String,
-        required: true
-    },
-    collections:{    //the collection it belongs to (fashion, funrniture..)
-        type: String,
-        required: true
-    },
-    category:{  //the category it belongs to (footwear, ..)
-        type: String,
-        required: true
-    },
-    trending:{
-        type: Boolean,
-        default: false
-    },
-    images:[    //array of image links of the product
-        {link:String}
-    ],
-    stock:{ //current quantity of the product 
-        type:Number,
-        default:0
-    },
     price:{ //set price of the product
         type: Number,
         required: true
@@ -42,24 +19,53 @@ const ProductSchema = new mongoose.Schema({
             default:0,
         }
     }),
-    options: new mongoose.Schema({  //product specific details
-        colors: [
-            {
-                color:String,   //name of the color
-                image:String,   //image of product in this color
-            }
-        ],
-        size: [
-            {
-                size:String,    //size of the product (dimensions/clothes size) 
-            }
-        ],
-        age: [
-            {
-                age:String,     //age to differentiate (synomyn of size ) 
-            }
-        ]
-    })
+    href:{
+        type:String,
+        required:true,
+    },
+    images:[    //array of image links of the product
+        {
+            src:String,
+            alt:String
+        }
+    ],
+    colors:[
+        {
+            color:String,
+        }
+    ],
+    sizes: [
+        {
+            size:String,
+            inStock:Boolean
+        }
+    ],
+    description: {  //lines describing the product
+        type: String,
+        required: true
+    },
+    highlights:{
+        type:Array
+    },
+    details:{
+        type:String
+    },
+    collections:{    //the collection it belongs to (fashion, funrniture..)
+        type: String,
+        required: true
+    },
+    category:{  //the category it belongs to (footwear, ..)
+        type: String,
+        required: true
+    },
+    trending:{
+        type: Boolean,
+        default: false
+    },
+    stock:{ //current quantity of the product 
+        type:Number,
+        default:0
+    },
 },
 {
     timestamps:true

@@ -1,7 +1,7 @@
 
 const Blog = ()=>{
     return(
-        <section className="py-24 md:py-28 px-4 sm:px-6 lg:px-8 bg-white">
+        <section className=" pt-20 px-4 sm:px-6 lg:px-8 bg-white">
           <div className="container mx-auto">
             <div className="flex flex-wrap  mx-4">
 
