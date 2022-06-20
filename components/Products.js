@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import mainImg from '../public/main.jpg';
 import connectDB from '../utils/connectDB';
-import Productmodel from '../models/productModel';
+import Product from '../models/productModel';
 connectDB();
 
 
@@ -61,7 +61,7 @@ connectDB();
       if(!productList){
         (async ()=>{
           console.log('getting data');
-          let f_products = await Productmodel.find({category: name});
+          let f_products = await Product.findOne({category: name});
           setProductList(f_products);
         } )();
       }
