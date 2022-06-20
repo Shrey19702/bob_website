@@ -12,5 +12,5 @@ const collectionSchema = new mongoose.Schema({
     ]
 },
 );
-const Collections = mongoose.models.collections || mongoose.model('collections',collectionSchema);
+const Collections = mongoose.models?.collections || mongoose.model('collections',collectionSchema);
 export default Collections;
