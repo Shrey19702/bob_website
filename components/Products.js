@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import mainImg from '../public/main.jpg';
 import connectDB from '../utils/connectDB';
-import Product from '../models/productModel';
+// import Productmodel from '../models/productModel';
 connectDB();
 
 
@@ -55,30 +55,23 @@ connectDB();
 //   ]
   
   export default function Products({name}) {
-    const [productList, setProductList] = useState(null);
+    const [productList, setProductList] = useState();
 
     useEffect(()=>{
       if(!productList){
-        (async ()=>{
-          console.log('getting data');
-          let f_products = await Product.findOne({category: name});
-          setProductList(f_products);
+        (async ()=>{  //fetch data using /api/products/<category> api
+          let data = await fetch(`${process.env.BASE_URL}api/products/${name.replace(/\s+/g, '-')}`)
+          let f_products = await data.json();
+          setProductList(f_products.body);
         } )();
       }
-      else{
-        console.log('### found products are : ', productList);
-      }
-
       return ()=>{};
     });
-    console.log(productList);
-    // return (
-    //   <div className=' p-96 font-semibold'>Hello </div>
-    // )
+    console.log(name);
     if(productList){
       return (
         <div className="bg-white">
-          <div className="max-w-2xl mx-auto py-28 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
+          <div id={name.replace(/\s+/g, '-')} className="max-w-2xl mx-auto py-28 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
             <h2 className="text-2xl font-extrabold tracking-tight text-gray-900">{name}</h2>
     
             <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
