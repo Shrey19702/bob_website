@@ -10,7 +10,7 @@ const navigation = [
   // { name: 'Categories'
 
   //    ,href: '#collection', current: false },
-  { name: "Blogs", href: "/blogs", current: false },
+  { name: "Blogs", href: "/blog", current: false },
 ];
 
 const products = [
