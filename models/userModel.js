@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { stringify } from 'postcss';
 
 const userSchema = new mongoose.Schema({
     name: { //name of user
@@ -10,6 +11,18 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique:true,
         lowercase:true
+    },
+    address:{
+        type:String,
+        required:true,
+
+
+    },
+    number:{
+        type:String,
+        required:true,
+        
+
     },
     role:{  //role of user (user or admin)
         type : String,
