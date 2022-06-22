@@ -1,14 +1,14 @@
 import connectDB from "../../../utils/connectDB";
-import Collections from "../../../models/collectionsModel"
-import { stringify } from "postcss";
+import Blog from "../../../models/blogModel";
+// import { stringify } from "postcss";
 
 connectDB();
 
-const deleteCollection = async (req,res)=>{
-    console.log('here is delete api log ',typeof(req.body.name))
+const deleteBlog = async (req,res)=>{
+   
     if(req.method == "DELETE"){
         try{
-            let del_collection = await Collections.findOneAndDelete({name: req.body.name});
+            let del_collection = await Blog.findOneAndDelete({name: req.body.title});
             if(del_collection){
                 res.status(200).json({
                     success:true,
@@ -38,4 +38,4 @@ const deleteCollection = async (req,res)=>{
         })
     }
 }
-export default deleteCollection;
+export default deleteBlog;
