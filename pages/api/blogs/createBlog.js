@@ -4,11 +4,12 @@ import Blog from "../../../models/blogModel";
 connectDB();
 
 const createBlog = async (req, res) => {
+  const d = new Date();
+ req.body.postTime = d;
   if (req.method == "POST") {
 
     try {
       let newBlog = await Blog.create(req.body);
-
       if (newBlog) {
         res.status(201).json({
           success: true,

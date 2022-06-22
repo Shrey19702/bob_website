@@ -6,10 +6,8 @@ export default function PostBlog() {
  const [title ,setTitle] = useState("");
  const [content,setContent] = useState("");
  const [link,setLink] = useState("");
-
-  useEffect(()=>{
-      console.log('hello world');
-  },[])
+ const [author,setAuthor] = useState("")
+ 
 
 
   return (
@@ -34,6 +32,14 @@ export default function PostBlog() {
           <label htmlFor="title">Enter the Link for Blog Picture</label>
           <input className='' placeholder="Enter the Link of your BlogPic"  type="text" id="blogPic" name='blogPic' value={link}  onChange={(e)=>{
           setLink(e.target.value)
+        }} />
+            </div> 
+
+
+            <div className='flex flex-col py-8'>
+          <label htmlFor="title">Enter the Author's Name</label>
+          <input className='' placeholder="Enter the Author's Name"  type="text" id="author" name='author' value={author}  onChange={(e)=>{
+          setAuthor(e.target.value)
         }} />
             </div> 
         

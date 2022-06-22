@@ -14,17 +14,12 @@ blogPic:{
     type: String,
     required: true,
 },
+author : { 
+      type:String
+},
 postTime : {
     type: Date,
 } ,
-nLikes : {
-    type: Number,
-},
-author : { 
-      UserId : String,
-      ProfilePic : String, 
-      Name : String
-}
 })
 
 let Blog = mongoose.models.blog ||mongoose.model('blog', blogSchema)
