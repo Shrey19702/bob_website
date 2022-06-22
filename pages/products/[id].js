@@ -1,11 +1,12 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { StarIcon } from '@heroicons/react/solid'
 import { RadioGroup } from '@headlessui/react'
 import Products from '../../models/productModel'
 import connectDB from '../../utils/connectDB'
+import {CartContext} from '../../components/Cart'
+// import { useDispatchCart } from "../../components/Cart";
 // import img from '../../public/main.jpg'
 connectDB();
-
 
 const reviews = { href: null, average: 4, totalCount: 117 }
 
@@ -13,25 +14,43 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-
-
 export default function products({ f_product }) {
+  const {state ,dispatch} = useContext(CartContext);
+  
+  const addToCart = (product) => {
+    let req_product = state.cart.filter((element)=> (element.id == product._id));
+    if(req_product.length === 0){ //if this product is not in the cart 
+      let productData = {
+        id: product._id,
+        name :product.name,
+        images: product.images,
+        price: product.price,
+        quantity: 1
+      };
+      console.log(productData);
+      dispatch({ type: "ADD_NEW", productData });
+    }
+    else{ //this product already exist in the cart
+      // let  = (state.cart.filter((element)=> (element.id == product._id)));
+      let curr_quantity = req_product[0].quantity;
+      let productID = product._id;
+      dispatch({type: "ADD_TO_EXISTING", productID, curr_quantity })
+    }
+  };
 
   f_product = JSON.parse(f_product);
   // console.log(f_product, typeof (f_product));
-
-
   const createBreadcrumbs = (product) => {
     let breadcrumb = [];
     breadcrumb.push({
       id: 1,
       name: product.collections,
-      href: `/${product.collections}`
+      href: `/collection/${product.collections.replace(/\s+/g, '-')}`
     })
     breadcrumb.push({
       id: 2,
       name: product.category,
-      href: `/${product.collection}#${product.category}`
+      href: `/collection/${product.collections.replace(/\s+/g, '-')}#${product.category.replace(/\s+/g, '-')}`
     })
     breadcrumb.push({
       id: 3,
@@ -41,14 +60,15 @@ export default function products({ f_product }) {
 
     return (breadcrumb);
   }
-
-
   const [selectedColor, setSelectedColor] = useState(f_product.colors[0])
   const [selectedSize, setSelectedSize] = useState(f_product.sizes[2])
 
+  if(!f_product){
+    return(<div className='p-96 font-semibold' >404 there is no such Product</div>)
+  }
   return (
     <div className="bg-white">
-      <div className="pt-24">
+      <div className="py-24">
         <nav aria-label="f_product">
           <ol role="list" className="max-w-2xl mx-auto px-4 flex items-center space-x-2 sm:px-6 lg:max-w-7xl lg:px-8">
             {
@@ -182,11 +202,11 @@ export default function products({ f_product }) {
                   <div className="flex items-center space-x-3">
                     {f_product.colors.map((color) => (
                       <RadioGroup.Option
-                        key={color.name}
-                        value={color}
+                        key={color.color}
+                        value={color.color}
                         className={({ active, checked }) =>
                           classNames(
-                            color.selectedClass,
+                            `bg-${color.color}-400 `,
                             active && checked ? 'ring ring-offset-1' : '',
                             !active && checked ? 'ring-2' : '',
                             '-m-0.5 relative p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none'
@@ -194,12 +214,12 @@ export default function products({ f_product }) {
                         }
                       >
                         <RadioGroup.Label as="span" className="sr-only">
-                          {color.name}
+                          {color.color}
                         </RadioGroup.Label>
                         <span
                           aria-hidden="true"
                           className={classNames(
-                            color.class,
+                            `bg-${color.color}-400 `,
                             'h-8 w-8 border border-black border-opacity-10 rounded-full'
                           )}
                         />
@@ -217,14 +237,13 @@ export default function products({ f_product }) {
                     Size guide
                   </a>
                 </div>
-
                 <RadioGroup value={selectedSize} onChange={setSelectedSize} className="mt-4">
                   <RadioGroup.Label className="sr-only">Choose a size</RadioGroup.Label>
                   <div className="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4">
                     {f_product.sizes.map((size) => (
                       <RadioGroup.Option
-                        key={size.name}
-                        value={size}
+                        key={size.size}
+                        value={size.size}
                         disabled={!size.inStock}
                         className={({ active }) =>
                           classNames(
@@ -238,7 +257,7 @@ export default function products({ f_product }) {
                       >
                         {({ active, checked }) => (
                           <>
-                            <RadioGroup.Label as="span">{size.name}</RadioGroup.Label>
+                            <RadioGroup.Label as="span">{size.size}</RadioGroup.Label>
                             {size.inStock ? (
                               <span
                                 className={classNames(
@@ -271,12 +290,13 @@ export default function products({ f_product }) {
                 </RadioGroup>
               </div>
 
-              <button
-                type="submit"
+              <div
+                onClick={() => addToCart(f_product)}
+                // type="submit"
                 className="mt-10 w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
               >
                 Add to Cart
-              </button>
+              </div>
             </form>
           </div>
 

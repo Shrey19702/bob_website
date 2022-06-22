@@ -63,11 +63,12 @@ connectDB();
           let data = await fetch(`${process.env.BASE_URL}api/products/${name.replace(/\s+/g, '-')}`)
           let f_products = await data.json();
           setProductList(f_products.body);
+          console.log(f_products.body);
         } )();
       }
       return ()=>{};
     });
-    console.log(name);
+    // console.log(name);
     if(productList){
       return (
         <div className="bg-white">
@@ -87,7 +88,7 @@ connectDB();
                   <div className="mt-4 flex justify-between">
                     <div>
                       <h3 className="text-sm text-gray-700">
-                        <a href={product.href}>
+                        <a href={`${process.env.BASE_URL}/products/${product._id}`}>
                           <span aria-hidden="true" className="absolute inset-0" />
                           {product.name}
                         </a>

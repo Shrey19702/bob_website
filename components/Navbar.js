@@ -1,9 +1,10 @@
-import { Fragment, useEffect, useState, useRef } from "react";
+import { Fragment, useEffect, useState, useContext } from "react";
 import {Disclosure,  Menu,  Transition,  Popover,  Dialog,} from "@headlessui/react";
 import {MenuIcon, XIcon } from "@heroicons/react/outline";
 import Cart from "./Svgs";
 import Image from "next/image";
 import { useSession, signIn, signOut, getProviders } from "next-auth/react";
+import {CartContext} from '../components/Cart';
 
 const navigation = [
   { name: "Home", href: "/", current: true },
@@ -40,15 +41,40 @@ const products = [
 ];
 
 export default function Navbar() {
-  //colorchange: true->white, false->transparent
-  const [colorChange, setColorchange] = useState(false);
-  //Cart's open close
-  const [open, setOpen] = useState(false);
+  //Cart States
+  const {state ,dispatch} = useContext(CartContext); //cart's context
+  const [cart, setcart] = useState(state.cart); //cart data
+  const [total, setTotal] = useState(0); //subtatal of items
+  const [open, setOpen] = useState(false); //Cart's open close state
+  //Cart functions
+  const handleReduce= (productID, curr_quantity) => {
+    console.log('reducing quantity from: ', curr_quantity);
+    dispatch({ type: "REDUCE_QUANTITY", productID, curr_quantity});
+    setcart(state.cart);
+  }
+  //Cart's useEffect
+  useEffect(()=>{
+    setcart(state.cart);
+  })
+  useEffect(() => {
+    const getTotal = () => {
+      const res = state.cart.reduce((prev, item) => {
+        return prev + (item.price * item.quantity)
+      },0)
+
+      setTotal(res)
+    }
+
+    getTotal()
+  },[cart])
+
+
+  //Navbar States
+  const [colorChange, setColorchange] = useState(false); //colorchange: true->white, false->transparent
+  const [cgList, setcgList] = useState(null); //list of collections and their categories
   //cart's sum adder
-  const [sum, setSum] = useState(0);
-
-  const [cgList, setcgList] = useState(null); //list of categories
-
+  // const [sum, setSum] = useState(0);
+  //Navbar Functions
   const changeNavbarColor = () => {
     if (
       window.location.pathname !== "/" ||
@@ -59,11 +85,10 @@ export default function Navbar() {
       setColorchange(false);
     }
   };
-
   if (typeof window !== "undefined") {
     window.addEventListener("scroll", changeNavbarColor);
   }
-
+  //Navbar UseEffect
   useEffect(() => {
     (async ()=>{
       if(cgList==null){ //fetch data only if not fetched before
@@ -74,18 +99,15 @@ export default function Navbar() {
         setcgList(CategoriesData.body);
       }
     })();
-
     if (typeof window !== "undefined") {
       // console.log(window.location.pathname);
       changeNavbarColor();
     }
-
-    let adder = 0;
-    products.map(
-      (x) => (adder += parseFloat(x.price.slice(1, x.price.length)))
-    );
-    setSum(adder.toFixed(2));
-
+    // let adder = 0;
+    // products.map(
+    //   (x) => (adder += parseFloat(x.price.slice(1, x.price.length)))
+    // );
+    // setSum(adder.toFixed(2));
     return () => {};
   });
 
@@ -147,13 +169,14 @@ export default function Navbar() {
                               role="list"
                               className="-my-6 divide-y divide-gray-200"
                             >
-                              {products.map((product) => {
+                              {cart.length==0 && (<div className=" m-auto w-fit py-[20vh] font-semibold">Cart is Empty</div>)}
+                              {cart.map((product) => {
                                 return (
                                   <li key={product.id} className="flex py-6">
                                     <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                       <img
-                                        src={product.imageSrc}
-                                        alt={product.imageAlt}
+                                        src={product.images[0]}
+                                        alt={product.name}
                                         className="h-full w-full object-cover object-center"
                                       />
                                     </div>
@@ -162,7 +185,7 @@ export default function Navbar() {
                                       <div>
                                         <div className="flex justify-between text-base font-medium text-gray-900">
                                           <h3>
-                                            <a href={product.href}>
+                                            <a href={null}>
                                               {" "}
                                               {product.name}{" "}
                                             </a>
@@ -171,9 +194,9 @@ export default function Navbar() {
                                             {product.price}
                                           </p>
                                         </div>
-                                        <p className="mt-1 text-sm text-gray-500">
-                                          {product.color}
-                                        </p>
+                                        {/* <p className="mt-1 text-sm text-gray-500">
+                                          {product.color} 
+                                        </p> */}
                                       </div>
                                       <div className="flex flex-1 items-end justify-between text-sm">
                                         <p className="text-gray-500">
@@ -182,10 +205,11 @@ export default function Navbar() {
 
                                         <div className="flex">
                                           <button
+                                            onClick={() => handleReduce(product.id, product.quantity)}
                                             type="button"
-                                            className="font-medium text-indigo-600 hover:text-indigo-500"
+                                            className="font-medium text-sky-600 hover:text-sky-500"
                                           >
-                                            Remove
+                                            {product.quantity>1 ? 'Reduce' : 'Remove'}
                                           </button>
                                         </div>
                                       </div>
@@ -201,7 +225,7 @@ export default function Navbar() {
                       <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
                         <div className="flex justify-between text-base font-medium text-gray-900">
                           <p>Subtotal</p>
-                          <p>${sum}</p>
+                          <p>₹{total}</p>
                         </div>
                         <p className="mt-0.5 text-sm text-gray-500">
                           Shipping and taxes calculated at checkout.
@@ -209,7 +233,7 @@ export default function Navbar() {
                         <div className="mt-6">
                           <a
                             href="/checkout"
-                            className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+                            className="flex items-center justify-center rounded-md border border-transparent bg-sky-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-sky-700"
                           >
                             Checkout
                           </a>
@@ -219,7 +243,7 @@ export default function Navbar() {
                             or{" "}
                             <button
                               type="button"
-                              className="font-medium text-indigo-600 hover:text-indigo-500"
+                              className="font-medium text-sky-600 hover:text-sky-500"
                               onClick={() => setOpen(false)}
                             >
                               Continue Shopping
@@ -304,13 +328,13 @@ export default function Navbar() {
                         <span>Categories</span>
                       </a>
                       {cgList?
-                        (<div className={` hover:grid peer-hover:grid hover:grid-row-${cgList.length-1} overflow-y-auto max-h-[95vh] w-7/12 gap-2 hidden absolute left-0 top-[54px] bg-gray-50 rounded-md shadow-lg py-8 px-10`} >
+                        (<div className={` transition-all hover:grid peer-hover:opacity-100 hover:opacity-100 peer-hover:grid hover:grid-row-${cgList.length-1} overflow-y-auto max-h-[95vh] w-7/12 gap-2 hidden opacity-0 absolute left-0 top-[54px] bg-gray-50 rounded-md shadow-lg py-8 px-10`} >
                           {cgList.map(x=>(
                             <div key={x.name} className="flex items-center  flex-wrap">
-                              <a href="#" className=" transition w-full text-black p-2 font-bold opacity-95 hover:opacity-100 rounded-lg "><span className="text-xl">{x.name}</span></a>
+                              <a href={`${process.env.BASE_URL}collection/${x.name.replace(/\s+/g, '-')}`} className=" transition w-full text-black p-2 font-bold opacity-95 hover:opacity-100 rounded-lg "><span className="text-xl">{x.name}</span></a>
                               {
                                 x.categories.map(y=>(
-                                  <a href="#" className=" max-w-[50%] transition text-white hover:opacity-90 rounded-3xl text-center bg-sky-300 px-3 py-2 m-2" key={y} ><span>{y}</span></a>
+                                  <a href={`${process.env.BASE_URL}collection/${x.name.replace(/\s+/g, '-')}#${y.replace(/\s+/g, '-')}`} className=" max-w-[50%] transition text-white hover:opacity-90 rounded-3xl text-center bg-sky-300 px-3 py-2 m-2" key={y} ><span>{y}</span></a>
                                 ))
                               }
                             </div>

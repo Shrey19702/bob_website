@@ -1,6 +1,7 @@
 import '../styles/globals.css'
 import Layout from '../components/Layout'
 import Head from 'next/head'
+import { CartProvider } from "../components/Cart";
 import { SessionProvider } from "next-auth/react"
 
 function MyApp({ Component, pageProps }) {
@@ -10,9 +11,11 @@ function MyApp({ Component, pageProps }) {
         <title>BoB the Builder</title>
       </Head>
       <SessionProvider session={ pageProps.session }>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
+        <CartProvider>
+          <Layout>
+              <Component {...pageProps} />
+          </Layout>
+        </CartProvider>
       </SessionProvider>
     </>
     
