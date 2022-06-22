@@ -1,12 +1,14 @@
 import connectDB from "../../../utils/connectDB";
 import Collections from "../../../models/collectionsModel"
+import { stringify } from "postcss";
 
 connectDB();
 
 const deleteCollection = async (req,res)=>{
-    if(req.method == 'DELETE'){
+    console.log('here is delete api log ',typeof(req.body.name))
+    if(req.method == "DELETE"){
         try{
-            let del_collection = await Collections.findOneAndDelete({name: req.body.name});
+            let del_collection = await Collections.findOneAndDelete({name: req.baody.name});
             if(del_collection){
                 res.status(200).json({
                     success:true,

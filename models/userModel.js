@@ -14,13 +14,12 @@ const userSchema = new mongoose.Schema({
     },
     address:{
         type:String,
-        required:true,
-
+        // required:true,
 
     },
     number:{
         type:String,
-        required:true,
+        // required:true,
         
 
     },

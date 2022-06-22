@@ -8,8 +8,9 @@ export default function Category({f_collection}) {
 
   const [givenCollection, setgivenCollection] = useState();
   useEffect(()=>{
-    if(!givenCollection)
+   
       setgivenCollection(JSON.parse(f_collection));
+  
   })
 
   const createBreadcrumbs = (collection) => {
