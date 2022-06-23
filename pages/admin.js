@@ -5,6 +5,7 @@ import PostBlog from '../components/admin_pages/PostBlog'
 import ProductControl from '../components/admin_pages/ProductControl';
 import UserInfo from '../components/admin_pages/UserInfo';
 import OrderInfo from '../components/admin_pages/OrderInfo';
+import DeleteBlog from '../components/admin_pages/DeleteBlog';
 
 const admin = () => {
 
@@ -52,7 +53,10 @@ const admin = () => {
                                 <a className="flex items-center text-sm py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" href="#!"onClick={()=>setCheck(3)} >ORDER</a>
                             </li>
                             <li className="relative">
-                                <a className="flex items-center text-sm py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" href="#!" onClick={()=>setCheck(4)}>BLOG</a>
+                                <a className="flex items-center text-sm py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" href="#!" onClick={()=>setCheck(4)}>CREATE BLOG</a>
+                            </li>
+                            <li className="relative">
+                                <a className="flex items-center text-sm py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" href="#!" onClick={()=>setCheck(5)}>DELETE BLOG</a>
                             </li>
                         </ul>
                     </div>
@@ -61,7 +65,7 @@ const admin = () => {
                     {/* <PostBlog/>
                     <ProductControl/> */}
                  {
-                    (check == 4?<PostBlog/>:check == 2?<ProductControl/>:check == 1?<UserInfo/>:check == 3?<OrderInfo/>:<ProductControl/>)
+                    (check == 4?<PostBlog/>:check == 2?<ProductControl/>:check == 1?<UserInfo/>:check == 3?<OrderInfo/>:check==5?<DeleteBlog/>:<ProductControl/>)
                  }
 
                 </div>
