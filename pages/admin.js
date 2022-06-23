@@ -3,11 +3,14 @@ import { useSession} from "next-auth/react"
 import PostBlog from '../components/admin_pages/PostBlog'
 
 import ProductControl from '../components/admin_pages/ProductControl';
+import UserInfo from '../components/admin_pages/UserInfo';
+import OrderInfo from '../components/admin_pages/OrderInfo';
 
 const admin = () => {
 
     const { data: session, status } = useSession();
     let [auth,setAuth] = useState(false)
+    let [check,setCheck] = useState(1);
     let foundUser;
 
     const validate = async () => {
@@ -40,23 +43,27 @@ const admin = () => {
                     <div className="w-60 h-[95vh] py-20 shadow-inner bg-white px-1 ">
                         <ul className="relative">
                             <li className="relative">
-                                <a className="flex items-center text-sm py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" href="#!">USERS</a>
+                                <a className="flex items-center text-sm py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" href="#!" onClick={()=>setCheck(1)}>USERS</a>
                             </li>
                             <li className="relative">
-                                <a className="flex items-center text-sm py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" href="#!">PRODUCT</a>
+                                <a className="flex items-center text-sm py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" href="#!" onClick={()=>setCheck(2)}>PRODUCT</a>
                             </li>
                             <li className="relative">
-                                <a className="flex items-center text-sm py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" href="#!">ORDER</a>
+                                <a className="flex items-center text-sm py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" href="#!"onClick={()=>setCheck(3)} >ORDER</a>
                             </li>
                             <li className="relative">
-                                <a className="flex items-center text-sm py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" href="#!">BLOG</a>
+                                <a className="flex items-center text-sm py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" href="#!" onClick={()=>setCheck(4)}>BLOG</a>
                             </li>
                         </ul>
                     </div>
 
                 <div className='flex  justify-center item-center w-full py-20 px-5'>                          
-                    {/* <PostBlog/> */}
-                    <ProductControl/>
+                    {/* <PostBlog/>
+                    <ProductControl/> */}
+                 {
+                    (check == 4?<PostBlog/>:check == 2?<ProductControl/>:check == 1?<UserInfo/>:check == 3?<OrderInfo/>:<ProductControl/>)
+                 }
+
                 </div>
               </div>
             )

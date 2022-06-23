@@ -19,6 +19,7 @@ const UserInfo = ()=>{
 
     return(
        <>
+       user info is here
        </>
     )
 }
