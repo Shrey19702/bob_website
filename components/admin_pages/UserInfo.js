@@ -6,7 +6,7 @@ import UpdateUser from "./UpdateUser";
 
 const UserInfo = ()=>{
    const [user,setUser] = useState([]);
-   const [role , setRole] = useState("user");
+   const [flag , setFlag] = useState(true);
    const [check,setCheck] =  useState(1);
    const [email,setEmail] = useState("");
    const [name,setName] = useState("");
@@ -22,7 +22,10 @@ const UserInfo = ()=>{
     const random = (email,name)=>{
         // setCheck(2);
         console.log(email);
-      if(email) {setCheck(2);setEmail(email); setName(name) } 
+      if(email&&flag) {setCheck(2);setEmail(email); setName(name) } 
+      else{
+        setCheck(1);
+      }
     }
    
 
@@ -39,7 +42,7 @@ const UserInfo = ()=>{
                 <div className="flex">
                 <li className="px-6 py-2 border-b border-gray-200 w-[50%] rounded-t-lg">{x.name}</li>
                 <li className="px-6 py-2 border-b border-gray-200 w-full rounded-t-lg">{x.role}</li>
-                <button type="button" className="my-4 h-3" onClick={(e)=>{random(x.email,x.name)}} >✏️</button> 
+                <button type="button" className="my-4 h-3" onClick={(e)=>{random(x.email,x.name); setFlag(!flag)}} >{check!=2?<>✏️</>:<>❌</>}</button> 
                 </div>
             ))
          }
