@@ -1,108 +1,116 @@
-import React, {useEffect, useCallback } from 'react'
+import React, {useEffect, useCallback, useState } from 'react'
 import useEmblaCarousel from 'embla-carousel-react'
 
 // use embla-carousel instead, css using tailwind for future reference: https://www.embla-carousel.com/
 
-const products = [
-  {
-    id: 1,
-    name: 'Basic Tee',
-    href: '#',
-    imageSrc: './main.jpg',
-    imageAlt: "Front of men's Basic Tee in black.",
-    price: '$35',
-    color: 'Black',
-  },
-  {
-      id: 2,
-      name: 'Basic Tee',
-      href: '#',
-      imageSrc: './main.jpg',
-      imageAlt: "Front of men's Basic Tee in black.",
-      price: '$35',
-      color: 'Black',
-  },
-  {
-      id: 3,
-      name: 'Basic Tee',
-      href: '#',
-      imageSrc: './main.jpg',
-      imageAlt: "Front of men's Basic Tee in black.",
-      price: '$35',
-      color: 'Black',
-  },
-  {
-      id: 4,
-      name: 'Basic Tee',
-      href: '#',
-      imageSrc: './main.jpg',
-      imageAlt: "Front of men's Basic Tee in black.",
-      price: '$35',
-      color: 'Black',
-  },
-  {
-      id: 5,
-      name: 'Basic Tee',
-      href: '#',
-      imageSrc: './main.jpg',
-      imageAlt: "Front of men's Basic Tee in black.",
-      price: '$35',
-      color: 'Black',
-  },
-  {
-    id: 6,
-    name: 'Basic Tee',
-    href: '#',
-    imageSrc: './main.jpg',
-    imageAlt: "Front of men's Basic Tee in black.",
-    price: '$35',
-    color: 'Black',
-  },
-  {
-    id: 7,
-    name: 'Basic Tee',
-    href: '#',
-    imageSrc: './main.jpg',
-    imageAlt: "Front of men's Basic Tee in black.",
-    price: '$35',
-    color: 'Black',
-  },
-  {
-    id: 8,
-    name: 'Basic Tee',
-    href: '#',
-    imageSrc: './main.jpg',
-    imageAlt: "Front of men's Basic Tee in black.",
-    price: '$35',
-    color: 'Black',
-  },
-  {
-    id: 9,
-    name: 'Basic Tee',
-    href: '#',
-    imageSrc: './main.jpg',
-    imageAlt: "Front of men's Basic Tee in black.",
-    price: '$35',
-    color: 'Black',
-  },
-  {
-    id: 10,
-    name: 'Basic Tee',
-    href: '#',
-    imageSrc: './main.jpg',
-    imageAlt: "Front of men's Basic Tee in black.",
-    price: '$35',
-    color: 'Black',
-  },
+// const products = [
+//   {
+//     id: 1,
+//     name: 'Basic Tee',
+//     href: '#',
+//     imageSrc: './main.jpg',
+//     imageAlt: "Front of men's Basic Tee in black.",
+//     price: '$35',
+//     color: 'Black',
+//   },
+//   {
+//       id: 2,
+//       name: 'Basic Tee',
+//       href: '#',
+//       imageSrc: './main.jpg',
+//       imageAlt: "Front of men's Basic Tee in black.",
+//       price: '$35',
+//       color: 'Black',
+//   },
+//   {
+//       id: 3,
+//       name: 'Basic Tee',
+//       href: '#',
+//       imageSrc: './main.jpg',
+//       imageAlt: "Front of men's Basic Tee in black.",
+//       price: '$35',
+//       color: 'Black',
+//   },
+//   {
+//       id: 4,
+//       name: 'Basic Tee',
+//       href: '#',
+//       imageSrc: './main.jpg',
+//       imageAlt: "Front of men's Basic Tee in black.",
+//       price: '$35',
+//       color: 'Black',
+//   },
+//   {
+//       id: 5,
+//       name: 'Basic Tee',
+//       href: '#',
+//       imageSrc: './main.jpg',
+//       imageAlt: "Front of men's Basic Tee in black.",
+//       price: '$35',
+//       color: 'Black',
+//   },
+//   {
+//     id: 6,
+//     name: 'Basic Tee',
+//     href: '#',
+//     imageSrc: './main.jpg',
+//     imageAlt: "Front of men's Basic Tee in black.",
+//     price: '$35',
+//     color: 'Black',
+//   },
+//   {
+//     id: 7,
+//     name: 'Basic Tee',
+//     href: '#',
+//     imageSrc: './main.jpg',
+//     imageAlt: "Front of men's Basic Tee in black.",
+//     price: '$35',
+//     color: 'Black',
+//   },
+//   {
+//     id: 8,
+//     name: 'Basic Tee',
+//     href: '#',
+//     imageSrc: './main.jpg',
+//     imageAlt: "Front of men's Basic Tee in black.",
+//     price: '$35',
+//     color: 'Black',
+//   },
+//   {
+//     id: 9,
+//     name: 'Basic Tee',
+//     href: '#',
+//     imageSrc: './main.jpg',
+//     imageAlt: "Front of men's Basic Tee in black.",
+//     price: '$35',
+//     color: 'Black',
+//   },
+//   {
+//     id: 10,
+//     name: 'Basic Tee',
+//     href: '#',
+//     imageSrc: './main.jpg',
+//     imageAlt: "Front of men's Basic Tee in black.",
+//     price: '$35',
+//     color: 'Black',
+//   },
 
-  // More products...
-]
+//   // More products...
+// ]
 
 export const EmblaCarousel = () => {
   // const [emblaRef] = useEmblaCarousel()
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true })
+  const [products,setProducts] = useState([]);
+
+  const getProduct = async()=>{
+      const data = await fetch(`${process.env.BASE_URL}api/products/getTrendingProduct`);
+      const info = await data.json();
+      setProducts(info.body);
+  }
 
   useEffect(() => {
+    getProduct();
     if (emblaApi) {
       // Embla API is ready
     }

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 const UpdateUser = ({email,name}) =>{
-    const [role,setRole] = useState("");
+    const [role,setRole] = useState("user");
 
     return(
         <form className='flex flex-col' action={`${process.env.BASE_URL}api/user/updateUser`} method='POST'> 
