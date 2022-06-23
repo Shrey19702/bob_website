@@ -46,22 +46,22 @@ const Footer = () => {
               <h6 className="uppercase font-semibold mb-4 flex justify-center ">Useful links</h6>
               <div className="grid grid-cols-2 grid-rows-3">
               <p className="mb-4">
-                <a href="#!" className="text-gray-600 ">About Us</a>
+                <a href="/aboutUs" className="text-gray-600 ">About Us</a>
               </p>
               <p className="mb-4">
-                <a href="#!" className="text-gray-600">Contact Us</a>
+                <a href="/contactForm" className="text-gray-600">Contact Us</a>
               </p>
               <p className="mb-4">
                 <a href="#!" className="text-gray-600">Shipping Info</a>
               </p>
               <p className="mb-4">
-                <a href="#!" className="text-gray-600">Privacy Policys</a>
+                <a href="/privacyPolicy" className="text-gray-600">Privacy Policys</a>
               </p >
               <p className="mb-4">
-                <a href="#!" className="text-gray-600">Terms and Conditions</a>
+                <a href="/tac" className="text-gray-600">Terms and Conditions</a>
               </p>
               <p className="mb-4">
-                <a href="#!" className="text-gray-600">Terms of Service</a>
+                <a href="/tos" className="text-gray-600">Terms of Service</a>
               </p>
               </div>  
             </div>
