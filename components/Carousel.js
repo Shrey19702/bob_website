@@ -112,7 +112,7 @@ export const EmblaCarousel = () => {
   useEffect(() => {
     getProduct();
     if (emblaApi) {
-      // Embla API is ready
+      
     }
   }, [emblaApi])
 
