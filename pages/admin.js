@@ -41,21 +41,21 @@ const admin = () => {
         if (auth) {
             return (
               <div className='flex'>
-                    <div className="w-60 h-[95vh] py-20 shadow-inner bg-white px-1 ">
+                    <div className="w-60 h-auto py-20 shadow-inner bg-white px-1 ">
                         <ul className="relative">
-                            <li className="relative">
+                            <li className="relative border-b">
                                 <a className="flex items-center text-sm py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" href="#!" onClick={()=>setCheck(1)}>USERS</a>
                             </li>
-                            <li className="relative">
+                            <li className="relative border-b">
                                 <a className="flex items-center text-sm py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" href="#!" onClick={()=>setCheck(2)}>PRODUCT</a>
                             </li>
-                            <li className="relative">
+                            <li className="relative border-b">
                                 <a className="flex items-center text-sm py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" href="#!"onClick={()=>setCheck(3)} >ORDER</a>
                             </li>
-                            <li className="relative">
+                            <li className="relative border-b">
                                 <a className="flex items-center text-sm py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" href="#!" onClick={()=>setCheck(4)}>CREATE BLOG</a>
                             </li>
-                            <li className="relative">
+                            <li className="relative border-b">
                                 <a className="flex items-center text-sm py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" href="#!" onClick={()=>setCheck(5)}>DELETE BLOG</a>
                             </li>
                         </ul>

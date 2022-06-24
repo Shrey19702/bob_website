@@ -101,7 +101,7 @@ import useEmblaCarousel from 'embla-carousel-react'
 export const EmblaCarousel = () => {
   // const [emblaRef] = useEmblaCarousel()
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true })
-  const [products,setProducts] = useState([]);
+  const [products,setProducts] = useState();
 
   const getProduct = async()=>{
       const data = await fetch(`${process.env.BASE_URL}api/products/getTrendingProduct`);
@@ -133,15 +133,15 @@ export const EmblaCarousel = () => {
       <button className="embla__next flex transition justify-center items-center bg-cyan-200 hover:bg-cyan-300 h-12 w-12 rounded-full text-gray-900 absolute top-1/3 right-3 z-10" onClick={scrollNext}>
         <Nextsvg/>
       </button>
-      <div className="embla__viewport" ref={emblaRef}>
+      <div className="embla__viewport" ref={products?emblaRef:null}>
         <div className="embla__container flex h-[55vh] items-center">
 
-          {products.map((product) => (
+          {products? products.map((product) => (
             <div key={product.id} className="embla__slide group relative flex-[0_0_320px] m-4 h-[50vh] max-h-[400px]">
               <div className="transition-all w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md group-hover:opacity-90 overflow-hidden  lg:h-80 lg:aspect-none">
                 <img
-                  src={product.imageSrc}
-                  alt={product.imageAlt}
+                  src={product.colors[0].images[0]}
+                  alt={product.name}
                   className="w-full h-full object-center object-cover lg:w-full lg:h-full"
                 />
               </div>
@@ -153,12 +153,12 @@ export const EmblaCarousel = () => {
                       {product.name}
                     </a>
                   </h3>
-                  <p className="mt-1 text-sm text-gray-500">{product.color}</p>
+                  {/* <p className="mt-1 text-sm text-gray-500">{product.color}</p> */}
                 </div>
                 <p className="text-sm font-medium text-gray-900">{product.price}</p>
               </div>
             </div>
-            ))}
+            )): <div>Loading...</div>}
         </div>
       </div>
      

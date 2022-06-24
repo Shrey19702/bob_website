@@ -1,6 +1,62 @@
 import React from "react";
 
-const Ordersum3 = () => {
+const Ordersum = () => {
+      
+    const initializeRazorpay = () => {
+    return new Promise((resolve) => {
+        const script = document.createElement("script");
+        script.src = "https://checkout.razorpay.com/v1/checkout.js";
+
+        script.onload = () => {
+        resolve(true);
+        };
+        script.onerror = () => {
+        resolve(false);
+        };
+
+        document.body.appendChild(script);
+    });
+    };
+
+    const makePayment = async () => {
+    const res = await initializeRazorpay();
+
+    if (!res) {
+        alert("Razorpay SDK Failed to load");
+        return;
+    }
+
+    // Make API call to the serverless API
+    const data = await fetch("/api/razorpay", { method: "POST" , body: JSON.stringify({amount:500000}) }).then((t) =>
+        t.json()
+    );
+
+    console.log(data);
+    var options = {
+        key: process.env.RAZORPAY_KEY, // Enter the Key ID generated from the Dashboard
+        name: "Baby On Board",
+        currency: data.currency,
+        amount: data.amount,
+        order_id: data.id,
+        description: "ThankYou for shopping with Us",
+        image: "/logo_img.png",
+        handler: function (response) {
+        // Validate payment at server - using webhooks is a better idea.
+        alert(response.razorpay_payment_id);
+        alert(response.razorpay_order_id);
+        alert(response.razorpay_signature);
+        },
+        prefill: {
+        name: "Manu Arora",
+        email: "manuarorawork@gmail.com",
+        contact: "9999999999",
+        },
+    };
+
+    const paymentObject = new window.Razorpay(options);
+    paymentObject.open();
+    };
+
     return (
         <div className="py-16 px-4 md:px-6 2xl:px-20 2xl:container 2xl:mx-auto">
             <div className="flex justify-start item-start space-y-2 mt-4` flex-col ">
@@ -9,12 +65,14 @@ const Ordersum3 = () => {
             </div>
             <div className="mt-10 flex flex-col xl:flex-row jusitfy-center items-stretch  w-full xl:space-x-8 space-y-4 md:space-y-6 xl:space-y-0">
                 <div className="flex flex-col justify-start items-start w-full space-y-4 md:space-y-6 xl:space-y-8">
+                    {/* Cart */}
                     <div className="flex flex-col justify-start items-start bg-gray-50 px-4 py-4 md:py-6 md:p-6 xl:p-8 w-full">
                         <p className="text-lg md:text-xl font-semibold leading-6 xl:leading-5 text-gray-800">Customer’s Cart</p>
+                            {/* MAP form here */}
                         <div className="mt-4 md:mt-6 flex  flex-col md:flex-row justify-start items-start md:items-center md:space-x-6 xl:space-x-8 w-full ">
                             <div className="pb-4 md:pb-8 w-full md:w-40">
                                 <img className="w-full hidden md:block" src="https://i.ibb.co/84qQR4p/Rectangle-10.png" alt="dress" />
-                                <img className="w-full md:hidden" src="https://i.ibb.co/L039qbN/Rectangle-10.png" alt="dress" />
+                                {/* <img className="w-full md:hidden" src="https://i.ibb.co/L039qbN/Rectangle-10.png" alt="dress" /> */}
                             </div>
                             <div className="border-b border-gray-200 md:flex-row flex-col flex justify-between items-start w-full  pb-8 space-y-4 md:space-y-0">
                                 <div className="w-full flex flex-col justify-start items-start space-y-8">
@@ -70,6 +128,7 @@ const Ordersum3 = () => {
                             </div>
                         </div>
                     </div>
+                    {/* summary */}
                     <div className="flex justify-center md:flex-row flex-col items-stretch w-full space-y-4 md:space-y-0 md:space-x-6 xl:space-x-8">
                         <div className="flex flex-col px-4 py-6 md:p-6 xl:p-8 w-full bg-gray-50 space-y-6   ">
                             <h3 className="text-xl font-semibold leading-5 text-gray-800">Summary</h3>
@@ -80,7 +139,7 @@ const Ordersum3 = () => {
                                 </div>
                                 <div className="flex justify-between items-center w-full">
                                     <p className="text-base leading-4 text-gray-800">
-                                        Discount <span className="bg-gray-200 p-1 text-xs font-medium leading-3  text-gray-800">STUDENT</span>
+                                        Discount
                                     </p>
                                     <p className="text-base leading-4 text-gray-600">-$28.00 (50%)</p>
                                 </div>
@@ -94,27 +153,6 @@ const Ordersum3 = () => {
                                 <p className="text-base font-semibold leading-4 text-gray-600">$36.00</p>
                             </div>
                         </div>
-                        {/* <div className="flex flex-col justify-center px-4 py-6 md:p-6 xl:p-8 w-full bg-gray-50 space-y-6   ">
-                            <h3 className="text-xl font-semibold leading-5 text-gray-800">Shipping</h3>
-                            <div className="flex justify-between items-start w-full">
-                                <div className="flex justify-center items-center space-x-4">
-                                    <div class="w-8 h-8">
-                                        <img class="w-full h-full" alt="logo" src="https://i.ibb.co/L8KSdNQ/image-3.png" />
-                                    </div>
-                                    <div className="flex flex-col justify-start items-center">
-                                        <p className="text-lg leading-6 font-semibold text-gray-800">
-                                            DPD Delivery
-                                            <br />
-                                            <span className="font-normal">Delivery with 24 Hours</span>
-                                        </p>
-                                    </div>
-                                </div>
-                                <p className="text-lg font-semibold leading-6 text-gray-800">$8.00</p>
-                            </div>
-                            <div className="w-full flex justify-center items-center">
-                                <button className="hover:bg-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 py-5 w-96 md:w-full bg-gray-800 text-base font-medium leading-4 text-white">View Carrier Details</button>
-                            </div>
-                        </div> */}
                     </div>
                 </div>
                 <div className="bg-gray-50 w-full xl:w-96 flex justify-between items-center md:items-start px-4 py-6 md:p-6 xl:p-8 flex-col ">
@@ -125,7 +163,7 @@ const Ordersum3 = () => {
                                 <img src="https://i.ibb.co/5TSg7f6/Rectangle-18.png" alt="avatar" />
                                 <div className=" flex justify-start items-start flex-col space-y-2">
                                     <p className="text-base font-semibold leading-4 text-left text-gray-800">David Kent</p>
-                                    <p className="text-sm leading-5 text-gray-600">10 Previous Orders</p>
+                                    {/* <p className="text-sm leading-5 text-gray-600">10 Previous Orders</p> */}
                                 </div>
                             </div>
 
@@ -158,7 +196,12 @@ const Ordersum3 = () => {
                                 </div>
                             </div>
                             <div className="flex w-full justify-center items-center md:justify-start md:items-start">
-                                <button className="mt-6 md:mt-0 py-5 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 border border-gray-800 font-medium w-96 2xl:w-full text-base leading-4 text-gray-800">Pay Now</button>
+                                <button 
+                                    className="mt-6 md:mt-0 py-5 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 border border-gray-800 font-medium w-96 2xl:w-full text-base leading-4 text-gray-800"
+                                    onClick={()=>{makePayment()}}
+                                >
+                                    Pay Now
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -168,4 +211,4 @@ const Ordersum3 = () => {
     );
 };
 
-export default Ordersum3;
+export default Ordersum;
