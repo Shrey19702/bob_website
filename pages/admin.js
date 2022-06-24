@@ -6,6 +6,7 @@ import ProductControl from '../components/admin_pages/ProductControl';
 import UserInfo from '../components/admin_pages/UserInfo';
 import OrderInfo from '../components/admin_pages/OrderInfo';
 import DeleteBlog from '../components/admin_pages/DeleteBlog';
+import ViewContacts from '../components/admin_pages/ViewContacts';
 
 const admin = () => {
 
@@ -58,6 +59,9 @@ const admin = () => {
                             <li className="relative border-b">
                                 <a className="flex items-center text-sm py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" href="#!" onClick={()=>setCheck(5)}>DELETE BLOG</a>
                             </li>
+                            <li className="relative border-b">
+                                <a className="flex items-center text-sm py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" href="#!" onClick={()=>setCheck(6)}>VIEW CONTACTS</a>
+                            </li>
                         </ul>
                     </div>
 
@@ -65,7 +69,7 @@ const admin = () => {
                     {/* <PostBlog/>
                     <ProductControl/> */}
                  {
-                    (check == 4?<PostBlog/>:check == 2?<ProductControl/>:check == 1?<UserInfo/>:check == 3?<OrderInfo/>:check==5?<DeleteBlog/>:<ProductControl/>)
+                    (check == 4?<PostBlog/>:check == 2?<ProductControl/>:check == 1?<UserInfo/>:check == 3?<OrderInfo/>:check==5?<DeleteBlog/>:check==6?<ViewContacts/>:<ProductControl/>)
                  }
 
                 </div>
