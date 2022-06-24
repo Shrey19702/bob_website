@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import EditCategories from "./EditCategories";
+import EditCollections from "./EditCollections";
 import Editproduct from "./Editproduct";
 
 const ProductControl = ()=>{
@@ -77,58 +79,15 @@ const ProductControl = ()=>{
                 <div>Branch:{tree.branch} Type:{tree.type}</div>
                 <ul className="w-full text-gray-900 ">
                     {/* Showing All the Collections */}
-                    {tree.type=="collection" && Data && Data.map((x)=>(
-                        <li key={x.name} onClick={()=>{enterBranch(x.name)}} className="transition bg-white px-6 py-6 my-4 flex justify-between cursor-pointer w-full rounded-md shadow-sm hover:shadow-md ">
-                            <h1 className=" inline text-lg" >{x.name}</h1>
-                            <button onClick={ async()=>{
-                                const name = x.name;
-                                const data = await fetch(`${process.env.BASE_URL}api/collections/deleteCollection`,{
-                                    method:"DELETE",
-                                    body:JSON.stringify({
-                                        name:{name}
-                                    }),
-                                    headers: {
-                                        "Content-type": "application/json; charset=UTF-8"
-                                    }
-                                });
-                            }}>🗑️</button>
-                        </li>
-                    ))}
+                    {tree.type=="collection" && Data && 
+                        (<>
+                            <EditCollections Data={Data} enterBranch={enterBranch} />
+                        </>)
+                    }
                     {/* Showing all the Categories inside a collection */}
                     {tree.type=="category" && typeof(Data[0])=='string' && 
                         (<>
-                            {Data.map((x, idx)=>(
-                                <li key={idx} onClick={()=>{enterBranch(x)}} className="transition bg-white px-6 py-6 my-4 flex justify-between cursor-pointer w-full rounded-md shadow-sm hover:shadow-md ">
-                                    <h1 className=" inline text-lg" >{x}</h1>
-                                    <button className="transition border border-red-400 rounded-md p-2 bg-transparent hover:bg-red-500 text-red-500 hover:text-white" onClick={ async()=>{
-                                        console.log(`Delete the product ${x.name}`);
-                                    }}>Delete</button>
-                                </li>
-                            ))}
-                            <a 
-                                className="transition block rounded-md cursor-pointer bg-sky-500 hover:bg-sky-400 text-white  py-2 px-4 " 
-                                onClick={()=>{
-                                    console.log(Data);
-                                    // let x= [...Data];
-                                    // x.push({
-                                    //     name: "",
-                                    //     price: 0,
-                                    //     discount: {applicable: false, newAmount: 0},
-                                    //     href: " ",
-                                    //     category: "",
-                                    //     collections: "",
-                                    //     trending: true,
-                                    //     description: "",
-                                    //     details: "",
-                                    //     highlights: [],
-                                    //     colors: [],
-                                    //     sizes: [],
-                                    //     stock: 0,
-                                    // });
-                                    // setData(x);
-                            }}>
-                                Create new Category
-                            </a>
+                            <EditCategories enterBranch={enterBranch} Data={Data} />
                         </>)
                     }
                     {/* Showing all products inside a category */}

@@ -5,6 +5,10 @@ const collectionSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    image: {
+        type:String,
+        default:' ',
+    },
     categories: [    //categories in collection
         {
             type:String
