@@ -80,22 +80,30 @@ connectDB();
                 <div key={product.id} className="group relative">
                   <div className="transition-all w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md group-hover:opacity-90 overflow-hidden  lg:h-80 lg:aspect-none">
                     <img
-                      src={product.image}
-                      alt={product.name}
+                      src={product.colors[0].images[0]}
+                      alt={product.colors[0].images[0]}
                       className="w-full h-full object-center object-cover lg:w-full lg:h-full"
                     />
                   </div>
                   <div className="mt-4 flex justify-between">
                     <div>
                       <h3 className="text-sm text-gray-700">
-                        <a href={`${process.env.BASE_URL}/products/${product._id}`}>
-                          <span aria-hidden="true" className="absolute inset-0" />
+                        <a href={product.href}>
+                          <span aria-hidden="true" className="absolute inset-0 font-medium" />
                           {product.name}
                         </a>
                       </h3>
-                      <p className="mt-1 text-sm text-gray-500">{product.colors[0].color}</p>
+                      {/* <p className="mt-1 text-sm text-gray-500">{product.colors[0].color}</p> */}
                     </div>
-                    <p className="text-sm font-medium text-gray-900">{product.price}</p>
+                    <p className="text-sm font-medium text-gray-700">
+                      {product.discount.applicable? 
+                        (
+                          <>
+                            <del className=' line-through decoration-[3px] decoration-red-600 font-thin'>{product.price}</del>&nbsp;&nbsp;
+                            <span className=' font-semibold'>{product.discount.newAmount}</span>
+                          </>
+                        ) : product.price }
+                    </p>
                   </div>
                 </div>
               ))}

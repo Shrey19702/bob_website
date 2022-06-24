@@ -410,18 +410,22 @@ export default function Navbar() {
 function Userlogin() {
   const { data: session, status } = useSession();
   const [providers, setProviders] = useState();
+  const [userData, setUserData] = useState();
 
   useEffect(() => {
+    (async ()=>{
+      const fetch_data = await fetch(`${process.env.BASE_URL}api/user/getUserByEmail`,{
+        method:'POST',
+        body: JSON.stringify({email: 'hello'})
+      });
+      const json_data = await fetch_data.json();
+      setUserData(json_data);
+    })();
     (async () => {
       const curr_providers = await getProviders();
       setProviders(curr_providers);
     })();
   }, []);
-
-  // const img_error = ()=>{
-  //   console.log(this.src);
-
-  // }
 
   if (session) {
     //user logged in
@@ -433,11 +437,12 @@ function Userlogin() {
             <span className="sr-only">Open user menu</span>
             <Image
               className=" h-11 w-11 rounded-full pointer-events-none"
-              loader={({src})=>{return session.user.image}}
+              // loader={({src})=>{return session.user.image}}
               src={session.user.image}
               alt="User Image"
               width={44}
               height={44}
+              priority
               onError={({ currentTarget }) => {
                 currentTarget.onerror = null;
                 currentTarget.src = "/UserOnError.png";
@@ -468,7 +473,7 @@ function Userlogin() {
                   </a>
                 )}
               </Menu.Item>
-              <Menu.Item>
+              {/* <Menu.Item>
                 {({ active }) => (
                   <a
                     href="#"
@@ -480,7 +485,7 @@ function Userlogin() {
                     Settings
                   </a>
                 )}
-              </Menu.Item>
+              </Menu.Item> */}
               <Menu.Item>
                 {({ active }) => (
                   <a

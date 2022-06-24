@@ -3,14 +3,13 @@ import Product from '../../../models/productModel';
 
 connectDB();
 
-const createProduct = async (req, res)=>{
+const updateProductById = async (req, res)=>{
     if(req.method == 'POST'){
+        const body = req.body;
+        console.log(body);
         try{
-            let newProduct = await Product.create(req.body);
+            let newProduct = await Product.findByIdAndUpdate(body.Id, body.product);
             if (newProduct) {
-                newProduct = await Product.findById(newProduct._id);
-                newProduct.href=`/products/${newProduct._id}`
-                newProduct = await newProduct.save();
 
                 console.log(newProduct);
                 res.status(201).json({
@@ -40,4 +39,4 @@ const createProduct = async (req, res)=>{
         })
     }
 }
-export default createProduct;
+export default updateProductById;
