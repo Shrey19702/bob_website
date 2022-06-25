@@ -217,15 +217,10 @@ export default function products({ f_product }) {
                         }
                       >
                         <RadioGroup.Label as="span" className="sr-only">
-                          {color.color}
+                          {color.color} 
                         </RadioGroup.Label>
-                        <span
-                          aria-hidden="true"
-                          className={classNames(
-                            `bg-${color.color}-400 `,
-                            'h-8 w-8 border border-black border-opacity-10 rounded-full'
-                          )}
-                        />
+                        <span className={`h-8 w-8 bg-${color.color}-400 rounded-full `}>
+                        </span>
                       </RadioGroup.Option>
                     ))}
                   </div>
