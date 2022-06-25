@@ -126,6 +126,7 @@ const Editproduct = ({ product }) => {
                         setDiscount(newDiscount);
                     }}
                     checked={discount.applicable}
+                    // error here
                 />
                 <label className="form-check-label min-w-fit inline-block px-4 text-gray-700">new Amount</label>
                 <input

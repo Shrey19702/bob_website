@@ -96,7 +96,7 @@ connectDB();
                       {/* <p className="mt-1 text-sm text-gray-500">{product.colors[0].color}</p> */}
                     </div>
                     <p className="text-sm font-medium text-gray-700">
-                      {product.discount.applicable? 
+                      {product.discount &&product.discount.applicable ? 
                         (
                           <>
                             <del className=' line-through decoration-[3px] decoration-red-600 font-thin'>{product.price}</del>&nbsp;&nbsp;

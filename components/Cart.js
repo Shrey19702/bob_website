@@ -4,8 +4,9 @@ export const CartContext = createContext();
 // const CartDispatchContext = createContext();
 
 const reducer = (state, action) => {
-  let clone = state;
-
+  let clone = {...state};
+  console.log("here is the state",clone);
+   
   switch (action.type) {
     case "ADD_NEW": //add new product
       // clone = state;
