@@ -4,6 +4,7 @@ import { RadioGroup } from '@headlessui/react'
 import Products from '../../models/productModel'
 import connectDB from '../../utils/connectDB'
 import {CartContext} from '../../components/Cart'
+import Image from "next/image"
 // import { useDispatchCart } from "../../components/Cart";
 // import img from '../../public/main.jpg'
 connectDB();
@@ -124,10 +125,12 @@ export default function products({ f_product }) {
 
           {/* product image */}
           <div className="aspect-w-4 aspect-h-5 sm:rounded-lg sm:overflow-hidden lg:aspect-w-3 lg:aspect-h-4">
-            <img
-              src={f_product.images.src}
-              alt={f_product.images.alt ? f_product.image.alt : "no image"}
+            <Image
+              src={f_product.colors[0].images[0]}
+              alt={f_product.colors[0].images[0]}
               className="w-full h-full object-center object-cover"
+              layout='fill'
+              priority
             />
           </div>
 

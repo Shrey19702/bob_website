@@ -1,20 +1,24 @@
 import connectDB from "../../../utils/connectDB";
 import Collections from "../../../models/collectionsModel"
+import Products from "../../../models/productModel"
 import { stringify } from "postcss";
 
 connectDB();
 
-const deleteCollection = async (req,res)=>{
-    console.log('here is delete api log ',typeof(req.body.name))
+const deleteCategoryFromColllection = async (req,res)=>{
+    // console.log('here is delete api log ',typeof(req.body.name))
     if(req.method == "DELETE"){
         try{
-            let f_col = await Collections.findOne({name: req.body.name});
-            if(f_col && (f_col.categories.length == 0) ){
-                f_col = await Collections.findOneAndDelete({name: req.body.name});
+            let f_products = await Products.find({category: req.body.category});
+            if( f_products && f_products.length==0){
+                //remove the category from collection
+                let f_collection = await Collections.findOne({name: req.body.collection});
+                f_collection.categories=f_collection.categories.filter((e)=>(e!=req.body.category));
+                f_collection = await f_collection.save();
                 res.status(200).json({
                     success:true,
-                    message : "Collection has been deleted",
-                    body: f_col
+                    message : "Category has been deleted",
+                    body: f_collection
                 })
             }
             else{
@@ -39,4 +43,4 @@ const deleteCollection = async (req,res)=>{
         })
     }
 }
-export default deleteCollection;
+export default deleteCategoryFromColllection;

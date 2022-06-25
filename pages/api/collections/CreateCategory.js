@@ -6,13 +6,15 @@ connectDB();
 const createCollection = async (req, res) => {
     if (req.method == 'POST') {
       try{
-        let newCollection = await Collections.create(req.body);
-        if (newCollection) {
-            console.log(newCollection);
+        let f_Collection = await Collections.create(req.body.collection);
+        if (f_Collection) {
+            console.log(f_Collection);
+            f_Collection.categories.push(req.body.category);
+            f_Collection = await f_Collection.save();
             res.status(201).json({
                 success:true,
-                message: "Succesful creation of Collection",
-                body: newCollection
+                message: "Succesful creation of Category",
+                body: f_Collection
             });
         } else {
             res.status(400).json({
