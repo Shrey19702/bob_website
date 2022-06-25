@@ -5,15 +5,17 @@ connectDB();
 
 const UpdateCategory = async (req, res) => {
     if (req.method == 'POST') {
+        console.log('######HELLLLO#######')
       try{  //category name, collection name to be given in req.body
-        let f_Collection = await Collections.findOne(req.body.collection);
+        let f_Collection = await Collections.findOne({name: req.body.collection});
         if (f_Collection) {
             console.log(f_Collection);
             // f_Collection.categories.push(req.body.category);
-            f_Collection.categories.map((category)=>{
+            f_Collection.categories = f_Collection.categories.map((category)=>{
                 if(category == req.body.oldName){
-                    category = req.body.newName;
+                    return req.body.newName;
                 }
+                return category
             })
             f_Collection = await f_Collection.save();
             res.status(201).json({

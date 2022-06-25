@@ -56,7 +56,7 @@ const EditCollections = ({Data, enterBranch}) => {
                                         disabled={(collections[idx].name==Data[idx].name && collections[idx].image==Data[idx].image)? true: false}
                                     >Update</button>    
                                     <button className="transition border hover:border-gray-900 rounded-md mx-2 p-2 bg-transparent bg-gray-500 text-white hover:opacity-95" 
-                                        onClick={()=>{enterBranch(collection.name)}}
+                                        onClick={(e)=>{e.preventDefault(); enterBranch(collection.name)}}
                                     >Go To Categories</button>                        
                                     <button className="transition border hover:border-red-900 rounded-md mx-2 p-2 bg-transparent bg-red-500 text-white hover:opacity-95"
                                         onClick={ async(e)=>{

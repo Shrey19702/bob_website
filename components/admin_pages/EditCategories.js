@@ -50,7 +50,7 @@ const EditCategories = ({enterBranch, collection, Data}) => {
                                                 headers: { 'Content-Type': 'application/json' },
                                                 body: JSON.stringify({collection: collection, category: Categories[idx]})
                                             }
-                                            const response = await fetch(`${process.env.BASE_URL}api/collections/DeleteCategory`,requestOptions);
+                                            const response = await fetch(`${process.env.BASE_URL}api/collections/deleteCategoryFromCollection`,requestOptions);
                                             const res_data = await response.json();
                                             console.log(`Deleted category :`,res_data);
                                         }}
