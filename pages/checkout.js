@@ -7,52 +7,83 @@ import { data } from "autoprefixer";
 
 const Ordersum = () => {
   const {state ,dispatch} = useContext(CartContext); 
+//   const [name,setName] = useState("");
+//   const [email,setEmail] = useState("");
+//   const [contact,setContact] = useState("");
+//   const [avatar ,setAvatar] = useState("");
+//   const [address,setAddress] = useState("");
+//   const [shippingAddress,setShippingAddress] = useState("");
+  const [total, setTotal] = useState(null);
+
+//  const [mainData,setMainData] = useState({
+//     name:" ",
+//     email:"",
+//     contact:" ",
+//     avatar:" ",
+//     address:" ",
+//     shippingAddress:" ",
+//  })
+const [mainData,setMainData] = useState(null)
+
+
     const { data: session, status } = useSession();
-    const [cart , setCart] = useState([]);
-    // const [idx,setIdx] = useState(0);
+    const [cart , setCart] = useState(null);
       
    const getCart = ()=>{
     dispatch({type:"GET_FROM_LOCALSTORAGE"});
      const data = state.cart;
           setCart(data);
-        //   console.log(cart);
    }
    
-    // const getProduct = async(id)=>{
-    //     const data = await fetch(`${process.env.BASE_URL}/api/products/getProductById`,{
-    //         method:"POST",
-    //         body:JSON.stringify({
-    //             id: id
-    //         })
-    //     });
-    //     const info =await data.json();
-    //     console.log(info);
-    // }
-    // const  s = "62b4bda5fdad99421484f32b";
+   const validate = async () => {
+    if(session)
+    {
+        const data = await fetch(`${process.env.BASE_URL}api/user/getUserByEmail`, {
+            method: "POST",
+            body: JSON.stringify({
+                email: session.user.email
+            })
+        }); 
+      let  foundUser = await data.json();
+     let x = {...foundUser.body};
+     x.shippingAddress = foundUser.body.address;
+    //   setName(foundUser.body.name);
+    //   setEmail( foundUser.body.email);
+    //  setContact( foundUser.body.number);
+    //  setAvatar(foundUser.body.avatar);
+    //  setAddress(foundUser.body.address);
+    //  setShippingAddress(foundUser.body.address);
+     setMainData(x);
+    }
+}
+  
+const getTotal = () => {
+    const res = state.cart.reduce((prev, item) => {
+      return prev + (item.price * item.quantity)
+    },0)
+
+    setTotal(res)
+
+  }
 
 
     useEffect(()=>{
-        getCart();
-        // validate();
-        // getProduct(s);
-    },[])
+
+        console.log("useEffect worked",cart);
+        if(!cart)
+        {getCart();}
+
+        if(!mainData)
+        validate();
+        
+        if(!total)
+        getTotal()
+     
+    })
 
 
-    const validate = async () => {
-        if(session)
-        {
-            const data = await fetch(`${process.env.BASE_URL}api/user/getUserByEmail`, {
-                method: "POST",
-                body: JSON.stringify({
-                    email: session.user.email
-                })
-            }); 
-          let  foundUser = await data.json();
     
-           
-        }
-    }
-
+console.log(mainData,"fjfjffjjfjf")
       
     const initializeRazorpay = () => {
     return new Promise((resolve) => {
@@ -70,7 +101,7 @@ const Ordersum = () => {
     });
     };
 
-    const makePayment = async () => {
+    const makePayment = async (name,email,contact) => {
     const res = await initializeRazorpay();
 
     if (!res) {
@@ -83,7 +114,7 @@ const Ordersum = () => {
         t.json()
     );
 
-    console.log(data);
+    // console.log(data,mainData);
     var options = {
         key: process.env.RAZORPAY_KEY, // Enter the Key ID generated from the Dashboard
         name: "Baby On Board",
@@ -99,9 +130,9 @@ const Ordersum = () => {
         alert(response.razorpay_signature);
         },
         prefill: {
-        name: " ",
-        email: "manuarorawork@gmail.com",
-        contact: "9999999999",
+        name: name,
+        email: email,
+        contact:contact,
         },
     };
 
@@ -127,6 +158,7 @@ const Ordersum = () => {
                             {/* MAP form here */}
                         
                            {
+                            cart&&
                             cart.map((x,idx)=>(
                                 <div key={idx} className="mt-4 md:mt-6 flex  flex-col md:flex-row justify-start items-start md:items-center md:space-x-6 xl:space-x-8 w-full ">
                                 <div className="pb-4 md:pb-8 w-full md:w-40">
@@ -161,7 +193,7 @@ const Ordersum = () => {
                             <div className="flex justify-center items-center w-full space-y-4 flex-col border-gray-200 border-b pb-4">
                                 <div className="flex justify-between  w-full">
                                     <p className="text-base leading-4 text-gray-800">Subtotal</p>
-                                    <p className="text-base leading-4 text-gray-600">10000</p>
+                                    <p className="text-base leading-4 text-gray-600">{total}</p>
                                 </div>
                                 <div className="flex justify-between items-center w-full">
                                     <p className="text-base leading-4 text-gray-800">
@@ -181,57 +213,7 @@ const Ordersum = () => {
                         </div>
                     </div>
                 </div>
-                <div className="bg-gray-50 w-full xl:w-96 flex justify-between items-center md:items-start px-4 py-6 md:p-6 xl:p-8 flex-col ">
-                    <h3 className="text-xl font-semibold leading-5 text-gray-800">Customer</h3>
-                    <div className="flex  flex-col md:flex-row xl:flex-col justify-start items-stretch h-full w-full md:space-x-6 lg:space-x-8 xl:space-x-0 ">
-                        <div className="flex flex-col justify-start items-start flex-shrink-0">
-                            <div className="flex justify-center  w-full  md:justify-start items-center space-x-4 py-8 border-b border-gray-200">
-                                <img src="https://i.ibb.co/5TSg7f6/Rectangle-18.png" alt="avatar" />
-                                <div className=" flex justify-start items-start flex-col space-y-2">
-                                    <p className="text-base font-semibold leading-4 text-left text-gray-800">David Kent</p>
-                                    {/* <p className="text-sm leading-5 text-gray-600">10 Previous Orders</p> */}
-                                </div>
-                            </div>
-
-                            <div className="flex justify-center  md:justify-start items-center space-x-4 py-4 border-b border-gray-200 w-full">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M19 5H5C3.89543 5 3 5.89543 3 7V17C3 18.1046 3.89543 19 5 19H19C20.1046 19 21 18.1046 21 17V7C21 5.89543 20.1046 5 19 5Z" stroke="#1F2937" strokeLinecap="round" strokeLinejoin="round" />
-                                    <path d="M3 7L12 13L21 7" stroke="#1F2937" strokeLinecap="round" strokeLinejoin="round" />
-                                </svg>
-                                <p className="cursor-pointer text-sm leading-5 text-gray-800">david89@gmail.com</p>
-                              
-                            </div>
-                            <div className="flex justify-center  md:justify-start items-center space-x-4 py-4 border-b border-gray-200 w-full">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M19 5H5C3.89543 5 3 5.89543 3 7V17C3 18.1046 3.89543 19 5 19H19C20.1046 19 21 18.1046 21 17V7C21 5.89543 20.1046 5 19 5Z" stroke="#1F2937" strokeLinecap="round" strokeLinejoin="round" />
-                                    <path d="M3 7L12 13L21 7" stroke="#1F2937" strokeLinecap="round" strokeLinejoin="round" />
-                                </svg>
-                                <p className="cursor-pointer text-sm leading-5 text-gray-800">987543210</p>
-                              
-                            </div>
-                        </div>
-                        <div className="flex justify-between xl:h-full  items-stretch w-full flex-col mt-6 md:mt-0">
-                            <div className="flex justify-center md:justify-start xl:flex-col flex-col md:space-x-6 lg:space-x-8 xl:space-x-0 space-y-4 xl:space-y-12 md:space-y-0 md:flex-row  items-center md:items-start ">
-                                <div className="flex justify-center md:justify-start  items-center md:items-start flex-col space-y-4 xl:mt-8">
-                                    <p className="text-base font-semibold leading-4 text-center md:text-left text-gray-800">Shipping Address</p>
-                                    <p className="w-48 lg:w-full xl:w-48 text-center md:text-left text-sm leading-5 text-gray-600">180 North King Street, Northhampton MA 1060</p>
-                                </div>
-                                <div className="flex justify-center md:justify-start  items-center md:items-start flex-col space-y-4 ">
-                                    <p className="text-base font-semibold leading-4 text-center md:text-left text-gray-800">Billing Address</p>
-                                    <p className="w-48 lg:w-full xl:w-48 text-center md:text-left text-sm leading-5 text-gray-600">180 North King Street, Northhampton MA 1060</p>
-                                </div>
-                            </div>
-                            <div className="flex w-full justify-center items-center md:justify-start md:items-start">
-                                <button 
-                                    className="mt-6 md:mt-0 py-5 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 border border-gray-800 font-medium w-96 2xl:w-full text-base leading-4 text-gray-800"
-                                    onClick={()=>{makePayment()}}
-                                >
-                                    Pay Now
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+               
             </div>
         </div>
     );
