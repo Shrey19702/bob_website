@@ -85,7 +85,7 @@ const ProductControl = ()=>{
                         </>)
                     }
                     {/* Showing all the Categories inside a collection */}
-                    {tree.type=="category" && typeof(Data[0])=='string' && 
+                    {tree.type=="category" && Array.isArray(Data) && (Data.length==0 || typeof(Data[0])=='string') &&
                         (<>
                             <EditCategories enterBranch={enterBranch} collection={tree.branch} Data={Data} />
                         </>)

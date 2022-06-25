@@ -2,6 +2,7 @@ import { useState } from "react";
 
 const EditCategories = ({enterBranch, collection, Data}) => {
     const [Categories, setCategories] = useState(Data);
+    console.log(Categories, Data);
     return ( 
         <>
             <form action="">
