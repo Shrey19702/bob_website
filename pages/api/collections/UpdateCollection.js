@@ -3,11 +3,11 @@ import Collections from "../../../models/collectionsModel"
 
 connectDB();
 
-const createCollection = async (req, res) => {
+const UpdateCollection = async (req, res) => {
     if (req.method == 'POST') {
       console.log(req.body);
       try{
-        let newCollection = await Collections.create(req.body);
+        let newCollection = await Collections.findOneAndUpdate({name: req.body.oldName}, req.body.new);
         if (newCollection) {
             console.log(newCollection);
             res.status(201).json({
@@ -35,4 +35,4 @@ const createCollection = async (req, res) => {
       })
     }
 }
-export default createCollection;
+export default UpdateCollection;

@@ -4,16 +4,17 @@ import Collections from "../../../models/collectionsModel"
 connectDB();
 
 const createCollection = async (req, res) => {
-    if (req.method == 'POST') {
-      console.log(req.body);
-      try{
-        let newCollection = await Collections.create(req.body);
-        if (newCollection) {
-            console.log(newCollection);
+    if (req.method == 'DELETE') {
+      try{  //category name, collection name to be given in req.body
+        let f_Collection = await Collections.findOne(req.body.collection);
+        if (f_Collection) {
+            console.log(f_Collection);
+            f_Collection.categories = f_Collection.categories.filter((category)=>(category !== req.body.category));
+            f_Collection = await f_Collection.save();
             res.status(201).json({
                 success:true,
-                message: "Succesful creation of Collection",
-                body: newCollection
+                message: "Succesful creation of Category",
+                body: f_Collection
             });
         } else {
             res.status(400).json({
@@ -27,7 +28,7 @@ const createCollection = async (req, res) => {
         })
         console.log(error)
       }
-    }    
+    }
     else{
       res.status(404).json({
           success:false,

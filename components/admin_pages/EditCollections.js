@@ -41,20 +41,51 @@ const EditCollections = ({Data, enterBranch}) => {
                             {Data[idx] ?
                                 //Collection already exist in the database
                                 <> 
-                                    <button className="transition border border-slate-500 rounded-md mx-2 p-2 bg-transparent hover:bg-slate-600 text-slate-500 hover:text-white" 
-                                        onClick={()=>{console.log("update collection")}}
+                                    <button className="transition border disabled:opacity-80 disabled:bg-transparent disabled:text-slate-500 disabled:border-slate-500 hover:border-slate-900 rounded-md mx-2 p-2 bg-transparent bg-slate-600 text-white hover:opacity-95" 
+                                        onClick={async(e)=>{
+                                            e.preventDefault();
+                                            const requestOptions={
+                                                method:'POST',
+                                                headers: { 'Content-Type': 'application/json' },
+                                                body: JSON.stringify({new: collections[idx], oldName:Data[idx].name})
+                                            }
+                                            const response = await fetch(`${process.env.BASE_URL}api/collections/UpdateCollection`,requestOptions);
+                                            const res_data = await response.json();
+                                            console.log(`Updated collection :`,res_data);
+                                        }}
+                                        disabled={(collections[idx].name==Data[idx].name && collections[idx].image==Data[idx].image)? true: false}
                                     >Update</button>    
-                                    <button className="transition border border-gray-400 rounded-md mx-2 p-2 bg-transparent hover:bg-gray-500 text-gray-500 hover:text-white" 
+                                    <button className="transition border hover:border-gray-900 rounded-md mx-2 p-2 bg-transparent bg-gray-500 text-white hover:opacity-95" 
                                         onClick={()=>{enterBranch(collection.name)}}
-                                    >Go To Products</button>                        
-                                    <button className="transition border border-red-400 rounded-md mx-2 p-2 bg-transparent hover:bg-red-500 text-red-500 hover:text-white"
-                                        onClick={ async()=>{console.log(`Delete the collection`);}}
+                                    >Go To Categories</button>                        
+                                    <button className="transition border hover:border-red-900 rounded-md mx-2 p-2 bg-transparent bg-red-500 text-white hover:opacity-95"
+                                        onClick={ async(e)=>{
+                                            e.preventDefault();
+                                            const requestOptions={
+                                                method:'DELETE',
+                                                headers: { 'Content-Type': 'application/json' },
+                                                body: JSON.stringify({name: collections[idx].name})
+                                            }
+                                            const response = await fetch(`${process.env.BASE_URL}api/collections/deleteCollection`,requestOptions);
+                                            const res_data = await response.json();
+                                            console.log(`Deleted collection :`,res_data);
+                                        }}
                                     >Delete</button>
                                 </>
                                 : //This collection has to be created
                                 <>
                                     <button className="transition border border-slate-500 rounded-md mx-2 px-8 py-2 bg-transparent hover:bg-slate-600 text-slate-500 hover:text-white" 
-                                        onClick={()=>{console.log("update collection")}}
+                                        onClick={async(e)=>{
+                                            e.preventDefault();
+                                            const requestOptions={
+                                                method:'POST',
+                                                headers: { 'Content-Type': 'application/json' },
+                                                body: JSON.stringify(collections[idx])
+                                            }
+                                            const response = await fetch(`${process.env.BASE_URL}api/collections/createCollections`,requestOptions);
+                                            const res_data = await response.json();
+                                            console.log('NEW COLLECTION CREATED :', res_data);
+                                        }}
                                     >Create</button>
                                     <button className="transition border border-red-400 rounded-md mx-2 p-2 bg-transparent hover:bg-red-500 text-red-500 hover:text-white"
                                         onClick={ async()=>{
@@ -71,7 +102,7 @@ const EditCollections = ({Data, enterBranch}) => {
                 <a 
                     className="transition block rounded-md cursor-pointer bg-sky-500 hover:bg-sky-400 text-white  py-2 px-4 " 
                     onClick={()=>{
-                        console.log(Data);
+                        // console.log(Data);
                         let x = [...collections];
                         x.push({
                             name: '',
