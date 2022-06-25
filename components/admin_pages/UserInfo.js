@@ -38,8 +38,8 @@ const UserInfo = ()=>{
         <ul className="bg-white rounded-lg border border-gray-200 w-96 text-gray-900">
 
          {
-            user.map(x=>(
-                <div className="flex">
+            user.map((x,idx)=>(
+                <div key={idx} className="flex">
                 <li className="px-6 py-2 border-b border-gray-200 w-[50%] rounded-t-lg">{x.name}</li>
                 <li className="px-6 py-2 border-b border-gray-200 w-full rounded-t-lg">{x.role}</li>
                 <button type="button" className="my-4 h-3" onClick={(e)=>{random(x.email,x.name); setFlag(!flag)}} >{check!=2?<>✏️</>:<>❌</>}</button> 
