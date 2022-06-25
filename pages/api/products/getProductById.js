@@ -4,7 +4,8 @@ import Product from '../../../models/productModel';
 connectDB();
 
 const getProductById = async (req, res)=>{
-    if(req.method == 'GET'){
+  console.log(req.body);
+    if(req.method == 'POST'){
         try{
             let f_Product = await Product.findById(req.body.id);
             if (f_Product) {
@@ -25,7 +26,8 @@ const getProductById = async (req, res)=>{
             console.error("error occured in finding product :", error);
             res.status(400).json({
                 success: false,
-                message: "error occured in finding product"
+                message: "error occured in finding product",
+                error: error
             })
         }
     }

@@ -21,9 +21,6 @@ export default function Store() {
     setcart(state.cart);
   })
 
-  // useEffect(()=>{
-  //  console.log('cart updated'); 
-  // }, [cart]);
   useEffect(() => {
     const getTotal = () => {
       const res = state.cart.reduce((prev, item) => {
@@ -61,6 +58,9 @@ export default function Store() {
                 <div>{item.price}</div>
                 <div>{item.quantity}</div>
                 <div>{item.id}</div>
+                {
+
+                }
                 <button className=" bg-slate-400 p-5 m-5" onClick={() => handleReduce(item.id, item.quantity)}>Reduce from Cart</button>
                 <button className=" bg-slate-400 p-5 m-5" onClick={() => handleRemove(item.id)}>Remove from cart</button>
             </div>
