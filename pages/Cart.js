@@ -34,7 +34,7 @@ export default function Store() {
   },[cart])
 
 
-  console.log('## state is: ',state);
+  // console.log('## state is: ',state);
 // return (
 //     <div className="p-96 font-semibold" >
 //         Hello

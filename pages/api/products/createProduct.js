@@ -9,7 +9,7 @@ const createProduct = async (req, res)=>{
             let newProduct = await Product.create(req.body);
             if (newProduct) {
                 newProduct = await Product.findById(newProduct._id);
-                newProduct.href=`/products/${newProduct._id}`
+                newProduct.href=`/product/${newProduct._id}`
                 newProduct = await newProduct.save();
 
                 console.log(newProduct);

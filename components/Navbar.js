@@ -45,6 +45,8 @@ export default function Navbar() {
   const {state ,dispatch} = useContext(CartContext); //cart's context
   const [cart, setcart] = useState(state.cart); //cart data
   const [total, setTotal] = useState(0); //subtatal of items
+  const [discounted, setDiscounted] = useState(0); //subtatal of items
+  
   const [open, setOpen] = useState(false); //Cart's open close state
   //Cart functions
   const handleReduce= (productID, curr_quantity) => {
@@ -58,13 +60,22 @@ export default function Navbar() {
   })
   useEffect(() => {
     const getTotal = () => {
-      const res = state.cart.reduce((prev, item) => {
+      const resTotal = state.cart.reduce((prev, item) => {
         return prev + (item.price * item.quantity)
       },0)
+      const resDiscounted = state.cart.reduce((prev, item) => {
+        if(item.discount.applicable){
+          return prev + (item.discount.newAmount * item.quantity);
+        }
+        else{
+          return prev + (item.price * item.quantity);
+        }
+      },0)
+      
+      setTotal(resTotal);
+      setDiscounted(resDiscounted); 
 
-      setTotal(res)
     }
-
     getTotal()
   },[cart])
 
@@ -173,31 +184,43 @@ export default function Navbar() {
                               {cart.map((product) => {
                                 return (
                                   <li key={product.id} className="flex py-6">
-                                    <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
-                                      <img
-                                        src=" "
-                                        alt="image here"
-                                        className="h-full w-full object-cover object-center"
-                                      />
+                                    <div className="h-24 w-24 bg-sky-100 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                                    <Image
+                                      src={product.image}
+                                      alt={product.name}
+                                      className="object-center object-contain"
+                                      height={96}
+                                      width={96}
+                                      priority
+                                    />
                                     </div>
 
                                     <div className="ml-4 flex flex-1 flex-col">
                                       <div>
                                         <div className="flex justify-between text-base font-medium text-gray-900">
                                           <h3>
-                                            <a href={null}>
+                                            <a href={product.href}>
                                               {" "}
                                               {product.name}{" "}
                                             </a>
                                           </h3>
                                           <p className="ml-4">
-                                            {product.price}
+                                            {product.discount.applicable? 
+                                              <>
+                                                <del className=' line-through decoration-[3px] decoration-red-600 font-thin'>₹{product.price}</del>&nbsp;&nbsp;
+                                                <span className=' font-semibold'>₹{product.discount.newAmount}</span>
+                                              </>
+                                            : '₹'+product.price }
                                           </p>
                                         </div>
-                                        {/* <p className="mt-1 text-sm text-gray-500">
+                                        <p className="mt-1 inline-block px-2 text-sm text-gray-500">
                                           {product.color} 
-                                        </p> */}
+                                        </p>
+                                        <p className="mt-1 inline-block px-2 text-sm text-gray-500">
+                                          {product.size}
+                                        </p>
                                       </div>
+
                                       <div className="flex flex-1 items-end justify-between text-sm">
                                         <p className="text-gray-500">
                                           Qty {product.quantity}
@@ -225,7 +248,12 @@ export default function Navbar() {
                       <div className="border-t border-gray-200 py-6 px-4 sm:px-6">
                         <div className="flex justify-between text-base font-medium text-gray-900">
                           <p>Subtotal</p>
-                          <p>₹{total}</p>
+                          <p>{total==discounted? '₹'+total:
+                            <>
+                              <del className=' line-through decoration-[3px] decoration-red-600 font-thin'>₹{total}</del>&nbsp;&nbsp;
+                              <span className=' font-semibold'>₹{discounted}</span>
+                            </>
+                          }</p>
                         </div>
                         <p className="mt-0.5 text-sm text-gray-500">
                           Shipping and taxes calculated at checkout.

@@ -3,12 +3,12 @@ import useEmblaCarousel from 'embla-carousel-react';
 import Image from 'next/image';
 import logoImg from '../public/logo_img.png'; 
 
-const media1 = '/heroImg.jpg';
-const media2 = '/heroImg1.jpeg';
-const media3 = '/heroImg2.jpeg';
-const media4 = '/heroImg.jpg';
-const media5 = '/heroImg1.jpeg';
-const media = [media1, media2, media3, media4, media5];
+const media1 = '/heroImg1.jpeg';
+const media2 = '/heroImg2.jpeg';
+const media3 = '/heroImg.jpg';
+// const media4 = '/heroImg.jpg';
+// const media5 = '/heroImg1.jpeg';
+const media = [media1, media2, media3];
 const mediaByIndex = index => media[index % media.length];
 
 const PARALLAX_FACTOR = 1.5;
@@ -120,7 +120,7 @@ const EmblaCarousel = ({ slides }) => {
   );
 };
 
-const SLIDE_COUNT = 5;
+const SLIDE_COUNT = 3;
 const slides = Array.from(Array(SLIDE_COUNT).keys());
 
 

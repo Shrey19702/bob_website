@@ -5,7 +5,6 @@ export const CartContext = createContext();
 
 const reducer = (state, action) => {
   let clone = {...state};
-  console.log("here is the state",clone);
    
   switch (action.type) {
     case "ADD_NEW": //add new product
@@ -50,7 +49,6 @@ const reducer = (state, action) => {
       return clone;
     
     case "GET_FROM_LOCALSTORAGE":
-      // console.log("getting data from localstorage");
       let data = JSON.parse(localStorage.getItem('Cart'));
       return data;
 

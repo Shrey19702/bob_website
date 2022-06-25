@@ -13,7 +13,7 @@ const Blogs=()=>{
    })
   return(
     <div className="pt-16">
-          <h1 className="mt-16 flex justify-center text-4xl">Blogs...</h1>
+          <h1 className="mt-16 flex justify-center text-4xl">Blogs</h1>
       {blogs.map((blog, index)=>(
           <main key={index} className="py-6 px-4 sm:p-6 md:py-10 md:px-8">
           <div className="max-w-4xl my-8 mx-auto grid grid-cols-1 lg:max-w-5xl lg:gap-x-20 lg:grid-cols-2 bg-white p-8 shadow-md">

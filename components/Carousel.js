@@ -1,5 +1,7 @@
 import React, {useEffect, useCallback, useState } from 'react'
 import useEmblaCarousel from 'embla-carousel-react'
+import Image from "next/image";
+
 
 // use embla-carousel instead, css using tailwind for future reference: https://www.embla-carousel.com/
 
@@ -127,10 +129,10 @@ export const EmblaCarousel = () => {
   return (
     <div className="embla overflow-hidden h-[80vh] min-h-[520px] max-h-[600px] py-12 relative bg-white">
       <h2 className=" text-3xl pb-5 text-center font-extrabold text-gray-900">Trending Products</h2>
-      <button className="embla__prev transition flex justify-center items-center bg-cyan-200 hover:bg-cyan-300 h-12 w-12 rounded-full text-gray-900 absolute top-1/3 left-3 z-10 " onClick={scrollPrev}>
+      <button className="embla__prev transition flex justify-center items-center bg-pink-200 hover:bg-pink-300 h-12 w-12 rounded-full text-gray-900 absolute top-1/3 left-3 z-10 " onClick={scrollPrev}>
         <Prevsvg/>
       </button>
-      <button className="embla__next flex transition justify-center items-center bg-cyan-200 hover:bg-cyan-300 h-12 w-12 rounded-full text-gray-900 absolute top-1/3 right-3 z-10" onClick={scrollNext}>
+      <button className="embla__next flex transition justify-center items-center bg-pink-200 hover:bg-pink-200 h-12 w-12 rounded-full text-gray-900 absolute top-1/3 right-3 z-10" onClick={scrollNext}>
         <Nextsvg/>
       </button>
       <div className="embla__viewport" ref={products?emblaRef:null}>
@@ -138,14 +140,21 @@ export const EmblaCarousel = () => {
 
           {products? products.map((product) => (
             <div key={product.id} className="embla__slide group relative flex-[0_0_320px] m-4 h-[50vh] max-h-[400px]">
-              <div className="transition-all w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md group-hover:opacity-90 overflow-hidden  lg:h-80 lg:aspect-none">
-                <img
+              <div className="transition-all relative w-full min-h-80 bg-sky-100 rounded-md group-hover:opacity-90 overflow-hidden h-80 aspect-none">
+                {/* <img  
                   src={product.colors[0].images[0]}
                   alt={product.name}
                   className="w-full h-full object-center object-cover lg:w-full lg:h-full"
-                />
+                /> */}
+                 <Image
+                    src={product.colors[0].images[0]}
+                    alt={product.colors[0].images[0]}
+                    className="embla__slide__img w-full h-full object-center object-contain"
+                    layout='fill'
+                    priority
+                  />
               </div>
-              <div className="mt-4 flex justify-between">
+              <div className="pt-4 flex justify-between">
                 <div>
                   <h3 className="text-sm text-gray-700">
                     <a href={product.href}>

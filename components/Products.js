@@ -77,12 +77,12 @@ connectDB();
     
             <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
               {productList.map((product) => (
-                <div key={product.id} className="group relative">
-                  <div className="transition-all w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md group-hover:opacity-90 overflow-hidden  lg:h-80 lg:aspect-none">
+                <div key={product.id} className="transition rounded-sm group relative shadow-sm hover:shadow-md px-2 py-4">
+                  <div className="transition-all w-full min-h-80 bg-sky-100 aspect-w-1 aspect-h-1 rounded-md group-hover:opacity-90 overflow-hidden  lg:h-80 lg:aspect-none">
                     <img
                       src={product.colors[0].images[0]}
                       alt={product.colors[0].images[0]}
-                      className="w-full h-full object-center object-cover lg:w-full lg:h-full"
+                      className="w-full h-full object-center object-contain lg:w-full lg:h-full"
                     />
                   </div>
                   <div className="mt-4 flex justify-between">

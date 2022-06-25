@@ -1,146 +1,117 @@
-import React, {useContext, useEffect, useState } from "react";
-import { useSession} from "next-auth/react"
+import React, { useContext, useEffect, useState } from "react";
+import { useSession } from "next-auth/react"
 import { CartContext } from "../components/Cart";
 import { data } from "autoprefixer";
-
+import Image from "next/image"
 
 
 const Ordersum = () => {
-  const {state ,dispatch} = useContext(CartContext); 
-//   const [name,setName] = useState("");
-//   const [email,setEmail] = useState("");
-//   const [contact,setContact] = useState("");
-//   const [avatar ,setAvatar] = useState("");
-//   const [address,setAddress] = useState("");
-//   const [shippingAddress,setShippingAddress] = useState("");
-  const [total, setTotal] = useState(null);
-
-//  const [mainData,setMainData] = useState({
-//     name:" ",
-//     email:"",
-//     contact:" ",
-//     avatar:" ",
-//     address:" ",
-//     shippingAddress:" ",
-//  })
-const [mainData,setMainData] = useState(null)
-
-
+    const { state, dispatch } = useContext(CartContext);
     const { data: session, status } = useSession();
-    const [cart , setCart] = useState(null);
-      
-   const getCart = ()=>{
-    dispatch({type:"GET_FROM_LOCALSTORAGE"});
-     const data = state.cart;
-          setCart(data);
-   }
-   
-   const validate = async () => {
-    if(session)
-    {
-        const data = await fetch(`${process.env.BASE_URL}api/user/getUserByEmail`, {
-            method: "POST",
-            body: JSON.stringify({
-                email: session.user.email
-            })
-        }); 
-      let  foundUser = await data.json();
-     let x = {...foundUser.body};
-     x.shippingAddress = foundUser.body.address;
-    //   setName(foundUser.body.name);
-    //   setEmail( foundUser.body.email);
-    //  setContact( foundUser.body.number);
-    //  setAvatar(foundUser.body.avatar);
-    //  setAddress(foundUser.body.address);
-    //  setShippingAddress(foundUser.body.address);
-     setMainData(x);
+    const [cart, setCart] = useState(null);
+
+    const [total, setTotal] = useState(0);
+    const [discounted, setDiscounted] = useState(0); 
+    
+    const [mainData, setMainData] = useState(null)
+
+    const validate = async () => {
+        if (session) {
+            const data = await fetch(`${process.env.BASE_URL}api/user/getUserByEmail`, {
+                method: "POST",
+                body: JSON.stringify({
+                    email: session.user.email
+                })
+            });
+            let foundUser = await data.json();
+            let x = { ...foundUser.body };
+            x.shippingAddress = foundUser.body.address;
+            setMainData(x);
+        }
     }
-}
-  
-const getTotal = () => {
-    const res = state.cart.reduce((prev, item) => {
-      return prev + (item.price * item.quantity)
-    },0)
-
-    setTotal(res)
-
-  }
-
 
     useEffect(()=>{
-        if(!cart)
-        {getCart();}
-
-        if(!mainData)
-        validate();
-        
-        if(!total)
-        getTotal()
-     
+        setCart(state.cart);
     })
-
-
+    useEffect(() => {
+        const getTotal = () => {
+            const resTotal = state.cart.reduce((prev, item) => {
+                return prev + (item.price * item.quantity)
+            },0)
     
-console.log(mainData,"fjfjffjjfjf")
-      
-    const initializeRazorpay = () => {
-    return new Promise((resolve) => {
-        const script = document.createElement("script");
-        script.src = "https://checkout.razorpay.com/v1/checkout.js";
-
-        script.onload = () => {
-        resolve(true);
-        };
-        script.onerror = () => {
-        resolve(false);
-        };
-
-        document.body.appendChild(script);
+            const resDiscounted = state.cart.reduce((prev, item) => {
+            if(item.discount.applicable){
+                return prev + (item.discount.newAmount * item.quantity);
+            }
+            else{
+                return prev + (item.price * item.quantity);
+            }
+            },0)
+            
+            setTotal(resTotal);
+            setDiscounted(resDiscounted); 
+        }
+        getTotal()
+      },[cart])
+    useEffect(() => {
+        if (!mainData)
+            validate();
     });
+
+    //Payment functions
+    const initializeRazorpay = () => {
+        return new Promise((resolve) => {
+            const script = document.createElement("script");
+            script.src = "https://checkout.razorpay.com/v1/checkout.js";
+
+            script.onload = () => {
+                resolve(true);
+            };
+            script.onerror = () => {
+                resolve(false);
+            };
+            document.body.appendChild(script);
+        });
+    };
+    const makePayment = async (name, email, contact) => {
+        const res = await initializeRazorpay();
+
+        if (!res) {
+            alert("Razorpay SDK Failed to load");
+            return;
+        }
+
+        // Make API call to the serverless API
+        const data = await fetch("/api/razorpay", { method: "POST", body: JSON.stringify({ amount: 500000 }) }).then((t) =>
+            t.json()
+        );
+
+        // console.log(data,mainData);
+        var options = {
+            key: process.env.RAZORPAY_KEY, // Enter the Key ID generated from the Dashboard
+            name: "Baby On Board",
+            currency: data.currency,
+            amount: data.amount,
+            order_id: data.id,
+            description: "ThankYou for shopping with Us",
+            image: "/logo_img.png",
+            handler: function (response) {
+                // Validate payment at server - using webhooks is a better idea.
+                alert(response.razorpay_payment_id);
+                alert(response.razorpay_order_id);
+                alert(response.razorpay_signature);
+            },
+            prefill: {
+                name: name,
+                email: email,
+                contact: contact,
+            },
+        };
+
+        const paymentObject = new window.Razorpay(options);
+        paymentObject.open();
     };
 
-    const makePayment = async (name,email,contact) => {
-    const res = await initializeRazorpay();
-
-    if (!res) {
-        alert("Razorpay SDK Failed to load");
-        return;
-    }
-
-    // Make API call to the serverless API
-    const data = await fetch("/api/razorpay", { method: "POST" , body: JSON.stringify({amount:500000}) }).then((t) =>
-        t.json()
-    );
-
-    // console.log(data,mainData);
-    var options = {
-        key: process.env.RAZORPAY_KEY, // Enter the Key ID generated from the Dashboard
-        name: "Baby On Board",
-        currency: data.currency,
-        amount: data.amount,
-        order_id: data.id,
-        description: "ThankYou for shopping with Us",
-        image: "/logo_img.png",
-        handler: function (response) {
-        // Validate payment at server - using webhooks is a better idea.
-        alert(response.razorpay_payment_id);
-        alert(response.razorpay_order_id);
-        alert(response.razorpay_signature);
-        },
-        prefill: {
-        name: name,
-        email: email,
-        contact:contact,
-        },
-    };
-
-    const paymentObject = new window.Razorpay(options);
-    paymentObject.open();
-    };
-  
-     
-
- 
 
     return (
         <div className="py-16 px-4 md:px-6 2xl:px-20 2xl:container 2xl:mx-auto">
@@ -153,36 +124,48 @@ console.log(mainData,"fjfjffjjfjf")
                     {/* Cart */}
                     <div className="flex flex-col justify-start items-start bg-gray-50 px-4 py-4 md:py-6 md:p-6 xl:p-8 w-full">
                         <p className="text-lg md:text-xl font-semibold leading-6 xl:leading-5 text-gray-800">Customer’s Cart</p>
-                            {/* MAP form here */}
-                        
-                           {
-                            cart&&
-                            cart.map((x,idx)=>(
+                        {/* MAP form here */}
+
+                        {
+                            cart &&
+                            cart.map((x, idx) => (
                                 <div key={idx} className="mt-4 md:mt-6 flex  flex-col md:flex-row justify-start items-start md:items-center md:space-x-6 xl:space-x-8 w-full ">
-                                <div className="pb-4 md:pb-8 w-full md:w-40">
-                                    <img className="w-full hidden md:block" src="https://i.ibb.co/84qQR4p/Rectangle-10.png" alt="dress" />
-                                    {/* <img className="w-full md:hidden" src="https://i.ibb.co/L039qbN/Rectangle-10.png" alt="dress" /> */}
-                                </div>
-                                <div className="border-b border-gray-200 md:flex-row flex-col flex justify-between items-start w-full  pb-8 space-y-4 md:space-y-0">
-                                    <div className="w-full flex flex-col justify-start items-start space-y-8">
-                                        <h3 className="text-xl xl:text-2xl font-semibold leading-6 text-gray-800">{x.name}</h3>
+                                    <div className="pb-4 md:pb-8 w-full md:w-40">
+                                        <Image
+                                            src={x.image}
+                                            alt={x.name}
+                                            className="w-full h-full hidden md:block object-center select-none object-contain"
+                                            height={150}
+                                            width={150}
+                                            priority
+                                        />
                                     </div>
-                                    <div className="flex justify-between space-x-8 items-start w-full">
-                                        <p className="text-base xl:text-lg leading-6">
-                                        ₹ {x.price}<span className="text-red-300 line-through"></span>
-                                        </p>
-                                        <p className="text-base xl:text-lg leading-6">
-                                         Qty = {x.quantity}
-                                        </p>
-                                        {/* <p className="text-base xl:text-lg leading-6 text-gray-800">01</p> */}
-                                        <p className="text-base xl:text-lg font-semibold leading-6 text-gray-800">₹{(x.price) * (x.quantity)}</p>
-                                      
+                                    <div className="border-b border-gray-200 md:flex-row flex-col flex justify-between items-start w-full  pb-8 space-y-4 md:space-y-0">
+                                        <div className="w-full flex flex-col justify-start items-start space-y-8">
+                                            <h3 className="text-xl xl:text-2xl font-semibold leading-6 text-gray-800">{x.name}</h3>
+                                        </div>
+                                        <div className="flex justify-between space-x-8 items-start w-full">
+                                            <p className="text-base xl:text-lg leading-6">
+                                            {x.discount.applicable? 
+                                              <>
+                                                <del className=' line-through decoration-[3px] decoration-red-600 font-thin'>₹{x.price}</del>&nbsp;&nbsp;
+                                                <span className=' font-semibold'>₹{x.discount.newAmount}</span>
+                                              </>
+                                            :'₹'+product.price }
+                                                {/* ₹ {x.price}<span className="text-red-300 line-through"></span> */}
+                                            </p>
+                                            <p className="text-base xl:text-lg leading-6">
+                                                Qty = {x.quantity}
+                                            </p>
+                                            {/* <p className="text-base xl:text-lg leading-6 text-gray-800">01</p> */}
+                                            <p className="text-base xl:text-lg font-semibold leading-6 text-gray-800">₹{x.discount.applicable?((x.discount.newAmount)*(x.quantity)):((x.price)*(x.quantity))}</p>
+
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
                             ))
-                           }
-                        
+                        }
+
                     </div>
                     {/* summary */}
                     <div className="flex justify-center md:flex-row flex-col items-stretch w-full space-y-4 md:space-y-0 md:space-x-6 xl:space-x-8">
@@ -191,89 +174,89 @@ console.log(mainData,"fjfjffjjfjf")
                             <div className="flex justify-center items-center w-full space-y-4 flex-col border-gray-200 border-b pb-4">
                                 <div className="flex justify-between  w-full">
                                     <p className="text-base leading-4 text-gray-800">Subtotal</p>
-                                    <p className="text-base leading-4 text-gray-600">{total}</p>
+                                    <p className="text-base leading-4 text-gray-600">₹{discounted}</p>
                                 </div>
                                 <div className="flex justify-between items-center w-full">
                                     <p className="text-base leading-4 text-gray-800">
                                         Discount
                                     </p>
-                                    <p className="text-base leading-4 text-gray-600">-$28.00 (50%)</p>
+                                    <p className="text-base leading-4 text-gray-600">-₹{total-discounted} {'('+((total-discounted)*(100/total)).toFixed(2)+'%)'}</p>
                                 </div>
                                 <div className="flex justify-between items-center w-full">
                                     <p className="text-base leading-4 text-gray-800">Shipping</p>
-                                    <p className="text-base leading-4 text-gray-600">$8.00</p>
+                                    <p className="text-base leading-4 text-gray-600">₹100</p>
                                 </div>
                             </div>
                             <div className="flex justify-between items-center w-full">
                                 <p className="text-base font-semibold leading-4 text-gray-800">Total</p>
-                                <p className="text-base font-semibold leading-4 text-gray-600">$36.00</p>
+                                <p className="text-base font-semibold leading-4 text-gray-600">₹{discounted+100}</p>
                             </div>
                         </div>
                     </div>
                 </div>
-                (mainData!=null?
+                {mainData &&
                     <div className="bg-gray-50 w-full xl:w-96 flex justify-between items-center md:items-start px-4 py-6 md:p-6 xl:p-8 flex-col ">
-                    <h3 className="text-xl font-semibold leading-5 text-gray-800">Customer</h3>
-                    <div className="flex  flex-col md:flex-row xl:flex-col justify-start items-stretch h-full w-full md:space-x-6 lg:space-x-8 xl:space-x-0 ">
-                        <div className="flex flex-col justify-start items-start flex-shrink-0">
-                            <div className="flex justify-center  w-full  md:justify-start items-center space-x-4 py-8 border-b border-gray-200">
-                                <img src={mainData.avatar} alt="avatar" />
-                                <div className=" flex justify-start items-start flex-col space-y-2">
-                                    <p className="text-base font-semibold leading-4 text-left text-gray-800">{mainData.name}</p>
-                                    {/* <p className="text-sm leading-5 text-gray-600">10 Previous Orders</p> */}
+                        <h3 className="text-xl font-semibold leading-5 text-gray-800">Customer</h3>
+                        <div className="flex  flex-col md:flex-row xl:flex-col justify-start items-stretch h-full w-full md:space-x-6 lg:space-x-8 xl:space-x-0 ">
+                            <div className="flex flex-col justify-start items-start flex-shrink-0">
+                                <div className="flex justify-center  w-full  md:justify-start items-center space-x-4 py-8 border-b border-gray-200">
+                                    <img src={mainData.avatar} alt="avatar" />
+                                    <div className=" flex justify-start items-start flex-col space-y-2">
+                                        <p className="text-base font-semibold leading-4 text-left text-gray-800">{mainData.name}</p>
+                                        {/* <p className="text-sm leading-5 text-gray-600">10 Previous Orders</p> */}
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div className="flex justify-center  md:justify-start items-center space-x-4 py-4 border-b border-gray-200 w-full">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M19 5H5C3.89543 5 3 5.89543 3 7V17C3 18.1046 3.89543 19 5 19H19C20.1046 19 21 18.1046 21 17V7C21 5.89543 20.1046 5 19 5Z" stroke="#1F2937" strokeLinecap="round" strokeLinejoin="round" />
-                                    <path d="M3 7L12 13L21 7" stroke="#1F2937" strokeLinecap="round" strokeLinejoin="round" />
-                                </svg>
-                                <p className="cursor-pointer text-sm leading-5 text-gray-800">{mainData.email}</p>
-                              
-                            </div>
-                            <div className="flex justify-center  md:justify-start items-center space-x-4 py-4 border-b border-gray-200 w-full">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M19 5H5C3.89543 5 3 5.89543 3 7V17C3 18.1046 3.89543 19 5 19H19C20.1046 19 21 18.1046 21 17V7C21 5.89543 20.1046 5 19 5Z" stroke="#1F2937" strokeLinecap="round" strokeLinejoin="round" />
-                                    <path d="M3 7L12 13L21 7" stroke="#1F2937" strokeLinecap="round" strokeLinejoin="round" />
-                                </svg>
-                                <p className="cursor-pointer text-sm leading-5 text-gray-800">{mainData.contact}</p>
-                              
-                            </div>
-                        </div>
-                        <div className="flex justify-between xl:h-full  items-stretch w-full flex-col mt-6 md:mt-0">
-                            <div className="flex justify-center md:justify-start xl:flex-col flex-col md:space-x-6 lg:space-x-8 xl:space-x-0 space-y-4 xl:space-y-12 md:space-y-0 md:flex-row  items-center md:items-start ">
-                                <div className="flex justify-center md:justify-start  items-center md:items-start flex-col space-y-4 xl:mt-8">
-                                    <p className="text-base font-semibold leading-4 text-center md:text-left text-gray-800">Shipping Address</p>
-                                    <input className="w-48 lg:w-full xl:w-48 text-center md:text-left text-sm leading-5 text-gray-600" type="text" name="" id="" value={mainData.shippingAddress} onChange={(e)=>{
-                                        let x = {...mainData}
-                                        x.shippingAddress = e.target.value;
-                                        setMainData(x);
-                                    }}/>
+                                <div className="flex justify-center  md:justify-start items-center space-x-4 py-4 border-b border-gray-200 w-full">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M19 5H5C3.89543 5 3 5.89543 3 7V17C3 18.1046 3.89543 19 5 19H19C20.1046 19 21 18.1046 21 17V7C21 5.89543 20.1046 5 19 5Z" stroke="#1F2937" strokeLinecap="round" strokeLinejoin="round" />
+                                        <path d="M3 7L12 13L21 7" stroke="#1F2937" strokeLinecap="round" strokeLinejoin="round" />
+                                    </svg>
+                                    <p className="cursor-pointer text-sm leading-5 text-gray-800">{mainData.email}</p>
+
                                 </div>
-                                <div className="flex justify-center md:justify-start  items-center md:items-start flex-col space-y-4 ">
-                                    <p className="text-base font-semibold leading-4 text-center md:text-left text-gray-800">Billing Address</p>
-                                    {/* <p className="w-48 lg:w-full xl:w-48 text-center md:text-left text-sm leading-5 text-gray-600">180 North King Street, Northhampton MA 1060</p> */}
-                                    <input className="w-48 lg:w-full xl:w-48 text-center md:text-left text-sm leading-5 text-gray-600" type="text" name="" id="" value={mainData.address} onChange={(e)=>{
-                                        let x = {...mainData}
-                                        x.address = e.target.value;
-                                        setMainData(x);
-                                    }}/>
+                                <div className="flex justify-center  md:justify-start items-center space-x-4 py-4 border-b border-gray-200 w-full">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M19 5H5C3.89543 5 3 5.89543 3 7V17C3 18.1046 3.89543 19 5 19H19C20.1046 19 21 18.1046 21 17V7C21 5.89543 20.1046 5 19 5Z" stroke="#1F2937" strokeLinecap="round" strokeLinejoin="round" />
+                                        <path d="M3 7L12 13L21 7" stroke="#1F2937" strokeLinecap="round" strokeLinejoin="round" />
+                                    </svg>
+                                    <p className="cursor-pointer text-sm leading-5 text-gray-800">{mainData.contact}</p>
 
                                 </div>
                             </div>
-                            <div className="flex w-full justify-center items-center md:justify-start md:items-start">
-                                <button 
-                                    className="mt-6 md:mt-0 py-5 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 border border-gray-800 font-medium w-96 2xl:w-full text-base leading-4 text-gray-800"
-                                    onClick={()=>{makePayment(mainData.name,mainData.email,mainData.contact)}}
-                                >
-                                    Pay Now
-                                </button>
+                            <div className="flex justify-between xl:h-full  items-stretch w-full flex-col my-3 md:mt-0">
+                                <div className="flex w-full justify-center md:justify-start xl:flex-col flex-col md:space-x-6 lg:space-x-8 xl:space-x-0 space-y-4 xl:space-y-12 md:space-y-0 md:flex-row  items-center md:items-start ">
+                                    <div className="flex w-full justify-center md:justify-start  items-center md:items-start flex-col space-y-4 mt-4">
+                                        <p className="text-base font-semibold leading-4 text-center md:text-left text-gray-800">Shipping Address</p>
+                                        <input className="w-48 lg:w-full xl:w-48 text-center rounded-md md:text-left text-sm leading-5 text-gray-600" type="text" name="" id="" value={mainData.shippingAddress} onChange={(e) => {
+                                            let x = { ...mainData }
+                                            x.shippingAddress = e.target.value;
+                                            setMainData(x);
+                                        }} />
+                                    </div>
+                                    <div className="flex w-full justify-center md:justify-start  items-center md:items-start flex-col ">
+                                        <p className="text-base font-semibold mb-3 leading-4 text-center md:text-left text-gray-800">Billing Address</p>
+                                        {/* <p className="w-48 lg:w-full xl:w-48 text-center md:text-left text-sm leading-5 text-gray-600">180 North King Street, Northhampton MA 1060</p> */}
+                                        <input className="w-48 lg:w-full xl:w-48 text-center rounded-md md:text-left text-sm leading-5 text-gray-600" type="text" name="" id="" value={mainData.address} onChange={(e) => {
+                                            let x = { ...mainData }
+                                            x.address = e.target.value;
+                                            setMainData(x);
+                                        }} />
+
+                                    </div>
+                                </div>
+                                <div className="flex w-full justify-center items-center mt-10  md:justify-start md:items-start">
+                                    <button
+                                        className="mt-6 md:mt-0 py-5 rounded-sm hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 border border-gray-800 font-medium w-96 2xl:w-full text-base leading-4 text-gray-800"
+                                        onClick={() => { makePayment(mainData.name, mainData.email, mainData.contact) }}
+                                    >
+                                        Pay Now
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>:<>loading........</>
-                )
+                }
             </div>
         </div>
     );

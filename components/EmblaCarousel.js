@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import Image from "next/image";
 import useEmblaCarousel from "embla-carousel-react";
 import { mediaByIndex } from "/media";
 import "../styles/embla.css";
@@ -68,11 +69,18 @@ const EmblaCarousel = ({ slides }) => {
                   className="embla__slide__parallax"
                   style={{ transform: `translateX(${parallaxValues[index]}%)` }}
                 >
-                  <img
+                  <Image
+                    src='kjlhj'
+                    alt={f_product.colors[0].images[0]}
+                    className="embla__slide__img w-full h-full object-center object-cover"
+                    layout='fill'
+                    priority
+                  />
+                  {/* <img
                     className="embla__slide__img"
                     src={mediaByIndex(index)}
                     alt="A cool cat."
-                  />
+                  /> */}
                 </div>
               </div>
             </div>

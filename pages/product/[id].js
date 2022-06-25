@@ -17,15 +17,23 @@ function classNames(...classes) {
 
 export default function products({ f_product }) {
   const {state ,dispatch} = useContext(CartContext);
+  f_product = JSON.parse(f_product);
+  const [selectedColor, setSelectedColor] = useState(f_product.colors[0])
+  const [selectedSize, setSelectedSize] = useState(f_product.sizes[0].size)
   
   const addToCart = (product) => {
     let req_product = state.cart.filter((element)=> (element.id == product._id));
+    console.log(selectedColor)
     if(req_product.length === 0){ //if this product is not in the cart 
       let productData = {
         id: product._id,
+        href: product.href,
         name :product.name,
-        images: product.images,
+        image: selectedColor.images[0],
+        color: selectedColor.color,
+        size: selectedSize,
         price: product.price,
+        discount: product.discount,
         quantity: 1
       };
       console.log(productData);
@@ -38,8 +46,6 @@ export default function products({ f_product }) {
       dispatch({type: "ADD_TO_EXISTING", productID, curr_quantity })
     }
   };
-
-  f_product = JSON.parse(f_product);
   // console.log(f_product, typeof (f_product));
   const createBreadcrumbs = (product) => {
     let breadcrumb = [];
@@ -61,8 +67,6 @@ export default function products({ f_product }) {
 
     return (breadcrumb);
   }
-  const [selectedColor, setSelectedColor] = useState(f_product.colors[0])
-  const [selectedSize, setSelectedSize] = useState(f_product.sizes[2])
 
   if(!f_product){
     return(<div className='p-96 font-semibold' >404 there is no such Product</div>)
@@ -124,14 +128,127 @@ export default function products({ f_product }) {
           </div>
 
           {/* product image */}
-          <div className="aspect-w-4 aspect-h-5 sm:rounded-lg sm:overflow-hidden lg:aspect-w-3 lg:aspect-h-4">
+          <div className="aspect-w-4 aspect-h-5 bg-sky-100 lg:shadow-md select-none shadow-sm sm:rounded-lg sm:overflow-hidden lg:aspect-w-3 lg:aspect-h-4">
             <Image
               src={f_product.colors[0].images[0]}
               alt={f_product.colors[0].images[0]}
-              className="w-full h-full object-center object-cover"
+              className="w-full h-full object-center select-none object-contain"
               layout='fill'
               priority
             />
+          </div>
+
+          {/* Options */}
+          <div className="mt-4 lg:mt-0">
+            <h2 className="sr-only">Product information</h2>
+            <p className="text-3xl text-gray-900">{f_product.discount.applicable? 
+                <>
+                  <del className=' line-through decoration-[3px] decoration-red-600'>₹{f_product.price}</del>&nbsp;&nbsp;
+                  <span className=' font-semibold'>₹{f_product.discount.newAmount}</span>
+                  <span className=' text-[1.4rem] text-base px-3'>{'('+((f_product.price-f_product.discount.newAmount)*(100/f_product.price)).toFixed(2)+'%)'}</span>
+                </>
+              : '₹'+f_product.price}</p>
+
+        
+            <form className="mt-10">
+              {/* Colors */}
+              <div>
+                <h3 className="text-sm text-gray-900 font-medium">Color</h3>
+
+                <RadioGroup value={selectedColor} onChange={setSelectedColor} className="mt-4">
+                  <RadioGroup.Label className="sr-only">Choose a color</RadioGroup.Label>
+                  <div className="flex items-center space-x-3">
+                    {f_product.colors.map((color) => (
+                      <RadioGroup.Option
+                        key={color.color}
+                        value={color.color}
+                        className={({ active, checked }) =>
+                          classNames(
+                            active && checked ? 'ring ring-offset-1 ring-sky-400' : '',
+                            !active && checked ? 'ring-2 ring-sky-400' : '',
+                            `-m-0.5 relative p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none`
+                          )
+                        }
+                        style={{ backgroundColor: `${color.color}` }}
+                       
+                      >
+                        <RadioGroup.Label as="span" className="sr-only">
+                          {color.color} 
+                        </RadioGroup.Label>
+                        <span className={`h-8 w-8 bg-${color.color}-400 rounded-full `}>
+                        </span>
+                      </RadioGroup.Option>
+                    ))}
+                  </div>
+                </RadioGroup>
+              </div>
+
+              {/* Sizes */}
+              <div className="mt-10">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-sm text-gray-900 font-medium">Size</h3>
+                </div>
+                <RadioGroup value={selectedSize} onChange={setSelectedSize} className="mt-4">
+                  <RadioGroup.Label className="sr-only">Choose a size</RadioGroup.Label>
+                  <div className="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4">
+                    {f_product.sizes.map((size) => (
+                      <RadioGroup.Option
+                        key={size.size}
+                        value={size.size}
+                        disabled={!size.inStock}
+                        className={({ active }) =>
+                          classNames(
+                            size.inStock
+                              ? 'bg-white shadow-sm text-gray-900 cursor-pointer'
+                              : 'bg-gray-50 text-gray-200 cursor-not-allowed',
+                            active ? 'ring-2 ring-sky-500' : '',
+                            'group relative border rounded-md py-3 px-4 flex items-center justify-center text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6'
+                          )
+                        }
+                      >
+                        {({ active, checked }) => (
+                          <>
+                            <RadioGroup.Label as="span">{size.size}</RadioGroup.Label>
+                            {size.inStock ? (
+                              <span
+                                className={classNames(
+                                  active ? 'border' : 'border-2',
+                                  checked ? 'border-sky-500' : 'border-transparent',
+                                  'absolute -inset-px rounded-md pointer-events-none'
+                                )}
+                                aria-hidden="true"
+                              />
+                            ) : (
+                              <span
+                                aria-hidden="true"
+                                className="absolute -inset-px rounded-md border-2 border-gray-200 pointer-events-none"
+                              >
+                                <svg
+                                  className="absolute inset-0 w-full h-full text-gray-200 stroke-2"
+                                  viewBox="0 0 100 100"
+                                  preserveAspectRatio="none"
+                                  stroke="currentColor"
+                                >
+                                  <line x1={0} y1={100} x2={100} y2={0} vectorEffect="non-scaling-stroke" />
+                                </svg>
+                              </span>
+                            )}
+                          </>
+                        )}
+                      </RadioGroup.Option>
+                    ))}
+                  </div>
+                </RadioGroup>
+              </div>
+
+              <div
+                onClick={() => addToCart(f_product)}
+                // type="submit"
+                className="mt-10 w-full cursor-pointer bg-sky-500 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500"
+              >
+                Add to Cart
+              </div>
+            </form>
           </div>
 
           {/* Description and details */}
@@ -165,137 +282,6 @@ export default function products({ f_product }) {
                 <p className="text-sm text-gray-600">{f_product.details}</p>
               </div>
             </div>
-          </div>
-
-          {/* Options */}
-          <div className="mt-4 lg:mt-0">
-            <h2 className="sr-only">Product information</h2>
-            <p className="text-3xl text-gray-900">₹{f_product.price}</p>
-
-            {/* Reviews */}
-            <div className="mt-6">
-              <h3 className="sr-only">Reviews</h3>
-              <div className="flex items-center">
-                <div className="flex items-center">
-                  {[0, 1, 2, 3, 4].map((rating) => (
-                    <StarIcon
-                      key={rating}
-                      className={classNames(
-                        reviews.average > rating ? 'text-gray-900' : 'text-gray-200',
-                        'h-5 w-5 flex-shrink-0'
-                      )}
-                      aria-hidden="true"
-                    />
-                  ))}
-                </div>
-                <p className="sr-only">{reviews.average} out of 5 stars</p>
-                <a href={reviews.href} className="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500">
-                  {reviews.totalCount} reviews
-                </a>
-              </div>
-            </div>
-
-            <form className="mt-10">
-              {/* Colors */}
-              <div>
-                <h3 className="text-sm text-gray-900 font-medium">Color</h3>
-
-                <RadioGroup value={selectedColor} onChange={setSelectedColor} className="mt-4">
-                  <RadioGroup.Label className="sr-only">Choose a color</RadioGroup.Label>
-                  <div className="flex items-center space-x-3">
-                    {f_product.colors.map((color) => (
-                      <RadioGroup.Option
-                        key={color.color}
-                        value={color.color}
-                        className={({ active, checked }) =>
-                          classNames(
-                            `bg-${color.color}-400 `,
-                            active && checked ? 'ring ring-offset-1' : '',
-                            !active && checked ? 'ring-2' : '',
-                            '-m-0.5 relative p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none'
-                          )
-                        }
-                      >
-                        <RadioGroup.Label as="span" className="sr-only">
-                          {color.color} 
-                        </RadioGroup.Label>
-                        <span className={`h-8 w-8 bg-${color.color}-400 rounded-full `}>
-                        </span>
-                      </RadioGroup.Option>
-                    ))}
-                  </div>
-                </RadioGroup>
-              </div>
-
-              {/* Sizes */}
-              <div className="mt-10">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-sm text-gray-900 font-medium">Size</h3>
-                  <a href="#" className="text-sm font-medium text-indigo-600 hover:text-indigo-500">
-                    Size guide
-                  </a>
-                </div>
-                <RadioGroup value={selectedSize} onChange={setSelectedSize} className="mt-4">
-                  <RadioGroup.Label className="sr-only">Choose a size</RadioGroup.Label>
-                  <div className="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4">
-                    {f_product.sizes.map((size) => (
-                      <RadioGroup.Option
-                        key={size.size}
-                        value={size.size}
-                        disabled={!size.inStock}
-                        className={({ active }) =>
-                          classNames(
-                            size.inStock
-                              ? 'bg-white shadow-sm text-gray-900 cursor-pointer'
-                              : 'bg-gray-50 text-gray-200 cursor-not-allowed',
-                            active ? 'ring-2 ring-indigo-500' : '',
-                            'group relative border rounded-md py-3 px-4 flex items-center justify-center text-sm font-medium uppercase hover:bg-gray-50 focus:outline-none sm:flex-1 sm:py-6'
-                          )
-                        }
-                      >
-                        {({ active, checked }) => (
-                          <>
-                            <RadioGroup.Label as="span">{size.size}</RadioGroup.Label>
-                            {size.inStock ? (
-                              <span
-                                className={classNames(
-                                  active ? 'border' : 'border-2',
-                                  checked ? 'border-indigo-500' : 'border-transparent',
-                                  'absolute -inset-px rounded-md pointer-events-none'
-                                )}
-                                aria-hidden="true"
-                              />
-                            ) : (
-                              <span
-                                aria-hidden="true"
-                                className="absolute -inset-px rounded-md border-2 border-gray-200 pointer-events-none"
-                              >
-                                <svg
-                                  className="absolute inset-0 w-full h-full text-gray-200 stroke-2"
-                                  viewBox="0 0 100 100"
-                                  preserveAspectRatio="none"
-                                  stroke="currentColor"
-                                >
-                                  <line x1={0} y1={100} x2={100} y2={0} vectorEffect="non-scaling-stroke" />
-                                </svg>
-                              </span>
-                            )}
-                          </>
-                        )}
-                      </RadioGroup.Option>
-                    ))}
-                  </div>
-                </RadioGroup>
-              </div>
-
-              <div
-                onClick={() => addToCart(f_product)}
-                // type="submit"
-                className="mt-10 w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              >
-                Add to Cart
-              </div>
-            </form>
           </div>
 
         </div>
