@@ -6,12 +6,15 @@ connectDB();
 const getProductByCategory = async (req, res)=>{
     if(req.method == 'GET'){
         try{
-            // let body = JSON.parse(req.body)
-            let query = req.query.category.split('-').join(' ');
-            // console.log(query);
-            let f_Products = await Product.find({category: query});
+            let f_Products;
+            if(req.query.category=='Products'){
+                f_Products = await Product.find({});
+            }
+            else{
+                let query = req.query.category.split('-').join(' ');
+                f_Products = await Product.find({category: query});
+            }
             if (f_Products) {
-                // console.log(f_Products);
                 res.status(201).json({
                     success:true,
                     message: "Requested products found",

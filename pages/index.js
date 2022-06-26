@@ -15,9 +15,7 @@ export default function Home() {
       <Heropage/>
       <EmblaCarousel/>
       <Category/>
-   
       {/* <button onClick={makePayment}>Paynow</button> */}
-
       <Blog/>
       <Products name="Products" />
     </>
