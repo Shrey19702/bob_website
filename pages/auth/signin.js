@@ -5,7 +5,7 @@ import Image from 'next/image'
 
 const Signin = ({ providers }) => {
   return (
-    <div className=' bg-slate-200 flex flex-col justify-center items-center min-h-[80vh] w-full'>
+    <div  className=" bg-[url('/gvf.jpeg')] bg-cover bg-slate-200 flex flex-col justify-center items-center min-h-[80vh] w-full">
         <div className=' bg-slate-200 flex flex-col sm:flex-row items-center py-12'>
             {providers && Object.values(providers)
                 .map(provider => (
