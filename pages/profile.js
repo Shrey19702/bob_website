@@ -1,131 +1,147 @@
 import { useSession, signIn, signOut } from "next-auth/react"
-import { useState ,useEffect} from "react";
+import { useState, useEffect } from "react";
 
-const Profile=()=>{
-    let foundUser;
-  const { data: session , status } = useSession();
-//   const [user,setUser] = useState()
-  const [name , setName] = useState("");
-  const [email,setEmail] = useState("");
-  const [avatar,setAvatar] = useState("");
-  const [mobno,setMobNo]   = useState("");
-  const [address,setAddress]   = useState("");
+const Profile = () => {
+    const { data: session, status } = useSession();
+    const [userData,setUserData] = useState();
 
-
-  const validate = async () => {
-    if(session)
-    {
-        
-        const data = await fetch(`${process.env.BASE_URL}api/user/getUserByEmail`, {
-            method: "POST",
-            body: JSON.stringify({
-                email: session.user.email
-            })
-        }); 
-        
-        foundUser = await data.json();
-          
-       
-
-        
-        setName(foundUser.body.name);
-        setAvatar(foundUser.body.avatar);
-        setMobNo(foundUser.body.number);
-        setAddress(foundUser.body.address);
-        setEmail(foundUser.body.email);  
+    const validate = async () => {
+        if (session) {
+            const response = await fetch(`${process.env.BASE_URL}api/user/getUserByEmail`, {
+                method: "POST",
+                body: JSON.stringify({
+                    email: session.user.email
+                })
+            });
+            let res_data = await response.json();
+            console.log('USER DATA :', res_data.body );
+            setUserData(res_data.body);
+        }
     }
- 
-   
-}
 
-useEffect(()=>{
-    validate();
-})
+    useEffect(() => {
+        if(!userData)
+            validate();
+    });
 
-if (session) 
-{
- 
-        return (
-           <form action={`${process.env.BASE_URL}api/user/updateUser`} method ="POST">
- 
-            <div className="w-full bg-cover  bg-[url('/profile_bg.png')]" >
-            <div className="container mx-auto p-5 ">
-                <div className="md:flex no-wrap md:-mx-2 mt-36 mb-14 justify-center">
-                
-                    <div className=" flex flex-col justify-center md:h-fit lg:h-[inherit] items-center w-full md:w-3/12 bg-white p-3 rounded-sm shadow-sm md:mx-2">
-                        <div className="image overflow-hidden">
-                            <img 
-                                className="h-auto w-full mx-auto"
-                                src={avatar}
-                                alt=""
-                            />
-                        </div>
-                        <h1 className="text-gray-900 text-center font-bold text-xl leading-8 my-8">{name}</h1>
-                    </div>
-            
-                    <div className="w-full bg-white p-3 shadow-sm rounded-sm md:w-8/12 text-3xl text-center sm:text-left ">
-                        <div className="space-x-2 font-semibold text-gray-900 leading-8 mt-6">
-                            <span className=" tracking-wider">About</span>
-                        </div>
-                        <div className="text-gray-700 mt-6 grid lg:grid-cols-2 text-xl">
-                            <div className="mt-2 flex flex-col flex-wrap w-full">
-                                <div className="px-4 py-2 font-semibold"> Name</div>
-                              <input type="text" value={name} id='name' name="name" onChange={e=>{setName(e.target.value)}}/>
-                            </div>
-                            <div className="mt-2 flex flex-col flex-wrap w-full">
-                                <div className="px-4 py-2 font-semibold">Contact No.</div>
-                                <input type="text" value={mobno} id='number' name="number" onChange={e=>{setMobNo(e.target.value)}}/>
-
-                            </div>
-                            
-                            <div className="mt-2 flex flex-col flex-wrap w-full">
-                                <div className="px-4 py-2 font-semibold">Permanant Address</div>
-                                <input type="text" value={address} id='address' name="address" onChange={e=>{setAddress(e.target.value)}}/>
-                            </div>
-
-                            <div className="mt-2 flex flex-col flex-wrap w-full">
-                                <div className="px-4 py-2 font-semibold">Email.</div>
-                                <div className="px-8 pt-1 pb-2">
-                                <input type="text" value={email} id='email' name="email" onChange={e=>{setName(e.target.value)}}/>
+    if (session) {
+        if(userData){
+            return (
+                <form action={`${process.env.BASE_URL}api/user/updateUser`} method="POST">
+                    <div className="w-full bg-cover  bg-[url('/profile_bg.png')]" >
+                        <div className="container mx-auto p-5 ">
+                            <div className="md:flex no-wrap md:-mx-2 mt-36 mb-14 justify-center">
+                                <div className=" flex flex-col justify-center md:h-fit lg:h-[inherit] items-center w-full md:w-3/12 bg-white p-3 rounded-sm shadow-sm md:mx-2">
+                                    <div className="image overflow-hidden">
+                                        <img
+                                            className="h-auto w-full mx-auto"
+                                            src={userData.avatar}
+                                            alt={userData.name}
+                                        />
+                                    </div>
+                                    <h1 className="text-gray-900 text-center font-bold text-xl leading-8 my-8">{userData.name}</h1>
+                                </div>
+                                <div className="w-full bg-white p-3 shadow-sm rounded-sm md:w-8/12 text-3xl text-center sm:text-left ">
+                                    <div className="space-x-2 font-semibold text-gray-900 leading-8 mt-6">
+                                        <span className=" tracking-wider">About</span>
+                                    </div>
+                                    <div className="text-gray-700 mt-6 flex flex-col text-base ">
+                                        <div className="py-2 px-5 w-full flex justify-start items-center">
+                                            <label className="form-label w-32  inline-block mb-2 px-4 text-gray-700">Name</label>
+                                            <input 
+                                                type="text"
+                                                disabled={true}
+                                                className="form-control inline-block w-[70%] min-w-[300px] px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-30 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" 
+                                                required
+                                                value={userData.name}
+                                                name="name" 
+                                                onChange={(e) => {
+                                                    let x = {...userData};
+                                                    x.name = e.target.value;
+                                                    setUserData(x);
+                                                }}
+                                            />
+                                        </div>
+                                        <div className="py-2 px-5 w-full flex justify-start items-center">
+                                            <label className="form-label w-32 inline-block mb-2 px-4 text-gray-700">Email</label>
+                                                <input 
+                                                    type="email"
+                                                    disabled={true}
+                                                    className="form-control inline-block w-[70%] min-w-[300px] px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-30 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" 
+                                                    required 
+                                                    value={userData.email} 
+                                                    name="email" 
+                                                    onChange={(e) => { 
+                                                        let x = {...userData};
+                                                        x.email = e.target.value;
+                                                        setUserData(x);
+                                                    }} 
+                                                />
+                                        </div>
+                                        <div className="py-2 px-5 w-full flex justify-start items-center">
+                                            <label className="form-label w-32 inline-block mb-2 px-4 text-gray-700">Contact no.</label>
+                                            <input 
+                                                type="tel"
+                                                className="form-control inline-block w-[70%] min-w-[300px] px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-30 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" 
+                                                required
+                                                placeholder="Phone Number"
+                                                value={userData.number}
+                                                name="number" 
+                                                onChange={(e) => { 
+                                                    let x = {...userData};
+                                                    x.number = e.target.value;
+                                                    setUserData(x);
+                                                }} 
+                                            />
+                                        </div>
+                                        <div className="py-2 px-5 w-full flex justify-start items-center">
+                                            <label className="form-label w-32 inline-block mb-2 px-4 text-gray-700">Address</label>
+                                            <input
+                                                type="text"
+                                                className="form-control inline-block w-[70%] min-w-[300px] px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-30 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" 
+                                                required
+                                                placeholder="Address"
+                                                value={userData.address} 
+                                                name="address"
+                                                onChange={(e) => { 
+                                                    let x = {...userData};
+                                                    x.address = e.target.value;
+                                                    setUserData(x);
+                                                }} 
+                                            />
+                                        </div>
+                                        
+                                        <button className="bg-sky-400 w-56 hover:bg-sky-600 text-white font-bold mx-auto my-4 py-2 px-4 rounded" type="submit">
+                                            Save Changes
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-
-                            <div className="mt-2 flex flex-col flex-wrap w-full">
-                                <div className="px-4 py-2 font-semibold">Profile Pic</div>
-                                <div className="px-8 pt-1 pb-2">
-                                <input type="text" value={avatar} id='avatar' name="avatar" onChange={e=>{setAvatar(e.target.value)}}/>
-                                </div>
-                            </div>
-
-                                   
-           <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit">
-   Save Changes
-</button>
                         </div>
                     </div>
+                </form>
+            )
+        }
+        else{
+            return (
+                <div>
+                    Loading..
                 </div>
-            </div>
-           </div>           
-     
-           </form>
+            )
+        }
+    }
+    else{
+        return (
+            <>
+                <div className=" flex-col flex h-[100vh] justify-center items-center">
+                    <h1 className=" text-3xl mb-8"> User Not signed in :|</h1>
+                  
+                    
+                    <button className="w-64 flex justify-center items-center text-xl bg-sky-200 p-6 h-4 border-black border-2 hover:bg-blue-300 transition duration-300" onClick={() => signIn()}>Sign in</button>
+                </div>
+            </>
         )
-    
-  
-}
-
-else 
-{
-    return (
-        <>
-            <div className="p-96 bg-green-300">
-                Not signed in
-                <br />
-                <button className=" bg-slate-300 p-6 border-black border-4" onClick={() => signIn()}>Sign in</button>
-            </div>
-        </>
-    )
-}
-
+    }
 }
 
 export default Profile;

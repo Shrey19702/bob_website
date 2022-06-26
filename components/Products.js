@@ -5,56 +5,6 @@ import connectDB from '../utils/connectDB';
 import Image from "next/image";
 
 connectDB();
-
-
-// const products = [
-//     {
-//       id: 1,
-//       name: 'Basic Tee',
-//       href: '#',
-//       imageSrc: mainImg,
-//       imageAlt: "Front of men's Basic Tee in black.",
-//       price: '$35',
-//       color: 'Black',
-//     },
-//     {
-//         id: 2,
-//         name: 'Basic Tee',
-//         href: '#',
-//         imageSrc: mainImg,
-//         imageAlt: "Front of men's Basic Tee in black.",
-//         price: '$35',
-//         color: 'Black',
-//     },
-//     {
-//         id: 3,
-//         name: 'Basic Tee',
-//         href: '#',
-//         imageSrc: mainImg,
-//         imageAlt: "Front of men's Basic Tee in black.",
-//         price: '$35',
-//         color: 'Black',
-//     },
-//     {
-//         id: 4,
-//         name: 'Basic Tee',
-//         href: '#',
-//         imageSrc: mainImg,
-//         imageAlt: "Front of men's Basic Tee in black.",
-//         price: '$35',
-//         color: 'Black',
-//     },
-//     {
-//         id: 5,
-//         name: 'Basic Tee',
-//         href: '#',
-//         imageSrc: mainImg,
-//         imageAlt: "Front of men's Basic Tee in black.",
-//         price: '$35',
-//         color: 'Black',
-//     },
-//     // More products...
-//   ]
   
   export default function Products({name}) {
     const [productList, setProductList] = useState();
@@ -81,7 +31,7 @@ connectDB();
               {productList.map((product, idx) => {
                 if(Limit>idx){
                   return (
-                    <div key={product.id} className="transition rounded-sm group relative shadow-sm hover:shadow-md px-2 py-4">
+                    <div key={idx} className="transition rounded-sm group relative shadow-sm hover:shadow-md px-2 py-4">
                       <div className="transition-all relative w-full min-h-80 bg-sky-100 aspect-w-1 aspect-h-1 rounded-md group-hover:opacity-90 overflow-hidden h-80 aspect-none">
                         {/* <img
                           src={product.colors[0].images[0]}

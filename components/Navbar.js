@@ -3,6 +3,7 @@ import {Disclosure,  Menu,  Transition,  Popover,  Dialog,} from "@headlessui/re
 import {MenuIcon, XIcon } from "@heroicons/react/outline";
 import Cart from "./Svgs";
 import Image from "next/image";
+import logo from '../public/logo.png';
 import { useSession, signIn, signOut, getProviders } from "next-auth/react";
 import {CartContext} from '../components/Cart';
 
@@ -320,11 +321,12 @@ export default function Navbar() {
                 {/* Left side of navbar */}
                 <div className="flex-1 flex items-center justify-start sm:items-stretch ml-8 sm:m-0">
                   <div className="flex-shrink-0 flex items-center">
-                    <a href="./">
-                      <img
-                        className="block h-16 w-auto pointer-events-none"
-                        src="/logo.png"
-                        alt="LOGO"
+                    <a href="/">
+                      <Image
+                        src={logo}
+                        alt="Logo"
+                        height={64}
+                        width={205}
                       />
                     </a>
                     {/* <img
@@ -438,23 +440,30 @@ export default function Navbar() {
 function Userlogin() {
   const { data: session, status } = useSession();
   const [providers, setProviders] = useState();
-  const [userData, setUserData] = useState();
+  const [isAdmin, setIsAdmin] = useState(null);
 
   useEffect(() => {
     (async ()=>{
-      const fetch_data = await fetch(`${process.env.BASE_URL}api/user/getUserByEmail`,{
-        method:'POST',
-        body: JSON.stringify({email: 'hello'})
-      });
-      const json_data = await fetch_data.json();
-      setUserData(json_data);
+      if(session && !isAdmin){
+        console.log('##### user data :', isAdmin, session);
+
+        const response = await fetch(`${process.env.BASE_URL}api/user/getUserByEmail`,{
+          method:'POST',
+          body: JSON.stringify({email: session.user.email})
+        });
+        const json_data = await response.json();
+        if(json_data.body.role=='admin'){
+          setIsAdmin(true);
+        }
+      }
     })();
     (async () => {
-      const curr_providers = await getProviders();
-      setProviders(curr_providers);
+      if(!providers){
+        const curr_providers = await getProviders();
+        setProviders(curr_providers);
+      }
     })();
-  }, []);
-
+  });
   if (session) {
     //user logged in
     return (
@@ -501,19 +510,21 @@ function Userlogin() {
                   </a>
                 )}
               </Menu.Item>
-              {/* <Menu.Item>
-                {({ active }) => (
-                  <a
-                    href="#"
-                    className={
-                      (active ? "bg-gray-100 " : " ") +
-                      "block px-4 py-2 text-sm text-gray-800"
-                    }
-                  >
-                    Settings
-                  </a>
-                )}
-              </Menu.Item> */}
+              { isAdmin &&
+                <Menu.Item>
+                  {({ active }) => (
+                    <a
+                      href="/admin"
+                      className={
+                        (active ? "bg-gray-100 " : " ") +
+                        "block px-4 py-2 text-sm text-gray-800"
+                      }
+                    >
+                      Admin
+                    </a>
+                  )}
+                </Menu.Item>
+              }
               <Menu.Item>
                 {({ active }) => (
                   <a

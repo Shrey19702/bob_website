@@ -79,8 +79,8 @@ const callouts = [
             <h2 className="text-2xl font-extrabold text-gray-900">Collections</h2>
   
             <div className="mt-6 space-y-12 lg:space-y-0 lg:grid lg:grid-cols-4 lg:gap-x-6 gap-y-8">
-              {collections && collections.map((collection)=> (
-                <div key={collection.name} className="group relative">
+              {collections && collections.map((collection, idx)=> (
+                <div key={idx} className="group relative">
                   <div className="relative w-full h-80 bg-white rounded-lg overflow-hidden group-hover:opacity-75 sm:aspect-w-2 sm:aspect-h-1 sm:h-64 lg:aspect-w-1 lg:aspect-h-1">
                     {/* <img
                       src={collection.image}

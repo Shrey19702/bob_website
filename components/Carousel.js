@@ -15,89 +15,6 @@ import Image from "next/image";
 //     price: '$35',
 //     color: 'Black',
 //   },
-//   {
-//       id: 2,
-//       name: 'Basic Tee',
-//       href: '#',
-//       imageSrc: './main.jpg',
-//       imageAlt: "Front of men's Basic Tee in black.",
-//       price: '$35',
-//       color: 'Black',
-//   },
-//   {
-//       id: 3,
-//       name: 'Basic Tee',
-//       href: '#',
-//       imageSrc: './main.jpg',
-//       imageAlt: "Front of men's Basic Tee in black.",
-//       price: '$35',
-//       color: 'Black',
-//   },
-//   {
-//       id: 4,
-//       name: 'Basic Tee',
-//       href: '#',
-//       imageSrc: './main.jpg',
-//       imageAlt: "Front of men's Basic Tee in black.",
-//       price: '$35',
-//       color: 'Black',
-//   },
-//   {
-//       id: 5,
-//       name: 'Basic Tee',
-//       href: '#',
-//       imageSrc: './main.jpg',
-//       imageAlt: "Front of men's Basic Tee in black.",
-//       price: '$35',
-//       color: 'Black',
-//   },
-//   {
-//     id: 6,
-//     name: 'Basic Tee',
-//     href: '#',
-//     imageSrc: './main.jpg',
-//     imageAlt: "Front of men's Basic Tee in black.",
-//     price: '$35',
-//     color: 'Black',
-//   },
-//   {
-//     id: 7,
-//     name: 'Basic Tee',
-//     href: '#',
-//     imageSrc: './main.jpg',
-//     imageAlt: "Front of men's Basic Tee in black.",
-//     price: '$35',
-//     color: 'Black',
-//   },
-//   {
-//     id: 8,
-//     name: 'Basic Tee',
-//     href: '#',
-//     imageSrc: './main.jpg',
-//     imageAlt: "Front of men's Basic Tee in black.",
-//     price: '$35',
-//     color: 'Black',
-//   },
-//   {
-//     id: 9,
-//     name: 'Basic Tee',
-//     href: '#',
-//     imageSrc: './main.jpg',
-//     imageAlt: "Front of men's Basic Tee in black.",
-//     price: '$35',
-//     color: 'Black',
-//   },
-//   {
-//     id: 10,
-//     name: 'Basic Tee',
-//     href: '#',
-//     imageSrc: './main.jpg',
-//     imageAlt: "Front of men's Basic Tee in black.",
-//     price: '$35',
-//     color: 'Black',
-//   },
-
-//   // More products...
 // ]
 
 export const EmblaCarousel = () => {
@@ -138,8 +55,8 @@ export const EmblaCarousel = () => {
       <div className="embla__viewport" ref={products?emblaRef:null}>
         <div className="embla__container flex h-[55vh] items-center">
 
-          {products? products.map((product) => (
-            <div key={product.id} className="embla__slide group relative flex-[0_0_320px] m-4 h-[50vh] max-h-[400px]">
+          {products? products.map((product, idx) => (
+            <div key={idx} className="embla__slide group relative flex-[0_0_320px] m-4 h-[50vh] max-h-[400px]">
               <div className="transition-all relative w-full min-h-80 bg-sky-100 rounded-md group-hover:opacity-90 overflow-hidden h-80 aspect-none">
                 {/* <img  
                   src={product.colors[0].images[0]}
