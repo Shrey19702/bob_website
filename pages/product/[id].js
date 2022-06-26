@@ -145,7 +145,7 @@ export default function products({ f_product }) {
                 <>
                   <del className=' line-through decoration-[3px] decoration-red-600'>₹{f_product.price}</del>&nbsp;&nbsp;
                   <span className=' font-semibold'>₹{f_product.discount.newAmount}</span>
-                  <span className=' text-[1.4rem] text-base px-3'>{'('+((f_product.price-f_product.discount.newAmount)*(100/f_product.price)).toFixed(2)+'%)'}</span>
+                  <span className=' text-[1.4rem] text-base px-3'>{'('+((f_product.price-f_product.discount.newAmount)*(100/f_product.price)).toFixed(2)+'% Off)'}</span>
                 </>
               : '₹'+f_product.price}</p>
 

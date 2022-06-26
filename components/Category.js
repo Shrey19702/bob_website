@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-
+import Image from "next/image";
 const callouts = [
     {
       name: 'Desk and Office A',
@@ -86,6 +86,13 @@ const callouts = [
                       src={collection.image}
                       alt={collection.name}
                       className="w-full h-full object-center object-cover"
+                    />
+                    <Image
+                      src={collection.image}
+                      alt={collection.name}
+                      className="w-full h-full object-center object-contain"
+                      layout='fill'
+                      priority
                     />
                   </div>
                   <h3 className="mt-6 text-sm text-gray-500">
