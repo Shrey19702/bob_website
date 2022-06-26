@@ -5,6 +5,7 @@ import Products from '../../models/productModel'
 import connectDB from '../../utils/connectDB'
 import {CartContext} from '../../components/Cart'
 import Image from "next/image"
+import ReactImageMagnify from 'react-image-magnify'
 // import { useDispatchCart } from "../../components/Cart";
 // import img from '../../public/main.jpg'
 connectDB();
@@ -13,7 +14,7 @@ const reviews = { href: null, average: 4, totalCount: 117 }
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
-}
+}  
 
 export default function products({ f_product }) {
   const {state ,dispatch} = useContext(CartContext);
@@ -128,16 +129,52 @@ export default function products({ f_product }) {
           </div>
 
           {/* product image */}
-          <div className=" bg-sky-100 h-fit lg:shadow-md select-none shadow-sm  sm:rounded-lg sm:overflow-hidden ">
-          <Image
+          <div className=" bg-sky-100 h-fit lg:shadow-md select-none shadow-sm  ">
+          {/* <Image
               src={f_product.colors[0].images[0]}
               alt={f_product.colors[0].images[0]}
               className="w-full h-full object-center select-none object-contain"
               height={400}
                width={350}
               priority
-            />
+            /> */}
+
+        <ReactImageMagnify
+           className=' z-10'
+          
+            {...{
+              smallImage: {
+                alt: "Wristwatch by Ted Baker London",
+                isFluidWidth: true,
+                src: f_product.colors[0].images[0],
+                // srcSet: this.srcSet,
+                // sizes:
+                //   "(width: 800px) 33.5vw, (min-width: 415px) 50vw, 100vw"
+              },
+              largeImage: {
+                alt: "",
+                src: f_product.colors[0].images[0],
+                width: 1200,
+                height: 1200,
+                sizes:
+                "(width: 800px) 33.5vw, (min-width: 415px) 50vw, 100vw"
+              },
+              enlargedImageContainerDimensions:{
+                height:600,
+                width: 600
+              },
+              enlargedImageContainerStyle:{
+                    backgroundColor:"rgba(0,0,0,.9)",   
+              },
+              enlargedImageStyle:{
+                marginLeft:"50%"
+              }
+              // isHintEnabled: true
+            }}
+          />
           </div>
+       
+       
          
           {/* options and description */}
           <div  className='w-[60%]'>
