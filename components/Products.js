@@ -82,12 +82,13 @@ connectDB();
                 if(Limit>idx){
                   return (
                     <div key={product.id} className="transition rounded-sm group relative shadow-sm hover:shadow-md px-2 py-4">
-                      <div className="transition-all relative w-full min-h-80 bg-sky-100 aspect-w-1 aspect-h-1 rounded-md group-hover:opacity-90 overflow-hidden  lg:h-80 lg:aspect-none">
+                      <div className="transition-all relative w-full min-h-80 bg-sky-100 aspect-w-1 aspect-h-1 rounded-md group-hover:opacity-90 overflow-hidden h-80 aspect-none">
                         {/* <img
                           src={product.colors[0].images[0]}
                           alt={product.colors[0].images[0]}
                           className="w-full h-full object-center object-contain lg:w-full lg:h-full"
                         /> */}
+                        
                         <Image
                           src={product.colors[0].images[0]}
                           alt={product.colors[0].images[0]}

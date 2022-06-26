@@ -120,15 +120,15 @@ export default function products({ f_product }) {
         </nav>
 
         {/* product image options discription  */}
-        <div className="mt-3 max-w-2xl mx-auto sm:px-6 lg:max-w-7xl lg:px-8 lg:grid lg:grid-cols-3 lg:gap-x-8">
+        <div className="mt-3 max-w-full mx-10 sm:px-6 justify-between  lg:px-8 flex flex-wrap">
 
           {/* product name */}
-          <div className="pt-3 my-3 lg:col-start-1 lg:col-span-3 lg:border-r lg:border-gray-200 lg:pr-8">
+          <div className="pt-3 my-3 w-full lg:col-start-1 lg:col-span-3 lg:border-r lg:border-gray-200 lg:pr-8">
             <h1 className="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl">{f_product.name}</h1>
           </div>
 
           {/* product image */}
-          <div className="aspect-w-4 aspect-h-5 bg-sky-100 lg:shadow-md select-none shadow-sm sm:rounded-lg sm:overflow-hidden lg:aspect-w-3 lg:aspect-h-4">
+          <div className=" bg-sky-100 w-[37%] h-auto lg:shadow-md select-none shadow-sm  sm:rounded-lg sm:overflow-hidden aspect-w-3 aspect-h-4">
             <Image
               src={f_product.colors[0].images[0]}
               alt={f_product.colors[0].images[0]}
@@ -137,9 +137,10 @@ export default function products({ f_product }) {
               priority
             />
           </div>
-
-          {/* Options */}
-          <div className="mt-4 lg:mt-0">
+          {/* options and description */}
+          <div  className='w-[60%]'>
+            {/* Options */}
+          <div className="mt-4 mx-12 lg:mt-0 ">
             <h2 className="sr-only">Product information</h2>
             <p className="text-3xl text-gray-900">{f_product.discount.applicable? 
                 <>
@@ -153,7 +154,7 @@ export default function products({ f_product }) {
             <form className="mt-10">
               {/* Colors */}
               <div>
-                <h3 className="text-sm text-gray-900 font-medium">Color</h3>
+                <h3 className="text-xl font-semibold text-gray-900 ">Color</h3>
 
                 <RadioGroup value={selectedColor} onChange={setSelectedColor} className="mt-4">
                   <RadioGroup.Label className="sr-only">Choose a color</RadioGroup.Label>
@@ -186,7 +187,7 @@ export default function products({ f_product }) {
               {/* Sizes */}
               <div className="mt-10">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-sm text-gray-900 font-medium">Size</h3>
+                  <h3 className="text-xl font-semibold text-gray-900 ">Size</h3>
                 </div>
                 <RadioGroup value={selectedSize} onChange={setSelectedSize} className="mt-4">
                   <RadioGroup.Label className="sr-only">Choose a size</RadioGroup.Label>
@@ -252,17 +253,17 @@ export default function products({ f_product }) {
           </div>
 
           {/* Description and details */}
-          <div className="py-10 lg:pt-6 lg:pb-16 lg:border-r lg:border-gray-200 lg:pr-8">
+          <div className="py-10 lg:pt-6 lg:pb-16 mx-4 lg:border-r lg:border-gray-200 lg:pr-8">
             <div>
               <h3 className="sr-only">Description</h3>
 
               <div className="space-y-6">
-                <p className="text-base text-gray-900">{f_product.description}</p>
+                <p className=" font-light text-sm text-gray-900">{f_product.description}</p>
               </div>
             </div>
 
             <div className="mt-10">
-              <h3 className="text-sm font-medium text-gray-900">Highlights</h3>
+              <h3 className="text-xl font-semibold text-gray-900">Highlights</h3>
 
               <div className="mt-4">
                 <ul role="list" className="pl-4 list-disc text-sm space-y-2">
@@ -276,13 +277,16 @@ export default function products({ f_product }) {
             </div>
 
             <div className="mt-10">
-              <h2 className="text-sm font-medium text-gray-900">Details</h2>
+              <h2 className="text-xl font-semibold text-gray-900">Details</h2>
 
               <div className="mt-4 space-y-6">
                 <p className="text-sm text-gray-600">{f_product.details}</p>
               </div>
             </div>
           </div>
+          </div>
+
+          
 
         </div>
         {/* Similar products */}
