@@ -22,6 +22,15 @@ export default function products({ f_product }) {
   const [selectedColor, setSelectedColor] = useState(f_product.colors[0])
   const [selectedSize, setSelectedSize] = useState(f_product.sizes[0].size)
 
+  const [images,setImages] = useState(null);
+  const [currImg,setCurrImg] = useState(null);
+  
+  if(!images)
+  {setImages(f_product.colors[0].images )
+  }
+  if(images &&!currImg)
+  setCurrImg(images[0]);
+
   const addToCart = (product) => {
     let req_product = state.cart.filter((element) => (element.id == product._id));
     console.log(selectedColor)
@@ -148,14 +157,14 @@ export default function products({ f_product }) {
                 smallImage: {
                   alt: f_product.name,
                   isFluidWidth: true,
-                  src: f_product.colors[0].images[0],
+                  src: currImg,
                   // srcSet: this.srcSet,
                   // sizes:
                   //   "(width: 800px) 33.5vw, (min-width: 415px) 50vw, 100vw"
                 },
                 largeImage: {
                   alt: "",
-                  src: f_product.colors[0].images[0],
+                  src: currImg,
                   width: 1200,
                   height: 1200,
                   sizes:
@@ -173,7 +182,18 @@ export default function products({ f_product }) {
                 }
                 // isHintEnabled: true
               }}
+              
             />
+            <div className='flex gap-3'>
+            
+          </div> 
+          {images&&
+              images.map((x,idx)=>(
+                  <img key={idx} className=' h-[75px] w-[75px] relative top-[75%] cursor-pointer hover: border-2' src={x} onClick={()=>{
+                    setCurrImg(x)
+                  }} alt="" />
+              ))
+             }
           </div>
 
 

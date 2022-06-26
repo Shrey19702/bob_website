@@ -23,7 +23,7 @@ export default function PostBlog() {
 
          <div className='flex flex-col py-4'>
          <label htmlFor="content">Enter your Blog Content</label>
-        <input className='h-[20vh] pb-[23%]' placeholder="Enter the Content of your Blog"  type="text" name="content" value={content}   onChange={(e)=>{
+        <textarea className='h-[20vh] pb-[23%]' placeholder="Enter the Content of your Blog" w  type="text" name="content" value={content}   onChange={(e)=>{
           setContent(e.target.value)
         }}/> 
          </div>
