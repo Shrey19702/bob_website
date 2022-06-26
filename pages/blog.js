@@ -15,19 +15,11 @@ const Blogs=()=>{
     getBlog();
    })
   return(
-<<<<<<< HEAD
     <div className="pt-16 bg-[url('/blog_bg.jpeg')] bg-cover">
           <h1 className="mt-16 flex justify-center text-4xl text-white">Blogs</h1>
       {blogs.map((blog, index)=>(
           <main key={index} className="py-6 px-4 sm:p-6 md:py-10 md:px-8 ">
           <div className="max-w-4xl my-8 mx-auto grid grid-cols-1 lg:max-w-5xl lg:gap-x-20 lg:grid-cols-2 bg-white p-8 shadow-md ">
-=======
-    <div className="pt-16">
-          <h1 className="mt-16 flex justify-center text-4xl">Blogs</h1>
-      {blogs&&blogs.map((blog, index)=>(
-          <main key={index} className="py-6 px-4 sm:p-6 md:py-10 md:px-8">
-          <div className="max-w-4xl my-8 mx-auto grid grid-cols-1 lg:max-w-5xl lg:gap-x-20 lg:grid-cols-2 bg-white p-8 shadow-md">
->>>>>>> ca26a712f570ef7ac2811eeccda1a1430d028f9d
             <div className="relative p-3 col-start-1 row-start-1 flex flex-col rounded-lg bg-gradient-to-t from-black/75 via-black/0 sm:bg-none sm:row-start-2 sm:p-0 lg:row-start-1">
               <h1 className="mt-1 text-lg sm:font-semibold font-normal text-white sm:text-slate-900 md:text-xl md:my-4 absolute md:top-2 sm:top-6 top-44">
                 {blog.title}
