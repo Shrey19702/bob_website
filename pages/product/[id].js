@@ -128,15 +128,17 @@ export default function products({ f_product }) {
           </div>
 
           {/* product image */}
-          <div className=" bg-sky-100 w-[37%] h-auto lg:shadow-md select-none shadow-sm  sm:rounded-lg sm:overflow-hidden aspect-w-3 aspect-h-4">
-            <Image
+          <div className=" bg-sky-100 h-fit lg:shadow-md select-none shadow-sm  sm:rounded-lg sm:overflow-hidden ">
+          <Image
               src={f_product.colors[0].images[0]}
               alt={f_product.colors[0].images[0]}
               className="w-full h-full object-center select-none object-contain"
-              layout='fill'
+              height={400}
+               width={350}
               priority
             />
           </div>
+         
           {/* options and description */}
           <div  className='w-[60%]'>
             {/* Options */}
