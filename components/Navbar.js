@@ -51,7 +51,7 @@ export default function Navbar() {
   const [open, setOpen] = useState(false); //Cart's open close state
   //Cart functions
   const handleReduce= (productID, curr_quantity) => {
-    console.log('reducing quantity from: ', curr_quantity);
+    // console.log('reducing quantity from: ', curr_quantity);
     dispatch({ type: "REDUCE_QUANTITY", productID, curr_quantity});
     setcart(state.cart);
   }
@@ -445,7 +445,7 @@ function Userlogin() {
   useEffect(() => {
     (async ()=>{
       if(session && !isAdmin){
-        console.log('##### user data :', isAdmin, session);
+        // console.log('##### user data :', isAdmin, session);
 
         const response = await fetch(`${process.env.BASE_URL}api/user/getUserByEmail`,{
           method:'POST',

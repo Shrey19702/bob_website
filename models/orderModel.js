@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require('mongoose');
 
 const OrderSchema = new mongoose.Schema({
     completion: {
@@ -11,7 +11,6 @@ const OrderSchema = new mongoose.Schema({
         productId: {
             type: String,
         },
-        name: String,
         quantity: {
             type: Number,
             required: true,
@@ -28,5 +27,5 @@ const OrderSchema = new mongoose.Schema({
     timestamps:true //time when this order was made
 }
 );
-
-module.exports = Order = mongoose.model('order',OrderSchema);
+const Order = mongoose.models?.order || mongoose.model('order',OrderSchema);
+export default Order;

@@ -15,7 +15,7 @@ connectDB();
           let data = await fetch(`${process.env.BASE_URL}api/products/${name.replace(/\s+/g, '-')}`)
           let f_products = await data.json();
           setProductList(f_products.body);
-          console.log(f_products.body);
+          // console.log(f_products.body);
         } )();
       }
       return ()=>{};

@@ -48,6 +48,11 @@ const reducer = (state, action) => {
       localStorage.setItem('Cart', JSON.stringify(clone));
       return clone;
     
+    case "EMPTY_CART":
+      console.log('emptying the cart');
+      localStorage.clear();
+      return {cart: []};
+
     case "GET_FROM_LOCALSTORAGE":
       let data = JSON.parse(localStorage.getItem('Cart'));
       return data;
