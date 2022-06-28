@@ -145,7 +145,7 @@ const Ordersum = () => {
         paymentObject.open();
     };
 
-    if(cart.length==0){
+    if(!cart){
         return(
             <div className="p-96 font-semibold ">
                 NO ITEMS IN CART

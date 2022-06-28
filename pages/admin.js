@@ -69,7 +69,13 @@ const admin = () => {
                     {/* <PostBlog/>
                     <ProductControl/> */}
                  {
-                    (check == 4?<PostBlog/>:check == 2?<ProductControl/>:check == 1?<UserInfo/>:check == 3?<OrderInfo/>:check==5?<DeleteBlog/>:check==6?<ViewContacts/>:<ProductControl/>)
+                    (check == 4 ? <PostBlog/> :
+                        check == 2 ? <ProductControl/> : 
+                            check == 1 ? <UserInfo/> :
+                                check == 3 ? <OrderInfo/> :
+                                    check==5 ? <DeleteBlog/> :
+                                        check==6 ? <ViewContacts/> :
+                                            <ProductControl/>)
                  }
 
                 </div>

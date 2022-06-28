@@ -31,7 +31,7 @@ const UserInfo = ()=>{
 
      useEffect(()=>{
              allUser();
-     })
+     });
 
     return(
         <div className="flex justify-center">
