@@ -6,6 +6,7 @@ import Image from "next/image";
 import logo from '../public/logo.png';
 import { useSession, signIn, signOut, getProviders } from "next-auth/react";
 import {CartContext} from '../components/Cart';
+import Link from "next/link";
 
 const navigation = [
   { name: "Home", href: "/", current: true },
@@ -122,6 +123,8 @@ export default function Navbar() {
     // setSum(adder.toFixed(2));
     return () => {};
   });
+  const { data: session, status } = useSession();
+
 
   return (
     <div>
@@ -381,12 +384,26 @@ export default function Navbar() {
                 <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                   <button
                     type="button"
+                    className=" transition bg-zinc-200 p-2 sm:mr-3 rounded-full text-gray-800 hover:text-red-500 hover:bg-zinc-100 focus:outline-none"
+                    
+                  > 
+                   {
+                    (session&& <Link href="/wishList">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                   </svg>
+                    </Link>
+                    )
+                   }
+                  </button>
+
+                  <button
+                    type="button"
                     className=" transition bg-zinc-200 p-2 rounded-full text-gray-800 hover:text-gray-900 hover:bg-zinc-100 focus:outline-none"
                     onClick={() => {
                       setOpen(true);
                     }}
                   >
-                    <span className="sr-only">User's Cart</span>
                     <Cart />
                   </button>
 

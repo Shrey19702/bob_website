@@ -4,20 +4,18 @@ import User from '../../../models/userModel';
 
 connectDB();
 
-const addToWishlist = async (req, res) => {
-    // console.log(typeof(req.body));
-    const data = JSON.parse(req.body)
-    if (req.method == 'POST') {
+const getWishlist = async (req, res) => {
+    if (req.method == 'GET') {
         const session = await getSession({ req });
         if(session){    //user is logged in
             try{
                 let f_user = await User.findOne({email: session.user.email});
-                if(f_user){ 
-                    f_user.wishlist.push(data.id);
-                    await f_user.save();
+                if(f_user){
+                    var product = f_user.wishList;
                     res.status(201).json({
                         success:true,
-                        message: "item added to user's wishlist"
+                        message: "Here is your wishlist",
+                        body: product
                     })
                 }
                 else{
@@ -48,4 +46,4 @@ const addToWishlist = async (req, res) => {
         })
     }
 }
-export default addToWishlist;
+export default getWishlist;

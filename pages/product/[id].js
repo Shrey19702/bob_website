@@ -21,9 +21,10 @@ export default function products({ f_product }) {
   f_product = JSON.parse(f_product);
   const [selectedColor, setSelectedColor] = useState(f_product.colors[0])
   const [selectedSize, setSelectedSize] = useState(f_product.sizes[0].size)
-
+  const [flag,setFlag] = useState(true);
   const [images,setImages] = useState(null);
   const [currImg,setCurrImg] = useState(null);
+  const [color,setColor] = useState(null);
   
   if(!images)
   {setImages(f_product.colors[0].images )
@@ -56,6 +57,31 @@ export default function products({ f_product }) {
       dispatch({ type: "ADD_TO_EXISTING", productID, curr_quantity })
     }
   };
+  // adding to wishList 
+  const addToWishList = async(id)=>{
+    console.log("id = ",id);
+     const data = await fetch(`${process.env.BASE_URL}api/user/addToWishlist`,{
+      method:'POST',
+      body:JSON.stringify({
+        id : id
+      })
+     })
+     const res = await data.json();
+  
+  }  
+ 
+  const deleteFromWishList = async(id)=>{
+    const data = await fetch(`${process.env.BASE_URL}api/user/removeFromWishlist`,{
+      method:'DELETE',
+      body:JSON.stringify({
+        id : id
+      })
+     })
+     const res = await data.json();
+  }
+
+
+
   // console.log(f_product, typeof (f_product));
   const createBreadcrumbs = (product) => {
     let breadcrumb = [];
@@ -133,12 +159,33 @@ export default function products({ f_product }) {
         <div className="mt-3 max-w-full mx-10 sm:px-6 justify-between md:justify-center lg:px-8 flex flex-wrap">
 
           {/* product name */}
-          <div className="pt-3 my-3 w-full lg:w-[80%] text-center lg:text-left lg:border-r lg:border-gray-200 ">
+          <div className="flex gap-[150px] sm:gap-[250px]  items-center pt-3 my-3 w-full lg:w-[80%] text-center lg:text-left lg:border-r lg:border-gray-200  ">
             <h1 className="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl">{f_product.name}</h1>
+            <svg xmlns="http://www.w3.org/2000/svg" className={`text-xl rounded-full decoration-${color}  cursor-pointer h-6 w-6`} fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
+              onClick={()=>{
+                setFlag(!flag);
+                // console.log(flag);
+                 if(flag)
+                 {
+                   //add to wishList
+                   setColor("rose-400")
+                   addToWishList(f_product._id);
+
+                 }
+                 else{
+                  //remove from wishList
+                  setColor("grey-200")
+                  deleteFromWishList(f_product._id);
+                 }
+              }}
+            >
+             <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+            </svg>
           </div>
 
           {/* product image */}
           <div className=" bg-sky-100 h-fit lg:shadow-md select-none shadow-sm ">
+
             <div className='lg:hidden'>
               <Image
                 src={f_product.colors[0].images[0]}
