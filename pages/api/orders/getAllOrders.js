@@ -9,32 +9,30 @@ const getAllOrders = async (req, res) => {
       try{
         let allOrders = await Orders.find({});
         if (allOrders) {
-            // console.log("Current order list :",newOrder);
-            var orderList = []; //store data of all orders
-            // console.log("all orders: ",allOrders);
-            allOrders.map(async(order)=>{
-                var x = {}; //store data of the order (user, product)
-                x.id = order._id;
-                x.completion = order.completion;
-                x.user = await Users.findById(order.userId);
-                x.bill = order.bill;
+             //store data of all orders
+            let orderList = [];
+            for(let i=0; i<allOrders.length; i++){
+
+                let x = {}; //store data of the order (user, product)
+                x.id = allOrders[i].id;
+                x.completion = allOrders[i].completion;
+                x.bill = allOrders[i].bill;
+                x.user = await Users.findById(allOrders[i].userId);
                 
-                var products=[{},{}];
-                // console.log("order products :",order.products);
-                var product_details = {};
-                order.products.map(async(product, idx)=>{
-                    product_details.id = product.productId;
-                    product_details.quantity = product.quantity;
-                    product_details.price = product.price;
-                    product_details.current_product = await Products.findById(product.productId);
-                    
+                let products=[];
+                for(let j=0; j<allOrders[i].products.length; j++){
+                    let product_details = {};
+                    product_details.id = allOrders[i].products[j].productId;
+                    product_details.quantity = allOrders[i].products[j].quantity;
+                    product_details.price = allOrders[i].products[j].price;
+                    product_details.current_product = await Products.findById(allOrders[i].products[j].productId);
+                    // console.log("~~~~~~~~~~~~~Hello", product_details);
                     products.push(product_details);
-                    console.log("Length = ",products.length, products);
-                })
-                console.log("products ",products, products.length);
+                }
+                x.products = products;
                 orderList.push(x);
-            })
-            console.log(orderList);
+            }
+            // console.log("orders are: ",orderList);
             res.status(200).json({
                 success: true,
                 message: "sucessfully found all the orders",
