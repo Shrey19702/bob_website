@@ -4,10 +4,10 @@ const wishList = ()=>{
     const [product, setProduct] = useState(null);
      
      const getProduct = async()=>{
-          const data = await fetch(`${process.env.BASE_URL}api/user/getWishList`);
-          const rand = await data.json();
-          setProduct(rand.body);
-          console.log(rand.body);
+          const response = await fetch(`${process.env.BASE_URL}api/user/getWishList`);
+          const res = await response.json();
+          setProduct(res.body);
+          console.log(res.body);
         }
         useEffect(()=>{
             if(!product)
@@ -16,14 +16,12 @@ const wishList = ()=>{
 
     return(
         <div className=" py-20">
-        {
-        product&&product.map((x,idx)=>(
+        {product && 
+          product.map((x,idx)=>(
             <>
-              {
-                idx
-              }
+              {idx}
             </>
-        ))
+          ))
         }
         </div>
     )

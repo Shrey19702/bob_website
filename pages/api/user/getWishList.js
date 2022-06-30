@@ -11,7 +11,7 @@ const getWishlist = async (req, res) => {
             try{
                 let f_user = await User.findOne({email: session.user.email});
                 if(f_user){
-                    var product = f_user.wishList;
+                    let product = f_user.wishList;
                     res.status(201).json({
                         success:true,
                         message: "Here is your wishlist",

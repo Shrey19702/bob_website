@@ -1,53 +1,65 @@
-import { useContext, useState } from 'react'
-import { StarIcon } from '@heroicons/react/solid'
+import { useContext, useEffect, useState, useCallback } from 'react'
 import { RadioGroup } from '@headlessui/react'
+import Image from "next/image"
+import useEmblaCarousel from 'embla-carousel-react'
+import ReactImageMagnify from 'react-image-magnify'
+import { CartContext } from '../../components/Cart'
 import Products from '../../models/productModel'
 import connectDB from '../../utils/connectDB'
-import { CartContext } from '../../components/Cart'
-import Image from "next/image"
-import ReactImageMagnify from 'react-image-magnify'
-// import { useDispatchCart } from "../../components/Cart";
 // import img from '../../public/main.jpg'
 connectDB();
 
-const reviews = { href: null, average: 4, totalCount: 117 }
+// const reviews = { href: null, average: 4, totalCount: 117 }
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
 export default function products({ f_product }) {
-  const { state, dispatch } = useContext(CartContext);
   f_product = JSON.parse(f_product);
-  const [selectedColor, setSelectedColor] = useState(f_product.colors[0])
+  const { state, dispatch } = useContext(CartContext);  //for adding products to cart
+  
+  const [selectedColorIdx, setSelectedColorIdx] = useState(0)
   const [selectedSize, setSelectedSize] = useState(f_product.sizes[0].size)
-  const [flag,setFlag] = useState(true);
+
   const [images,setImages] = useState(null);
   const [currImg,setCurrImg] = useState(null);
-  const [color,setColor] = useState(null);
-  
-  if(!images)
-  {setImages(f_product.colors[0].images )
-  }
-  if(images &&!currImg)
-  setCurrImg(images[0]);
 
-  const addToCart = (product) => {
+  const [emblaRef, emblaApi] = useEmblaCarousel();
+  
+  useEffect(()=>{
+    setImages(f_product.colors[selectedColorIdx].images );
+  },[selectedColorIdx]);
+
+  useEffect(()=>{
+    if(images)
+      setCurrImg(images[0]);
+  },[images]);
+
+  const scrollPrev = useCallback(() => {
+    if (emblaApi) emblaApi.scrollPrev()
+  }, [emblaApi])
+
+  const scrollNext = useCallback(() => {
+    if (emblaApi) emblaApi.scrollNext()
+  }, [emblaApi])
+
+  const addToCart = (product) => {  //add to cart button 
     let req_product = state.cart.filter((element) => (element.id == product._id));
-    console.log(selectedColor)
+    // console.log(selectedColor)
     if (req_product.length === 0) { //if this product is not in the cart 
       let productData = {
         id: product._id,
         href: product.href,
         name: product.name,
-        image: selectedColor.images[0],
-        color: selectedColor.color,
+        image: f_product.colors[selectedColorIdx].images[0],
+        color: f_product.colors[selectedColorIdx].color,
         size: selectedSize,
         price: product.price,
         discount: product.discount,
         quantity: 1
       };
-      console.log(productData);
+      // console.log(productData);
       dispatch({ type: "ADD_NEW", productData });
     }
     else { //this product already exist in the cart
@@ -57,20 +69,19 @@ export default function products({ f_product }) {
       dispatch({ type: "ADD_TO_EXISTING", productID, curr_quantity })
     }
   };
-  // adding to wishList 
-  const addToWishList = async(id)=>{
-    console.log("id = ",id);
-     const data = await fetch(`${process.env.BASE_URL}api/user/addToWishlist`,{
+ 
+  const addToWishList = async(id)=>{ // adding to wishList toggle button
+    // console.log("id = ",id);
+    const data = await fetch(`${process.env.BASE_URL}api/user/addToWishlist`,{
       method:'POST',
       body:JSON.stringify({
         id : id
       })
-     })
-     const res = await data.json();
-  
+    });
+    const res = await data.json();
   }  
  
-  const deleteFromWishList = async(id)=>{
+  const deleteFromWishList = async(id)=>{ //delete from wishlist toggle button 
     const data = await fetch(`${process.env.BASE_URL}api/user/removeFromWishlist`,{
       method:'DELETE',
       body:JSON.stringify({
@@ -80,11 +91,8 @@ export default function products({ f_product }) {
      const res = await data.json();
   }
 
-
-
-  // console.log(f_product, typeof (f_product));
-  const createBreadcrumbs = (product) => {
-    let breadcrumb = [];
+  const createBreadcrumbs = (product) => {  //create an array with the links and name for products category and collection
+    let breadcrumb = []; 
     breadcrumb.push({
       id: 1,
       name: product.collections,
@@ -100,18 +108,19 @@ export default function products({ f_product }) {
       name: product.name,
       href: `/products/${product._id}`
     })
-
     return (breadcrumb);
   }
 
   if (!f_product) {
     return (<div className='p-96 font-semibold' >404 there is no such Product</div>)
   }
+  console.log('Current Selected color', selectedColorIdx)
   return (
-    <div className="bg-white">
-      <div className="py-24">
-        <nav aria-label="f_product">
-          <ol role="list" className="max-w-2xl mx-auto px-4 flex items-center space-x-2 sm:px-6 lg:max-w-7xl lg:px-8">
+    <div className="bg-gray-50">
+      <div className="py-32">
+        {/* Breadcrumbs */}
+        <nav aria-label="product" className=' pb-8' >
+          <ol role="list" className="max-w-2xl mx-auto px-4 flex items-center space-x-2 sm:px-6 lg:max-w-7xl lg:px-40">
             {
               createBreadcrumbs(f_product).map(breadcrumb => {
                 if (breadcrumb.id == 3) {
@@ -158,133 +167,147 @@ export default function products({ f_product }) {
         {/* product image options discription  */}
         <div className="mt-3 max-w-full mx-10 sm:px-6 justify-between md:justify-center lg:px-8 flex flex-wrap">
 
-          {/* product name */}
-          <div className="flex gap-[150px] sm:gap-[250px]  items-center pt-3 my-3 w-full lg:w-[80%] text-center lg:text-left lg:border-r lg:border-gray-200  ">
-            <h1 className="text-2xl font-extrabold tracking-tight text-gray-900 sm:text-3xl">{f_product.name}</h1>
-            <svg xmlns="http://www.w3.org/2000/svg" className={`text-xl rounded-full decoration-${color}  cursor-pointer h-6 w-6`} fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"
-              onClick={()=>{
-                setFlag(!flag);
-                // console.log(flag);
-                 if(flag)
-                 {
-                   //add to wishList
-                   setColor("rose-400")
-                   addToWishList(f_product._id);
-
-                 }
-                 else{
-                  //remove from wishList
-                  setColor("grey-200")
-                  deleteFromWishList(f_product._id);
-                 }
-              }}
-            >
-             <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-            </svg>
-          </div>
-
           {/* product image */}
-          <div className=" bg-sky-100 h-fit lg:shadow-md select-none shadow-sm ">
-
-            <div className='lg:hidden'>
+          <div className=" h-fit select-none">
+            {/* product images without magnification for small screens */}
+            <div className='lg:hidden'> 
               <Image
-                src={f_product.colors[0].images[0]}
-                alt={f_product.colors[0].images[0]}
+                src={f_product.colors[selectedColorIdx].images[0]}
+                alt={f_product.name}
                 className="w-full h-full object-center select-none object-contain"
                 height={600}
                 width={450}
                 priority
               />
             </div>
-
+            {/* product images with magnification for large screens */}
             <ReactImageMagnify
               className='z-10 hidden lg:block'
-
               {...{
                 smallImage: {
                   alt: f_product.name,
-                  isFluidWidth: true,
+                  // isFluidWidth: true,
+                  width: 500,
+                  height: 500,
                   src: currImg,
-                  // srcSet: this.srcSet,
-                  // sizes:
-                  //   "(width: 800px) 33.5vw, (min-width: 415px) 50vw, 100vw"
                 },
                 largeImage: {
                   alt: "",
                   src: currImg,
-                  width: 1200,
-                  height: 1200,
+                  width: 1000,
+                  height: 1000,
                   sizes:
                     "(width: 800px) 33.5vw, (min-width: 415px) 50vw, 100vw"
                 },
+                imageClassName: 'object-contain',
                 enlargedImageContainerDimensions: {
                   height: 500,
                   width: 500
                 },
-                enlargedImageContainerStyle: {
-                  backgroundColor: "rgba(0,0,0,.9)",
-                },
-                enlargedImageStyle: {
-                  marginLeft: "50%"
-                }
+                enlargedImageContainerClassName: 'bg-white',
+                enlargedImageClassName: 'object-contain relative left-[50%] '
                 // isHintEnabled: true
               }}
-              
             />
-            <div className='flex gap-3'>
-            
-          </div> 
-          {images&&
-              images.map((x,idx)=>(
-                  <img key={idx} className=' h-[75px] w-[75px] relative top-[75%] cursor-pointer hover: border-2' src={x} onClick={()=>{
-                    setCurrImg(x)
-                  }} alt="" />
-              ))
-             }
+
+            {/* carousel for images */}
+            <div className='relative w-fit'>
+              <div className="embla overflow-hidden" ref={images?null:emblaRef}>
+                <div className="embla__container flex">
+                  {images &&
+                    images.map((image,idx)=>(
+                      <div key={idx} className={`embla__slide relative `+(image==currImg?' ':' opacity-95')}>
+                        <Image 
+                          className=' cursor-pointer object-contain' 
+                          src={image}
+                          height={150}
+                          width={150}
+                          alt="~"
+                          onClick={()=>{setCurrImg(image)}}
+                        /> 
+                      </div>
+                    ))
+                  }
+                </div>
+              </div>
+              <button className="embla__prev absolute top-[35%] left-0 bg-pink-200 rounded-full" onClick={scrollPrev}>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M11 17l-5-5m0 0l5-5m-5 5h12" />
+                </svg>
+              </button>
+              <button className="embla__next absolute top-[35%] right-0 bg-pink-200 rounded-full" onClick={scrollNext}>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </button>
+            </div>
+
           </div>
 
-
-
           {/* options and description */}
-          <div className=' md:w-[67%] lg:w-[50%] '>
+          <div className=' pt-12 px-7 md:w-[67%] lg:w-[50%] '>
+
+            {/* product name */}
+            <div className="w-full mb-10">
+              <h1 className="sm:text-3xl font-medium text-2xl">{f_product.name}</h1>
+              {/* <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                className={`text-xl rounded-full decoration-${color} cursor-pointer h-6 w-6`} 
+                fill="none" 
+                viewBox="0 0 24 24" 
+                stroke="currentColor" 
+                strokeWidth="2"
+                onClick={()=>{
+                  setFlag(!flag);
+                  if(flag)
+                  {
+                    //add to wishList
+                    setColor("rose-400")
+                    addToWishList(f_product._id);
+                  }
+                  else{
+                    //remove from wishList
+                    setColor("grey-200")
+                    deleteFromWishList(f_product._id);
+                  }
+                }}
+              >
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+              </svg> */}
+            </div>
+
             {/* Options */}
-            <div className="mt-4 mx-12 lg:mt-0 ">
-              <p className=" text-lg md:text-3xl text-gray-900">{f_product.discount.applicable ?
+            <div className="mt-4 lg:mt-0 ">
+              <p className=" text-lg md:text-3xl text-[#149fbee1] opacity-95">{f_product.discount.applicable ?
                 <>
-                  <del className=' line-through decoration-[3px] decoration-red-600'>₹{f_product.price}</del>&nbsp;&nbsp;
-                  <span className=' font-semibold'>₹{f_product.discount.newAmount}</span>
+                  Rs.
+                  <del className=" line-through decoration-[3px] text-gray-400 opacity-90">{f_product.price}</del>&nbsp;
+                  <span className=" font-['righteous'] font-semibold">{f_product.discount.newAmount}</span>
                   <span className=' lg:text-[1.4rem] text-base px-3'>{'(' + ((f_product.price - f_product.discount.newAmount) * (100 / f_product.price)).toFixed(2) + '% Off)'}</span>
                 </>
-                : '₹' + f_product.price}</p>
-
+                : 'Rs. ' + f_product.price}
+              </p>
 
               <form className="mt-10">
                 {/* Colors */}
-                <div>
-                  <h3 className="text-xl font-semibold text-gray-900 ">Color</h3>
+                <div className='flex items-center'>
+                  <span className="text-xl font-semibold text-gray-900 ">Color</span>
 
-                  <RadioGroup value={selectedColor} onChange={setSelectedColor} className="mt-4">
-                    <RadioGroup.Label className="sr-only">Choose a color</RadioGroup.Label>
+                  <RadioGroup value={selectedColorIdx} onChange={setSelectedColorIdx} className=" mx-4 p-2">
+                    {/* <RadioGroup.Label className="sr-only">Choose a color</RadioGroup.Label> */}
                     <div className="flex items-center space-x-3">
-                      {f_product.colors.map((color) => (
+                      {f_product.colors.map((color,idx) => (
                         <RadioGroup.Option
-                          key={color.color}
-                          value={color.color}
-                          className={({ active, checked }) =>
+                          value={idx}
+                          className={({checked }) =>(
                             classNames(
-                              active && checked ? 'ring ring-offset-1 ring-sky-400' : '',
-                              !active && checked ? 'ring-2 ring-sky-400' : '',
+                              checked ? 'ring ring-offset-1 ring-sky-400' : '',
                               `-m-0.5 relative p-0.5 rounded-full flex items-center justify-center cursor-pointer focus:outline-none`
-                            )
+                            ))
                           }
                           style={{ backgroundColor: `${color.color}` }}
-
                         >
-                          <RadioGroup.Label as="span" className="sr-only">
-                            {color.color}
-                          </RadioGroup.Label>
-                          <span className={`h-8 w-8 bg-${color.color}-400 rounded-full `}>
-                          </span>
+                            <span className={`h-8 w-8 rounded-full `}></span>
                         </RadioGroup.Option>
                       ))}
                     </div>
@@ -292,7 +315,7 @@ export default function products({ f_product }) {
                 </div>
 
                 {/* Sizes */}
-                <div className="mt-10">
+                <div className="mt-4">
                   <div className="flex items-center justify-between">
                     <h3 className="text-xl font-semibold text-gray-900 ">Size</h3>
                   </div>
@@ -348,11 +371,16 @@ export default function products({ f_product }) {
                     </div>
                   </RadioGroup>
                 </div>
-
+              
+                <div className='transition cursor-pointer inline-block p-3 mt-5 hover:text-[#149fbee1] hover:underline ' >
+                  Add to Wishlist
+                </div>
+                
+                {/* add to cart */}
                 <div
-                  onClick={() => addToCart(f_product)}
+                  onClick={() => {addToCart(f_product); alert('product added to cart');}}
                   // type="submit"
-                  className="mt-10 w-full cursor-pointer bg-sky-500 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500"
+                  className="mt-5 w-full cursor-pointer bg-sky-500 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:opacity-95 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500"
                 >
                   Add to Cart
                 </div>
@@ -360,7 +388,7 @@ export default function products({ f_product }) {
             </div>
 
             {/* Description and details */}
-            <div className="py-10 lg:pt-6 lg:pb-16 mx-4 lg:border-r lg:border-gray-200 lg:ml-16 ">
+            <div className="py-10 my-7 lg:pt-6 lg:pb-16 lg:border-t lg:border-gray-300 ">
               <div>
                 <h3 className="sr-only">Description</h3>
 
@@ -391,11 +419,11 @@ export default function products({ f_product }) {
                 </div>
               </div>
             </div>
+
           </div>
 
-
-
         </div>
+        
         {/* Similar products */}
         <div className=""></div>
       </div>

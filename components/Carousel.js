@@ -84,7 +84,7 @@ export const EmblaCarousel = () => {
                 <p className="text-sm font-medium text-gray-900">{product.price}</p>
               </div>
             </div>
-            )): <div>Loading...</div>}
+            )): <div className=' m-auto'>Loading...</div>}
         </div>
       </div>
      

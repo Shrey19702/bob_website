@@ -1,45 +1,17 @@
 import { Fragment, useEffect, useState, useContext } from "react";
+import { useSession, signIn, signOut, getProviders } from "next-auth/react";
 import {Disclosure,  Menu,  Transition,  Popover,  Dialog,} from "@headlessui/react";
 import {MenuIcon, XIcon } from "@heroicons/react/outline";
-import Cart from "./Svgs";
 import Image from "next/image";
+import Cart from "./Svgs";
 import logo from '../public/logo.png';
-import { useSession, signIn, signOut, getProviders } from "next-auth/react";
 import {CartContext} from '../components/Cart';
 import Link from "next/link";
 
 const navigation = [
   { name: "Home", href: "/", current: true },
-  // { name: 'Categories'
-
-  //    ,href: '#collection', current: false },
+  // { name: 'Categories',href: '#collection', current: false },
   { name: "Blogs", href: "/blog", current: false },
-];
-
-const products = [
-  {
-    id: 1,
-    name: "Bunk Bed",
-    href: "#",
-    color: "Salmon",
-    price: "$780.50",
-    quantity: 1,
-    imageSrc: "./main.jpg",
-    imageAlt:
-      "Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.",
-  },
-  {
-    id: 2,
-    name: "Bunk Bed",
-    href: "#",
-    color: "Salmon",
-    price: "$90.00",
-    quantity: 1,
-    imageSrc: "./main.jpg",
-    imageAlt:
-      "Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.",
-  },
-  // More products...
 ];
 
 export default function Navbar() {
@@ -116,15 +88,10 @@ export default function Navbar() {
       // console.log(window.location.pathname);
       changeNavbarColor();
     }
-    // let adder = 0;
-    // products.map(
-    //   (x) => (adder += parseFloat(x.price.slice(1, x.price.length)))
-    // );
-    // setSum(adder.toFixed(2));
     return () => {};
   });
-  const { data: session, status } = useSession();
 
+  const { data: session, status } = useSession(); //Loged in User Data
 
   return (
     <div>
@@ -332,11 +299,6 @@ export default function Navbar() {
                         width={205}
                       />
                     </a>
-                    {/* <img
-                      className="hidden lg:block h-8 w-auto"
-                      src="https://tailwindui.com/img/logos/workflow-logo-indigo-500-mark-white-text.svg"
-                      alt="Workflow"
-                    /> */}
                   </div>
                   <div className="hidden my-auto sm:block sm:ml-6">
                     {/* navigation elements */}
@@ -360,7 +322,7 @@ export default function Navbar() {
                       <a className="text-gray-800 peer hover:bg-zinc-200 px-3 py-2 rounded-md text-lg font-medium transition cursor-pointer">
                         <span>Categories</span>
                       </a>
-                      {cgList?
+                      {cgList &&
                         (<div className={` transition-all hover:grid peer-hover:opacity-100 hover:opacity-100 peer-hover:grid hover:grid-row-${cgList.length-1} overflow-y-auto max-h-[95vh] w-7/12 gap-2 hidden opacity-0 absolute left-0 top-[54px] bg-gray-50 rounded-md shadow-lg py-8 px-10`} >
                           {cgList.map(x=>(
                             <div key={x.name} className="flex items-center  flex-wrap">
@@ -372,8 +334,7 @@ export default function Navbar() {
                               }
                             </div>
                         ))}
-                        </div>)  
-                        : ( <div>Loading...</div> )
+                        </div>)
                       }
                         
                     </div>
@@ -382,21 +343,18 @@ export default function Navbar() {
 
                 {/* right side of navbar */}
                 <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                  <button
-                    type="button"
-                    className=" transition bg-zinc-200 p-2 sm:mr-3 rounded-full text-gray-800 hover:text-red-500 hover:bg-zinc-100 focus:outline-none"
-                    
-                  > 
-                   {
-                    (session&& <Link href="/wishList">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                   </svg>
-                    </Link>
-                    )
-                   }
-                  </button>
+                  {/* user's wishlist */}
+                  {session &&                   
+                    <button type="button" className=" transition bg-zinc-200 p-2 sm:mr-3 rounded-full text-gray-800 hover:text-red-500 hover:bg-zinc-100 focus:outline-none"> 
+                      <Link href="/wishList">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                        </svg>
+                      </Link>
+                    </button>
+                  }
 
+                  {/* cart button  */}
                   <button
                     type="button"
                     className=" transition bg-zinc-200 p-2 rounded-full text-gray-800 hover:text-gray-900 hover:bg-zinc-100 focus:outline-none"
@@ -407,6 +365,7 @@ export default function Navbar() {
                     <Cart />
                   </button>
 
+                  {/* login and details dropdown */}
                   <Userlogin />
                 </div>
               </div>
