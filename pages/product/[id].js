@@ -6,6 +6,7 @@ import ReactImageMagnify from 'react-image-magnify'
 import { CartContext } from '../../components/Cart'
 import Products from '../../models/productModel'
 import connectDB from '../../utils/connectDB'
+import { useSession } from "next-auth/react"
 // import img from '../../public/main.jpg'
 connectDB();
 
@@ -18,15 +19,35 @@ function classNames(...classes) {
 export default function products({ f_product }) {
   f_product = JSON.parse(f_product);
   const { state, dispatch } = useContext(CartContext);  //for adding products to cart
-  
+  const { data: session, status } = useSession();
+
   const [selectedColorIdx, setSelectedColorIdx] = useState(0)
   const [selectedSize, setSelectedSize] = useState(f_product.sizes[0].size)
 
   const [images,setImages] = useState(null);
   const [currImg,setCurrImg] = useState(null);
 
+  const [wishlist, setWishlist] = useState(false);
+  const [user, setUser] = useState(null);
+
   const [emblaRef, emblaApi] = useEmblaCarousel();
   
+  useEffect(()=>{
+    (async()=>{
+      if(session && !user){
+        const response = await fetch(`${process.env.BASE_URL}api/user/getUserByEmail`,{
+          method:'POST',
+          body: JSON.stringify({email: session.user.email})
+        });
+        const res = await response.json();
+        let x = res.body.wishlist.find((id)=>id._id===f_product._id)
+        if(x)
+          setWishlist(true);
+        setUser(res.body);
+      }
+    })();
+  });
+
   useEffect(()=>{
     setImages(f_product.colors[selectedColorIdx].images );
   },[selectedColorIdx]);
@@ -114,7 +135,8 @@ export default function products({ f_product }) {
   if (!f_product) {
     return (<div className='p-96 font-semibold' >404 there is no such Product</div>)
   }
-  console.log('Current Selected color', selectedColorIdx)
+  // console.log('Current Selected color', selectedColorIdx)
+
   return (
     <div className="bg-gray-50">
       <div className="py-32">
@@ -372,10 +394,28 @@ export default function products({ f_product }) {
                   </RadioGroup>
                 </div>
               
-                <div className='transition cursor-pointer inline-block p-3 mt-5 hover:text-[#149fbee1] hover:underline ' >
-                  Add to Wishlist
-                </div>
-                
+                {/* add to wishlist */}
+                {session && 
+                  <div 
+                    className={'transition inline-block p-3 mt-5 hover:text-[#149fbee1] hover:underline '+ (wishlist? "" : "  cursor-pointer")}
+                    onClick={async ()=>{
+                      if(!wishlist){
+                        const requestOptions = {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({id: f_product._id})
+                        };
+                        const response = await fetch(`${process.env.BASE_URL}api/user/addToWishlist`, requestOptions);
+                        const data = await response.json();
+                        console.log("FETCHED ", data);
+                        setWishlist(true);
+                      }
+                    }}
+                  >
+                    {wishlist? "Added in Wishlist" :"Add to Wishlist"}
+                  </div>
+                }
+
                 {/* add to cart */}
                 <div
                   onClick={() => {addToCart(f_product); alert('product added to cart');}}

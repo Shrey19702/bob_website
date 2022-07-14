@@ -7,10 +7,10 @@ const getProductByCategory = async (req, res)=>{
     if(req.method == 'GET'){
         try{
             let f_Products;
-            if(req.query.category=='Products'){
+            if(req.query.category=='Products'){ //send all the products
                 f_Products = await Product.find({});
             }
-            else{
+            else{   //send by category 
                 let query = req.query.category.split('-').join(' ');
                 f_Products = await Product.find({category: query});
             }

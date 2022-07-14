@@ -132,8 +132,8 @@ function Heropage() {
       </div>
      
       <EmblaCarousel slides={slides} />
-      <div className='mt-8 heroTitle text-4xl z-0 selection:text-pink-200 lg:text-5xl absolute top-[30%] w-full text-center lg:text-left px-5 lg:pl-36 text-gray-100 font-[Luckiest Guy] '> 
-      With love for your <span className="text-sky-200">little ones...</span> 
+      <div className=' drop-shadow-lg mt-8 heroTitle text-4xl z-0 selection:text-pink-200 lg:text-5xl absolute top-[30%] w-full text-center lg:text-left px-5 lg:pl-36 text-gray-100 font-["Righteous"] '> 
+        With love for your <span className="text-sky-200">little ones...</span> 
       </div>
     </div>
   )

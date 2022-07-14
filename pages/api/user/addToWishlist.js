@@ -5,8 +5,9 @@ import User from '../../../models/userModel';
 connectDB();
 
 const addToWishlist = async (req, res) => {
-    // console.log(typeof(req.body));
-    const data = JSON.parse(req.body)
+    console.log(typeof(req.body));
+    // const data = JSON.parse(req.body)
+    const data = req.body;
     if (req.method == 'POST') {
         const session = await getSession({ req });
         if(session){    //user is logged in

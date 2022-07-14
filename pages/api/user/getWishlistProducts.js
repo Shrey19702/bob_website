@@ -1,22 +1,28 @@
 import connectDB from "../../../utils/connectDB";
 import { getSession } from "next-auth/react"
 import User from '../../../models/userModel';
+import Products from '../../../models/productModel'
 
 connectDB();
 
-const removeFromWishlist = async (req, res) => {
-    if (req.method == 'DELETE') {
+const getWishlistProducts = async (req, res) => {
+    if (req.method == 'GET') {
         const session = await getSession({ req });
         if(session){    //user is logged in
-            const data = JSON.parse(req.body);
             try{
                 let f_user = await User.findOne({email: session.user.email});
                 if(f_user){
-                    f_user.wishlist = f_user.wishlist.filter((id)=>(id._id != data.id));
-                    await f_user.save();
+                    let product_ids = f_user.wishlist;
+                    let wishlistProducts=[];
+                    for(let id of product_ids){
+                        let product = await Products.findById(id._id);
+                        wishlistProducts.push(product);
+                    }
+                    // console.log('############',wishlistProducts);
                     res.status(201).json({
                         success:true,
-                        message: "item removed from user's wishlist"
+                        message: "Wishlist products",
+                        body: wishlistProducts
                     })
                 }
                 else{
@@ -47,4 +53,4 @@ const removeFromWishlist = async (req, res) => {
         })
     }
 }
-export default removeFromWishlist;
+export default getWishlistProducts;
