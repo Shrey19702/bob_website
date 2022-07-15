@@ -19,8 +19,6 @@ const userSchema = new mongoose.Schema({
     number:{
         type:String,
         // required:true,
-        
-
     },
     role:{  //role of user (user or admin)
         type : String,

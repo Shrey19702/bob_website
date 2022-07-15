@@ -9,18 +9,7 @@ export default function contactForm() {
             <span className="block mb-4 text-base text-primary font-semibold">
               Contact Us
             </span>
-            <h2
-              className="
-                  text-dark
-                  mb-6
-                  uppercase
-                  font-bold
-                  text-[32px]
-                  sm:text-[40px]
-                  lg:text-[36px]
-                  xl:text-[40px]
-                  "
-            >
+            <h2 className="text-dark mb-6 uppercase font-bold text-[32px] sm:text-[40px] lg:text-[36px] xl:text-[40px]">
               GET IN TOUCH WITH US
             </h2>
             <p className="text-base text-body-color leading-relaxed mb-9">

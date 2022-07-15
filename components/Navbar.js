@@ -499,6 +499,19 @@ function Userlogin() {
                   </a>
                 )}
               </Menu.Item>
+              <Menu.Item>
+                {({ active }) => (
+                  <a
+                    href="/orderHistory"
+                    className={
+                      (active ? "bg-gray-100 " : " ") +
+                      "block px-4 py-2 text-sm text-gray-800"
+                    }
+                  >
+                   Order history
+                  </a>
+                )}
+              </Menu.Item>
               { isAdmin &&
                 <Menu.Item>
                   {({ active }) => (

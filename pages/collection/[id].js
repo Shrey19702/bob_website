@@ -8,10 +8,8 @@ export default function Category({f_collection}) {
 
   const [givenCollection, setgivenCollection] = useState();
   useEffect(()=>{
-   
       setgivenCollection(JSON.parse(f_collection));
-  
-  })
+  },[]);
 
   const createBreadcrumbs = (collection) => {
     let breadcrumb = [];
@@ -75,9 +73,11 @@ export default function Category({f_collection}) {
           </div>
         </div>
 
-        {givenCollection.categories.map(name=>{
+        {givenCollection.categories.map((name,idx)=>{
             return (
-              <Products name={name} />
+              <div key={idx}>
+                <Products name={name} />
+              </div>
             )
         })} 
       </div>

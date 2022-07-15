@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const OrderSchema = new mongoose.Schema({
     completion: {
-        type:String     //3 options (Canclled)/(Delivered)/(Order Placed)
+        type:String     //3 options (Cancled)/(Delivered)/(Order Placed)
     },
     userId: {   //user ordering this product
         type: String,
