@@ -7,6 +7,7 @@ import UserInfo from '../components/admin_pages/UserInfo';
 import OrderInfo from '../components/admin_pages/OrderInfo';
 import DeleteBlog from '../components/admin_pages/DeleteBlog';
 import ViewContacts from '../components/admin_pages/ViewContacts';
+import Consultations from '../components/admin_pages/Consultations';
 
 const admin = () => {
 
@@ -62,6 +63,9 @@ const admin = () => {
                             <li className="relative border-b">
                                 <a className="flex items-center text-sm py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" href="#!" onClick={()=>setCheck(6)}>VIEW CONTACTS</a>
                             </li>
+                            <li className="relative border-b">
+                                <a className="flex items-center text-sm py-4 px-6 h-12 overflow-hidden text-gray-700 text-ellipsis whitespace-nowrap rounded hover:text-gray-900 hover:bg-gray-100 transition duration-300 ease-in-out" href="#!" onClick={()=>setCheck(7)}>CONSULTATIONS INFO</a>
+                            </li>
                         </ul>
                     </div>
 
@@ -75,9 +79,9 @@ const admin = () => {
                                 check == 3 ? <OrderInfo/> :
                                     check==5 ? <DeleteBlog/> :
                                         check==6 ? <ViewContacts/> :
+                                        check==7?<Consultations/>:
                                             <ProductControl/>)
                  }
-
                 </div>
               </div>
             )
