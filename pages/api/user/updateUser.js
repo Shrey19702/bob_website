@@ -5,6 +5,7 @@ connectDB();
 
 const UpdateUser = async (req, res) => {
     if (req.method == 'POST') {
+      let body = JSON.parse(req.body)  
       try{
         let option ={};
         if(req.body.email){
@@ -13,7 +14,7 @@ const UpdateUser = async (req, res) => {
         if(req.body.id){
             option.id = req.body.id;
         }
-        let f_user = await User.findOneAndUpdate(option, req.body);
+        let f_user = await User.findOneAndUpdate(option, body);
         if (f_user) {   
             res.status(200).json({
                 success: true,

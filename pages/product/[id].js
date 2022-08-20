@@ -4,9 +4,10 @@ import Image from "next/image"
 import useEmblaCarousel from 'embla-carousel-react'
 import ReactImageMagnify from 'react-image-magnify'
 import { CartContext } from '../../components/Cart'
-import Products from '../../models/productModel'
+import ProductsModel from '../../models/productModel'
 import connectDB from '../../utils/connectDB'
 import { useSession } from "next-auth/react"
+import Products from "../../components/Products"
 // import img from '../../public/main.jpg'
 connectDB();
 
@@ -90,28 +91,6 @@ export default function products({ f_product }) {
       dispatch({ type: "ADD_TO_EXISTING", productID, curr_quantity })
     }
   };
- 
-  const addToWishList = async(id)=>{ // adding to wishList toggle button
-    // console.log("id = ",id);
-    const data = await fetch(`${process.env.BASE_URL}api/user/addToWishlist`,{
-      method:'POST',
-      body:JSON.stringify({
-        id : id
-      })
-    });
-    const res = await data.json();
-  }  
- 
-  const deleteFromWishList = async(id)=>{ //delete from wishlist toggle button 
-    const data = await fetch(`${process.env.BASE_URL}api/user/removeFromWishlist`,{
-      method:'DELETE',
-      body:JSON.stringify({
-        id : id
-      })
-     })
-     const res = await data.json();
-  }
-
   const createBreadcrumbs = (product) => {  //create an array with the links and name for products category and collection
     let breadcrumb = []; 
     breadcrumb.push({
@@ -142,12 +121,13 @@ export default function products({ f_product }) {
       <div className="py-32">
         {/* Breadcrumbs */}
         <nav aria-label="product" className=' pb-8' >
-          <ol role="list" className="max-w-2xl mx-auto px-4 flex items-center space-x-2 sm:px-6 lg:max-w-7xl lg:px-40">
+          <ol role="list" className="max-w-2xl px-4 flex items-center space-x-2 sm:px-6 lg:max-w-7xl lg:px-40">
             {
               createBreadcrumbs(f_product).map(breadcrumb => {
                 if (breadcrumb.id == 3) {
                   return (
-                    <li className="text-sm" key={breadcrumb.id}>
+                    <li className="text-lg
+                    " key={breadcrumb.id}>
 
                       <a href={breadcrumb.href} aria-current="page" className="font-medium text-gray-500 hover:text-gray-600">
                         {breadcrumb.name}
@@ -272,30 +252,6 @@ export default function products({ f_product }) {
             {/* product name */}
             <div className="w-full mb-10">
               <h1 className="sm:text-3xl font-medium text-2xl">{f_product.name}</h1>
-              {/* <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                className={`text-xl rounded-full decoration-${color} cursor-pointer h-6 w-6`} 
-                fill="none" 
-                viewBox="0 0 24 24" 
-                stroke="currentColor" 
-                strokeWidth="2"
-                onClick={()=>{
-                  setFlag(!flag);
-                  if(flag)
-                  {
-                    //add to wishList
-                    setColor("rose-400")
-                    addToWishList(f_product._id);
-                  }
-                  else{
-                    //remove from wishList
-                    setColor("grey-200")
-                    deleteFromWishList(f_product._id);
-                  }
-                }}
-              >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-              </svg> */}
             </div>
 
             {/* Options */}
@@ -465,7 +421,9 @@ export default function products({ f_product }) {
         </div>
         
         {/* Similar products */}
-        <div className=""></div>
+        <div className="">
+          <Products name={f_product.category} heading={" More products of this category"}/>
+        </div>
       </div>
     </div>
 
@@ -474,7 +432,7 @@ export default function products({ f_product }) {
 
 export const getStaticProps = async (context) => {  //can only send JSON or String.. :(
   // console.log("###Context is :", context);
-  let data = await Products.findById(context.params.id);
+  let data = await ProductsModel.findById(context.params.id);
   let f_product = JSON.stringify(data);
   return {
     props: { f_product }
@@ -483,7 +441,7 @@ export const getStaticProps = async (context) => {  //can only send JSON or Stri
 
 export async function getStaticPaths() {  //can only send JSON or String.. :(
 
-  let all_products = await Products.find({});
+  let all_products = await ProductsModel.find({});
 
   if (all_products) {
     const ids = all_products.map((product) => product.id)

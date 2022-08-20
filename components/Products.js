@@ -6,7 +6,7 @@ import Image from "next/image";
 
 connectDB();
   
-  export default function Products({name}) {
+  export default function Products({name, heading=null}) {
     const [productList, setProductList] = useState();
     const [Limit, setLimit] = useState(8); 
     useEffect(()=>{
@@ -25,7 +25,11 @@ connectDB();
       return (
         <div className="bg-white">
           <div id={name.replace(/\s+/g, '-')} className="max-w-2xl mx-auto py-28 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
-            <h2 className="text-2xl font-extrabold tracking-tight text-gray-900">{name}</h2>
+            {heading? 
+              <h2 className="text-2xl font-extrabold tracking-tight text-gray-900">{heading}</h2>              
+              : 
+              <h2 className="text-2xl font-extrabold tracking-tight text-gray-900">{name}</h2>
+            }
     
             <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
               {productList.map((product, idx) => {
