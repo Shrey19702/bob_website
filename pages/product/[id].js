@@ -17,7 +17,7 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function products({ f_product }) {
+export default function ProductPage({ f_product }) {
   f_product = JSON.parse(f_product);
   const { state, dispatch } = useContext(CartContext);  //for adding products to cart
   const { data: session, status } = useSession();
@@ -276,6 +276,7 @@ export default function products({ f_product }) {
                     <div className="flex items-center space-x-3">
                       {f_product.colors.map((color,idx) => (
                         <RadioGroup.Option
+                          key={idx}
                           value={idx}
                           className={({checked }) =>(
                             classNames(

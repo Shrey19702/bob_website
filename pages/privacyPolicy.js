@@ -2,20 +2,20 @@ import React from 'react'
 
 export default function aboutUs() {
   return (
-    <div class="container px-5 py-24 mx-auto flex flex-col">
-    <div class="lg:w-4/6 mx-auto">
+    <div className="container px-5 py-24 mx-auto flex flex-col">
+    <div className="lg:w-4/6 mx-auto">
       
-      <div class="flex flex-col sm:flex-row mt-10">
-        <div class="sm:w-1/3 text-center sm:pr-8 sm:py-8">
+      <div className="flex flex-col sm:flex-row mt-10">
+        <div className="sm:w-1/3 text-center sm:pr-8 sm:py-8">
           
-          <div class="flex flex-col items-center text-center justify-center">
-            <h2 class="font-medium title-font mt-4 text-black text-3xl">Privacy-Policy</h2>
+          <div className="flex flex-col items-center text-center justify-center">
+            <h2 className="font-medium title-font mt-4 text-black text-3xl">Privacy-Policy</h2>
           
             
           </div>
         </div>
-        <div class="sm:w-2/3 sm:pl-8 sm:py-8 sm:border-l border-gray-800 sm:border-t-0 border-t mt-4 pt-4 sm:mt-0 text-center sm:text-left">
-          <p class="leading-relaxed text-lg mb-4">
+        <div className="sm:w-2/3 sm:pl-8 sm:py-8 sm:border-l border-gray-800 sm:border-t-0 border-t mt-4 pt-4 sm:mt-0 text-center sm:text-left">
+          <p className="leading-relaxed text-lg mb-4">
           At Baby onBoard, accessible from www.babyonboard.com, one of our main priorities is the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by Baby onBoard and how we use it.
 
 If you have additional questions or require more information about our Privacy Policy, do not hesitate to contact us.
@@ -43,28 +43,28 @@ Communicate with you, either directly or through one of our partners, including 
 Send you emails
 Find and prevent fraud
 Log Files
-Baby onBoard follows a standard procedure of using log files. These files log visitors when they visit websites. All hosting companies do this and a part of hosting services' analytics. The information collected by log files include internet protocol (IP) addresses, browser type, Internet Service Provider (ISP), date and time stamp, referring/exit pages, and possibly the number of clicks. These are not linked to any information that is personally identifiable. The purpose of the information is for analyzing trends, administering the site, tracking users' movement on the website, and gathering demographic information.
+Baby onBoard follows a standard procedure of using log files. These files log visitors when they visit websites. All hosting companies do this and a part of hosting services&apos analytics. The information collected by log files include internet protocol (IP) addresses, browser type, Internet Service Provider (ISP), date and time stamp, referring/exit pages, and possibly the number of clicks. These are not linked to any information that is personally identifiable. The purpose of the information is for analyzing trends, administering the site, tracking users&apos movement on the website, and gathering demographic information.
 
 Advertising Partners Privacy Policies
 You may consult this list to find the Privacy Policy for each of the advertising partners of Baby onBoard.
 
-Third-party ad servers or ad networks uses technologies like cookies, JavaScript, or Web Beacons that are used in their respective advertisements and links that appear on Baby onBoard, which are sent directly to users' browser. They automatically receive your IP address when this occurs. These technologies are used to measure the effectiveness of their advertising campaigns and/or to personalize the advertising content that you see on websites that you visit.
+Third-party ad servers or ad networks uses technologies like cookies, JavaScript, or Web Beacons that are used in their respective advertisements and links that appear on Baby onBoard, which are sent directly to users&apos browser. They automatically receive your IP address when this occurs. These technologies are used to measure the effectiveness of their advertising campaigns and/or to personalize the advertising content that you see on websites that you visit.
 
 Note that Baby onBoard has no access to or control over these cookies that are used by third-party advertisers.
 
 Third Party Privacy Policies
-Baby onBoard's Privacy Policy does not apply to other advertisers or websites. Thus, we are advising you to consult the respective Privacy Policies of these third-party ad servers for more detailed information. It may include their practices and instructions about how to opt-out of certain options.
+Baby onBoard&apos s Privacy Policy does not apply to other advertisers or websites. Thus, we are advising you to consult the respective Privacy Policies of these third-party ad servers for more detailed information. It may include their practices and instructions about how to opt-out of certain options.
 
-You can choose to disable cookies through your individual browser options. To know more detailed information about cookie management with specific web browsers, it can be found at the browsers' respective websites.
+You can choose to disable cookies through your individual browser options. To know more detailed information about cookie management with specific web browsers, it can be found at the browsers&apos respective websites.
 
 CCPA Privacy Rights (Do Not Sell My Personal Information)
 Under the CCPA, among other rights, California consumers have the right to:
 
-Request that a business that collects a consumer's personal data disclose the categories and specific pieces of personal data that a business has collected about consumers.
+Request that a business that collects a consumer&apos s personal data disclose the categories and specific pieces of personal data that a business has collected about consumers.
 
 Request that a business delete any personal data about the consumer that a business has collected.
 
-Request that a business that sells a consumer's personal data, not sell the consumer's personal data.
+Request that a business that sells a consumer&apos s personal data, not sell the consumer&apos s personal data.
 
 If you make a request, we have one month to respond to you. If you would like to exercise any of these rights, please contact us.
 
@@ -85,7 +85,7 @@ The right to data portability – You have the right to request that we transfer
 
 If you make a request, we have one month to respond to you. If you would like to exercise any of these rights, please contact us.
 
-Children's Information
+Children&apos s Information
 Another part of our priority is adding protection for children while using the internet. We encourage parents and guardians to observe, participate in, and/or monitor and guide their online activity.
 
 Baby onBoard does not knowingly collect any Personal Identifiable Information from children under the age of 13. If you think that your child provided this kind of information on our website, we strongly encourage you to contact us immediately and we will do our best efforts to promptly remove such information from our records.</p>

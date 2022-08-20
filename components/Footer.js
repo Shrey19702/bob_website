@@ -1,3 +1,4 @@
+import Link from 'next/link'
 
 const Footer = () => {
     return ( 
@@ -8,15 +9,21 @@ const Footer = () => {
             <span>Get connected with us on social networks:</span>
           </div>
           <div className="flex justify-center">
-            <a href="#!" className="mr-6 text-gray-600">
-              <Facebooksvg/>
-            </a>
-            <a href="#!" className="mr-6 text-gray-600">
-              <Googlesvg/>
-            </a>
-            <a href="#!" className="mr-6 text-gray-600">
-              <Instagramsvg/>
-            </a>
+            <Link href="https://www.facebook.com/">
+              <a className="mr-6 text-gray-600"> 
+                <Facebooksvg/>
+              </a>
+            </Link>
+            <Link href="https://www.google.com/">
+              <a className="mr-6 text-gray-600"> 
+                <Googlesvg/>
+              </a>
+            </Link>
+            <Link href="https://www.instagram.com/">
+              <a className="mr-6 text-gray-600"> 
+                <Instagramsvg/>
+              </a>
+            </Link>
           
           </div>
         </div>
@@ -33,7 +40,7 @@ const Footer = () => {
                   items-center
                   justify-center
                 ">
-                <img src="/logo.png" className=" h-16" />
+                <img src="/logo.png" alt="company logo" className=" h-16" />
               </div>
               <p>
                 Here you can use rows and columns to organize your footer content. Lorem ipsum dolor
@@ -46,22 +53,40 @@ const Footer = () => {
               <h6 className="uppercase font-semibold mb-4 flex justify-center ">Useful links</h6>
               <div className="grid grid-cols-2 grid-rows-3">
               <p className="mb-4">
-                <a href="/aboutUs" className="text-gray-600 ">About Us</a>
+                <Link href="/aboutUs">
+                  <a className="text-gray-600 ">About Us</a>
+                </Link>
               </p>
               <p className="mb-4">
-                <a href="/contactForm" className="text-gray-600">Contact Us</a>
+                <Link href="/contactForm">
+                  <a className="text-gray-600">
+                    Contact Us
+                  </a>
+                </Link>
               </p>
+              {/* <p className="mb-4"> */}
+                {/* <a href="#!" className="text-gray-600">Shipping Info</a> */}
+              {/* </p> */}
               <p className="mb-4">
-                <a href="#!" className="text-gray-600">Shipping Info</a>
-              </p>
-              <p className="mb-4">
-                <a href="/privacyPolicy" className="text-gray-600">Privacy Policys</a>
+                <Link href="/privacyPolicy">
+                  <a className="text-gray-600">
+                    Privacy Policy
+                  </a>
+                </Link>
               </p >
               <p className="mb-4">
-                <a href="/tac" className="text-gray-600">Terms and Conditions</a>
+                <Link href="/tac">
+                  <a className="text-gray-600">
+                    Terms and Conditions
+                  </a>
+                </Link>
               </p>
               <p className="mb-4">
-                <a href="/tos" className="text-gray-600">Terms of Service</a>
+                <Link href="/tos">
+                  <a className="text-gray-600">
+                    Terms of Service
+                  </a>
+                </Link>
               </p>
               </div>  
             </div>

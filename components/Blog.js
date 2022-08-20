@@ -1,3 +1,4 @@
+import Link from 'next/link'
 
 const Blog = ()=>{
     return(
@@ -19,7 +20,11 @@ const Blog = ()=>{
                     <span>Designed by experts, inspired by real life</span>
                   </h2>
                   <p className="max-w-md font-light mb-8">The house by the pond cras ornare, some chords for a three moments, like a sense of truth.</p>
-                  <a className="inline-block w-full sm:w-auto px-7 py-4 text-center font-medium bg-sky-500 hover:bg-sky-600 text-white rounded transition duration-250" href="/blog">Read More</a>
+                  <Link href="/blog">
+                    <a className="inline-block w-full sm:w-auto px-7 py-4 text-center font-medium bg-sky-500 hover:bg-sky-600 text-white rounded transition duration-250">
+                      Read More
+                    </a>
+                  </Link>
                 </div>
               </div>
             </div>

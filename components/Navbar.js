@@ -170,10 +170,10 @@ export default function Navbar() {
                                       <div>
                                         <div className="flex justify-between text-base font-medium text-gray-900">
                                           <h3>
-                                            <a href={product.href}>
+                                            <Link href={product.href? product.href : "#"}>
                                               {" "}
                                               {product.name}{" "}
-                                            </a>
+                                            </Link>
                                           </h3>
                                           <p className="ml-4">
                                             {product.discount.applicable? 
@@ -230,12 +230,11 @@ export default function Navbar() {
                           Shipping and taxes calculated at checkout.
                         </p>
                         <div className="mt-6">
-                          <a
-                            href="/checkout"
-                            className="flex items-center justify-center rounded-md border border-transparent bg-sky-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-sky-700"
-                          >
-                            Checkout
-                          </a>
+                          <Link href="/checkout">
+                            <a className="flex items-center justify-center rounded-md border border-transparent bg-sky-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-sky-700">
+                              Checkout
+                            </a>
+                          </Link>
                         </div>
                         <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                           <p>
@@ -291,45 +290,56 @@ export default function Navbar() {
                 {/* Left side of navbar */}
                 <div className="flex-1 flex items-center justify-start sm:items-stretch ml-8 sm:m-0">
                   <div className="flex-shrink-0 flex items-center">
-                    <a href="/">
+                    <Link href="/">
                       <Image
                         src={logo}
                         alt="Logo"
                         height={64}
                         width={205}
                       />
-                    </a>
+                    </Link>
                   </div>
                   <div className="hidden my-auto sm:block sm:ml-6">
                     {/* navigation elements */}
                     <div className="flex space-x-4">
-                      {navigation.map((item) => (
-                        <a
-                          key={item.name}
-                          href={item.href}
-                          className={
-                            (item.current
-                              ? " bg-zinc-100 text-gray-800 "
-                              : "text-gray-800 hover:bg-zinc-200 ") +
-                            "px-3 py-2 rounded-md text-lg font-medium transition"
-                          }
-                          aria-current={item.current ? "page" : undefined}
+                      {navigation.map((item, idx) => (
+                        <Link
+                          key={idx}
+                          href={item.href? item.href : "#"}
                         >
-                          {item.name}
-                        </a>
+                          <a 
+                            className={
+                              (item.current
+                                ? " bg-zinc-100 text-gray-800 "
+                                : "text-gray-800 hover:bg-zinc-200 ") +
+                              "px-3 py-2 rounded-md text-lg font-medium transition"
+                            }
+                            aria-current={item.current ? "page" : undefined}
+                          >{item.name}</a>
+                        </Link>
                       ))}
                       {/* categories */}
-                      <a className="text-gray-800 peer hover:bg-zinc-200 px-3 py-2 rounded-md text-lg font-medium transition cursor-pointer">
-                        <span>Categories</span>
+                      <a className=" text-gray-800 peer hover:bg-zinc-200 px-3 py-2 rounded-md text-lg font-medium transition cursor-pointer">
+                        Categories
                       </a>
                       {cgList &&
                         (<div className={` transition-all hover:grid peer-hover:opacity-100 hover:opacity-100 peer-hover:grid hover:grid-row-${cgList.length-1} overflow-y-auto max-h-[95vh] w-7/12 gap-2 hidden opacity-0 absolute left-0 top-[54px] bg-gray-50 rounded-md shadow-lg py-8 px-10`} >
                           {cgList.map(x=>(
                             <div key={x.name} className="flex items-center  flex-wrap">
-                              <a href={`${process.env.BASE_URL}collection/${x.name.replace(/\s+/g, '-')}`} className=" transition w-full text-black p-2 font-bold opacity-95 hover:opacity-100 rounded-lg "><span className="text-xl">{x.name}</span></a>
+                              <Link href={`${process.env.BASE_URL}collection/${x.name.replace(/\s+/g, '-')}`}>
+                                <a className=" transition w-full text-black p-2 font-bold opacity-95 hover:opacity-100 rounded-lg ">
+                                  <span className="text-xl">
+                                    {x.name}
+                                  </span>
+                                </a>
+                              </Link>
                               {
                                 x.categories.map(y=>(
-                                  <a href={`${process.env.BASE_URL}collection/${x.name.replace(/\s+/g, '-')}#${y.replace(/\s+/g, '-')}`} className=" max-w-[50%] transition text-white hover:opacity-90 rounded-3xl text-center bg-sky-300 px-3 py-2 m-2" key={y} ><span>{y}</span></a>
+                                  <Link href={`${process.env.BASE_URL}collection/${x.name.replace(/\s+/g, '-')}#${y.replace(/\s+/g, '-')}`} key={y} >
+                                    <a className=" max-w-[50%] transition text-white hover:opacity-90 rounded-3xl text-center bg-sky-300 px-3 py-2 m-2">
+                                      <span>{y}</span>
+                                    </a>
+                                  </Link>
                                 ))
                               }
                             </div>
@@ -465,61 +475,65 @@ function Userlogin() {
             <Menu.Items className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-2 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
               <Menu.Item>
                 {({ active }) => (
-                  <a
-                    href="/profile"
-                    className={
-                      (active ? "bg-gray-100 " : " ") +
-                      "block px-4 py-2 text-sm text-gray-800"
-                    }
-                  >
-                    Your Profile
-                  </a>
-                )}
-              </Menu.Item>
-              <Menu.Item>
-                {({ active }) => (
-                  <a
-                    href="/wishlist"
-                    className={
-                      (active ? "bg-gray-100 " : " ") +
-                      "block px-4 py-2 text-sm text-gray-800"
-                    }
-                  >
-                    Wishlist
-                  </a>
-                )}
-              </Menu.Item>
-              <Menu.Item>
-                {({ active }) => (
-                  <a
-                    href="/orderHistory"
-                    className={
-                      (active ? "bg-gray-100 " : " ") +
-                      "block px-4 py-2 text-sm text-gray-800"
-                    }
-                  >
-                   Order history
-                  </a>
-                )}
-              </Menu.Item>
-              { isAdmin &&
-                <Menu.Item>
-                  {({ active }) => (
+                  <Link href="/profile">
                     <a
-                      href="/admin"
                       className={
                         (active ? "bg-gray-100 " : " ") +
                         "block px-4 py-2 text-sm text-gray-800"
                       }
                     >
-                      Admin
+                      Your Profile
                     </a>
+                  </Link>
+                )}
+              </Menu.Item>
+              <Menu.Item>
+                {({ active }) => (
+                  <Link href="/wishlist">
+                    <a
+                      className={
+                        (active ? "bg-gray-100 " : " ") +
+                        "block px-4 py-2 text-sm text-gray-800"
+                      }
+                    >
+                      Wishlist
+                    </a>
+                  </Link>
+                )}
+              </Menu.Item>
+              <Menu.Item>
+                {({ active }) => (
+                  <Link href="/orderHistory">
+                    <a
+                      className={
+                        (active ? "bg-gray-100 " : " ") +
+                        "block px-4 py-2 text-sm text-gray-800"
+                      }
+                    >
+                      Order history
+                    </a>
+                  </Link>
+                )}
+              </Menu.Item>
+              { isAdmin &&
+                <Menu.Item>
+                  {({ active }) => (
+                    <Link href="/admin">
+                      <a
+                        className={
+                          (active ? "bg-gray-100 " : " ") +
+                          "block px-4 py-2 text-sm text-gray-800"
+                        }
+                      >
+                        Admin
+                      </a>
+                    </Link>
                   )}
                 </Menu.Item>
               }
               <Menu.Item>
                 {({ active }) => (
-                  <a
+                  <div
                     onClick={() => signOut()}
                     className={
                       (active ? "bg-gray-100 " : " ") +
@@ -527,7 +541,7 @@ function Userlogin() {
                     }
                   >
                     Sign out
-                  </a>
+                  </div>
                 )}
               </Menu.Item>
             </Menu.Items>

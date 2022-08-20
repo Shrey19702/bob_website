@@ -15,7 +15,7 @@ export default function contactForm() {
             <p className="text-base text-body-color leading-relaxed mb-9">
               We are always open for suggestions and to help in case of any
               inconvinience, so send us a mail or fill this form and send a
-              message to let us know and we'll handle the rest.
+              message to let us know and we &apos ll handle the rest.
             </p>
             <div className="flex mb-8 max-w-[370px] w-full">
               <div

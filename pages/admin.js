@@ -9,7 +9,7 @@ import DeleteBlog from '../components/admin_pages/DeleteBlog';
 import ViewContacts from '../components/admin_pages/ViewContacts';
 import Consultations from '../components/admin_pages/Consultations';
 
-const admin = () => {
+const Admin = () => {
 
     const { data: session, status } = useSession();
     let [auth,setAuth] = useState(false)
@@ -105,4 +105,4 @@ const admin = () => {
     }
 }
 
-export default admin;
+export default Admin;

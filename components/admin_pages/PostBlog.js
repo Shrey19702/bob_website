@@ -37,7 +37,7 @@ export default function PostBlog() {
 
 
             <div className='flex flex-col py-8'>
-          <label htmlFor="title">Enter the Author's Name</label>
+          <label htmlFor="title">Enter the Author&apos s Name</label>
           <input className='' placeholder="Enter the Author's Name"  type="text" id="author" name='author' value={author}  onChange={(e)=>{
           setAuthor(e.target.value)
         }} />

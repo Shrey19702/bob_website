@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { useSession } from "next-auth/react"
 import Image from "next/image";
 
-const wishList = ()=>{
+const WishList = ()=>{
     const { data: session, status } = useSession();
     const [list, setList] = useState(null);
     
@@ -64,4 +64,4 @@ const wishList = ()=>{
       )
     }
 }
-export default wishList
+export default WishList

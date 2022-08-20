@@ -18,6 +18,7 @@ export default function Store() {
     setcart(state.cart);
   }
   useEffect(()=>{
+    console.log("Hello F");
     setcart(state.cart);
   })
 
