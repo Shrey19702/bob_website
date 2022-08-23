@@ -17,13 +17,14 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-export default function ProductPage({ f_product }) {
-  f_product = JSON.parse(f_product);
+export default function ProductPage({f_product}) {
+  // var f_product = JSON.parse(found_product);
   const { state, dispatch } = useContext(CartContext);  //for adding products to cart
   const { data: session, status } = useSession();
 
   const [selectedColorIdx, setSelectedColorIdx] = useState(0)
-  const [selectedSize, setSelectedSize] = useState(f_product.sizes[0].size)
+  // const [selectedSize, setSelectedSize] = useState(f_product.sizes[0].size)
+  const [selectedSize, setSelectedSize] = useState(null)
 
   const [images,setImages] = useState(null);
   const [currImg,setCurrImg] = useState(null);
@@ -33,9 +34,9 @@ export default function ProductPage({ f_product }) {
 
   const [emblaRef, emblaApi] = useEmblaCarousel();
   
-  useEffect(()=>{
+  useEffect(()=>{ //get user and wishlist
     (async()=>{
-      if(session && !user){
+      if(status=='authenticated' && !user){
         const response = await fetch(`${process.env.BASE_URL}api/user/getUserByEmail`,{
           method:'POST',
           body: JSON.stringify({email: session.user.email})
@@ -47,17 +48,20 @@ export default function ProductPage({ f_product }) {
         setUser(res.body);
       }
     })();
+    if(selectedSize==null)
+      setSelectedSize(f_product.sizes[0].size);
   });
 
-  useEffect(()=>{
+  useEffect(()=>{ // show images for the requested color
     setImages(f_product.colors[selectedColorIdx].images );
   },[selectedColorIdx]);
 
-  useEffect(()=>{
+  useEffect(()=>{ //show the first image as the current image if a new image set is selected
     if(images)
       setCurrImg(images[0]);
   },[images]);
 
+  //embla carousel buttons
   const scrollPrev = useCallback(() => {
     if (emblaApi) emblaApi.scrollPrev()
   }, [emblaApi])
@@ -67,8 +71,7 @@ export default function ProductPage({ f_product }) {
   }, [emblaApi])
 
   const addToCart = (product) => {  //add to cart button 
-    let req_product = state.cart.filter((element) => (element.id == product._id));
-    // console.log(selectedColor)
+    let req_product = state.cart.filter((element) => { return ((element.id == product._id) && (element.color == f_product.colors[selectedColorIdx].color) && (element.size == selectedSize)) });
     if (req_product.length === 0) { //if this product is not in the cart 
       let productData = {
         id: product._id,
@@ -81,11 +84,9 @@ export default function ProductPage({ f_product }) {
         discount: product.discount,
         quantity: 1
       };
-      // console.log(productData);
       dispatch({ type: "ADD_NEW", productData });
     }
     else { //this product already exist in the cart
-      // let  = (state.cart.filter((element)=> (element.id == product._id)));
       let curr_quantity = req_product[0].quantity;
       let productID = product._id;
       dispatch({ type: "ADD_TO_EXISTING", productID, curr_quantity })
@@ -118,7 +119,7 @@ export default function ProductPage({ f_product }) {
 
   return (
     <div className="bg-gray-50">
-      <div className="py-32">
+      <div className="pt-32">
         {/* Breadcrumbs */}
         <nav aria-label="product" className=' pb-8' >
           <ol role="list" className="max-w-2xl px-4 flex items-center space-x-2 sm:px-6 lg:max-w-7xl lg:px-40">
@@ -167,7 +168,7 @@ export default function ProductPage({ f_product }) {
         </nav>
 
         {/* product image options discription  */}
-        <div className="mt-3 max-w-full mx-10 sm:px-6 justify-between md:justify-center lg:px-8 flex flex-wrap">
+        <div className="mt-3 max-w-full mx-auto sm:px-6 justify-between md:justify-center lg:px-1 flex flex-wrap">
 
           {/* product image */}
           <div className=" h-fit select-none">
@@ -423,7 +424,7 @@ export default function ProductPage({ f_product }) {
         
         {/* Similar products */}
         <div className="">
-          <Products name={f_product.category} heading={" More products of this category"}/>
+          <Products name={f_product.category} heading={" products in this category"}/>
         </div>
       </div>
     </div>
@@ -432,22 +433,28 @@ export default function ProductPage({ f_product }) {
 }
 
 export const getStaticProps = async (context) => {  //can only send JSON or String.. :(
-  // console.log("###Context is :", context);
-  let data = await ProductsModel.findById(context.params.id);
-  let f_product = JSON.stringify(data);
+  // const res = await fetch(`${process.env.BASE_URL}api/products/getProductById`, {method: 'POST', body: JSON.stringify({id: context.params.id})} ); //ProductsModel.find({});
+  // const fetch_data = await res.json();
+  // const f_product = fetch_data.body;
+
+  const data = await ProductsModel.findById(context.params.id);
+  // let f_product = JSON.stringify(data);
+  // console.log("DATA RECIEVED###>>>",f_product);
+  const f_product = JSON.parse(JSON.stringify(data));
   return {
-    props: { f_product }
+    props: {f_product}
   }
 }
 
-export async function getStaticPaths() {  //can only send JSON or String.. :(
+export const getStaticPaths = async ()=>{  //can only send JSON or String.. :(
+  // const res= await fetch(`${process.env.BASE_URL}api/products/Products`); //ProductsModel.find({});
+  // const fetch_data = await res.json();
+  // const all_products = fetch_data.body;
 
-  let all_products = await ProductsModel.find({});
-
+  const all_products = await ProductsModel.find({});  
+  // console.log(`------------------->`,all_products[0]._id);
   if (all_products) {
-    const ids = all_products.map((product) => product.id)
-    const paths = ids.map((id) => ({ params: { id: id.toString() } }))
-    // console.log("###paths are :",paths)
+    const paths = all_products.map((product) => ({ params: { id: product._id.toString() } }));
     return { paths, fallback: true }
   }
 

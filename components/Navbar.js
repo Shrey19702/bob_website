@@ -23,9 +23,9 @@ export default function Navbar() {
   
   const [open, setOpen] = useState(false); //Cart's open close state
   //Cart functions
-  const handleReduce= (productID, curr_quantity) => {
+  const handleReduce= (productData, curr_quantity) => {
     // console.log('reducing quantity from: ', curr_quantity);
-    dispatch({ type: "REDUCE_QUANTITY", productID, curr_quantity});
+    dispatch({ type: "REDUCE_QUANTITY", productData, curr_quantity});
     setcart(state.cart);
   }
   //Cart's useEffect
@@ -63,7 +63,7 @@ export default function Navbar() {
   const changeNavbarColor = () => {
     if (
       window.location.pathname !== "/" ||
-      window.scrollY >= window.innerHeight - 64
+      window.scrollY >= 64
     ) {
       setColorchange(true);
     } else {
@@ -87,6 +87,18 @@ export default function Navbar() {
     if (typeof window !== "undefined") {
       // console.log(window.location.pathname);
       changeNavbarColor();
+      if(window.location.pathname == '/blog'){
+        navigation[0].current=false;
+        navigation[1].current=true;
+      }
+      else if(window.location.pathname == '/'){
+        navigation[0].current=true;
+        navigation[1].current=false;
+      }
+      else{
+        navigation[0].current=false;
+        navigation[1].current=false;  
+      }
     }
     return () => {};
   });
@@ -152,9 +164,9 @@ export default function Navbar() {
                               className="-my-6 divide-y divide-gray-200"
                             >
                               {cart.length==0 && (<div className=" m-auto w-fit py-[20vh] font-semibold">Cart is Empty</div>)}
-                              {cart.map((product) => {
+                              {cart.map((product, idx) => {
                                 return (
-                                  <li key={product.id} className="flex py-6">
+                                  <li key={idx} className="flex py-6">
                                     <div className="h-24 w-24 bg-sky-100 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                                     <Image
                                       src={product.image}
@@ -171,8 +183,10 @@ export default function Navbar() {
                                         <div className="flex justify-between text-base font-medium text-gray-900">
                                           <h3>
                                             <Link href={product.href? product.href : "#"}>
-                                              {" "}
-                                              {product.name}{" "}
+                                              <>
+                                                {" "}
+                                                {product.name}{" "}
+                                              </>
                                             </Link>
                                           </h3>
                                           <p className="ml-4">
@@ -199,7 +213,7 @@ export default function Navbar() {
 
                                         <div className="flex">
                                           <button
-                                            onClick={() => handleReduce(product.id, product.quantity)}
+                                            onClick={() => handleReduce(product, product.quantity)}
                                             type="button"
                                             className="font-medium text-sky-600 hover:text-sky-500"
                                           >
@@ -291,12 +305,14 @@ export default function Navbar() {
                 <div className="flex-1 flex items-center justify-start sm:items-stretch ml-8 sm:m-0">
                   <div className="flex-shrink-0 flex items-center">
                     <Link href="/">
-                      <Image
-                        src={logo}
-                        alt="Logo"
-                        height={64}
-                        width={205}
-                      />
+                      <a className=" cursor-pointer">
+                        <Image
+                          src={logo}
+                          alt="Logo"
+                          height={64}
+                          width={205}
+                        />
+                      </a>
                     </Link>
                   </div>
                   <div className="hidden my-auto sm:block sm:ml-6">
@@ -371,7 +387,7 @@ export default function Navbar() {
               </div>
             </div>
             {/* for mobile type  */}
-            <Disclosure.Panel className="sm:hidden">
+            <Disclosure.Panel className="sm:hidden opacity-90 bg-slate-700">
               <div className="px-2 pt-2 pb-3 space-y-1">
                 {navigation.map((item) => (
                   <Disclosure.Button
@@ -381,8 +397,6 @@ export default function Navbar() {
                     className={
                       (item.current
                         ? "bg-gray-900 text-white"
-                        : colorChange
-                        ? "text-gray-900 hover:bg-gray-900 hover:text-gray-100"
                         : "text-white hover:bg-gray-900 hover:text-gray-200") +
                       " block px-3 py-2 rounded-md text-base font-medium"
                     }
@@ -395,12 +409,7 @@ export default function Navbar() {
                     key={'Category'}
                     as="a"
                     href='#'
-                    className={
-                      (colorChange
-                        ? "text-gray-900 hover:bg-gray-900 hover:text-gray-100"
-                        : "text-white hover:bg-gray-900 hover:text-gray-200") +
-                      " block px-3 py-2 rounded-md text-base font-medium"
-                    }
+                    className="text-white hover:bg-gray-900 hover:text-gray-200 block px-3 py-2 rounded-md text-base font-medium"
                   >
                     Category
                   </Disclosure.Button>

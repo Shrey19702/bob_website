@@ -9,7 +9,7 @@ const reducer = (state, action) => {
   switch (action.type) {
     case "ADD_NEW": //add new product
       // clone = state;
-      let found = clone.cart.find((element)=>(element.id===action.productData.id)); //check if it already existed
+      let found = clone.cart.find((element)=>(element.id===action.productData.id && element.color==action.productData.color && element.size==action.productData.size)); //check if it already existed
       if(!found)
         clone.cart = [...state.cart, action.productData]
       localStorage.setItem('Cart',  JSON.stringify(clone));
@@ -30,9 +30,9 @@ const reducer = (state, action) => {
     case "REDUCE_QUANTITY": //dec. quantity of a product
       // clone = state;
       clone.cart.forEach((element)=>{
-        if( (element.id == action.productID) && (element.quantity == action.curr_quantity) ){ //dec. only if it has same id and same quanitiy was there
+        if( (element.id===action.productData.id && element.color==action.productData.color && element.size==action.productData.size) && (element.quantity == action.curr_quantity) ){ //dec. only if it has same id and same quanitiy was there
+          // console.log(element.quantity, action.productData.quantity);
           element.quantity-=1;
-          // console.log(element.quantity);
         }
       })
       clone.cart = clone.cart.filter((element)=>(element.quantity>0));

@@ -8,11 +8,11 @@ const getProductList = async (req, res)=>{
     if(req.method == 'GET'){
         try{
             
-            let f_Product = await Product.find();
+            let f_Product = await Product.find({});
             if (f_Product) {
                 res.status(201).json({
                     success:true,
-                    message: "Requested product found",
+                    message: "Requested products found",
                     body: f_Product
                 });
             } else {

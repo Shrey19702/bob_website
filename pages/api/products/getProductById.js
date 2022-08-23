@@ -4,10 +4,19 @@ import Product from '../../../models/productModel';
 connectDB();
 
 const getProductById = async (req, res)=>{
-  console.log(req.body);
+    let req_id;
+    if(typeof(req.body)==='string'){
+        let x = JSON.parse(req.body);
+        req_id = x.id;
+    }
+    else
+        req_id=req.body.id;
+
+    // console.log('->>>>',typeof(req.body));
     if(req.method == 'POST'){
         try{
-            let f_Product = await Product.findById(req.body.id);
+
+            let f_Product = await Product.findById(req_id);
             if (f_Product) {
                 console.log(f_Product);
                 res.status(201).json({
