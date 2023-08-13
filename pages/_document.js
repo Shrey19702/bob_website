@@ -5,7 +5,10 @@ class MyDocument extends Document {
         return (
             <Html>
                 <Head>
+                    {/* icon */}
+                    {/* <link rel="shortcut icon" href="/logo_img.png" /> */}
                     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+                    <title>Groceries store</title>
                 </Head>
                 <body>
                     <Main />

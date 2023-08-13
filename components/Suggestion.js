@@ -15,13 +15,15 @@ const Suggestion = ()=>{
           <div className="border-[1px] hover:border-black  cursor-pointer absolute px-1 top-1 right-1 text-xl hover:font-semibold "
             onClick={()=>setHidden(true)} 
           >x</div>
-          <Link href="/consultDetail" className=" leading-6 transition hover:underline absolute mt-6 mx-2">
-            <div className="p-2">
-              Book child consultancy
-              <span className=" text-3xl">
-                🏥
-              </span>
-            </div>
+          <Link href="/consultDetail">
+            <a className=" cursor-pointer pt-3 leading-6 transition hover:underline absolute">
+              <div className="p-2">
+                Book child consultancy
+                <span className=" text-3xl">
+                  🏥
+                </span>
+              </div>
+            </a>
           </Link>
        </div>
     </>

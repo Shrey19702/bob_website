@@ -23,12 +23,12 @@ connectDB();
     // console.log(name);
     if(productList){
       return (
-        <div className="bg-white">
+        <div id='product-list' className="bg-white">
           <div id={name.replace(/\s+/g, '-')} className="max-w-2xl mx-auto py-28 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
             {heading? 
-              <h2 className="text-2xl font-extrabold tracking-tight text-gray-900">{heading}</h2>              
+              <h2 className="text-2xl font-extrabold tracking-tight text-yellow-500">{heading}</h2>              
               : 
-              <h2 className="text-2xl font-extrabold tracking-tight text-gray-900">{name}</h2>
+              <h2 className="text-2xl font-extrabold tracking-tight text-yellow-500">{name}</h2>
             }
     
             <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
@@ -36,7 +36,7 @@ connectDB();
                 if(Limit>idx){
                   return (
                     <div key={idx} className="transition rounded-sm group relative shadow-sm hover:shadow-md px-2 py-4">
-                      <div className="transition-all relative w-full min-h-80 bg-sky-100 aspect-w-1 aspect-h-1 rounded-md group-hover:opacity-90 overflow-hidden h-80 aspect-none">
+                      <div className="transition-all relative w-full min-h-80 bg-green-50 aspect-w-1 aspect-h-1 rounded-md group-hover:opacity-90 overflow-hidden h-80 aspect-none">
                         {/* <img
                           src={product.colors[0].images[0]}
                           alt={product.colors[0].images[0]}
@@ -62,10 +62,11 @@ connectDB();
                           {/* <p className="mt-1 text-sm text-gray-500">{product.colors[0].color}</p> */}
                         </div>
                         <p className="text-sm font-medium text-gray-700">
+                        ₹
                           {product.discount &&product.discount.applicable ? 
                             (
                               <>
-                                <del className=' line-through decoration-[3px] decoration-red-600 font-thin'>{product.price}</del>&nbsp;&nbsp;
+                                <del className=' line-through decoration-[3px] decoration-red-600 px-1'>{product.price}</del>&nbsp;&nbsp;
                                 <span className=' font-semibold'>{product.discount.newAmount}</span>
                               </>
                             ) : product.price }

@@ -45,11 +45,11 @@ export const EmblaCarousel = () => {
 
   return (
     <div className="embla overflow-hidden h-[80vh] min-h-[520px] max-h-[600px] py-12 relative bg-white">
-      <h2 className=" text-3xl pb-5 text-center font-extrabold text-gray-900">Trending Products</h2>
-      <button className="embla__prev transition flex justify-center items-center bg-pink-200 hover:bg-pink-300 h-12 w-12 rounded-full text-gray-900 absolute top-1/3 left-3 z-10 " onClick={scrollPrev}>
+      <h2 className=" text-2xl pb-5 text-center font-bold text-yellow-500">Trending </h2>
+      <button className="embla__prev transition flex justify-center items-center bg-yellow-500 hover:bg-yellow-400 h-12 w-12 rounded-full text-gray-900 absolute top-1/3 left-3 z-10 " onClick={scrollPrev}>
         <Prevsvg/>
       </button>
-      <button className="embla__next flex transition justify-center items-center bg-pink-200 hover:bg-pink-200 h-12 w-12 rounded-full text-gray-900 absolute top-1/3 right-3 z-10" onClick={scrollNext}>
+      <button className="embla__next flex transition justify-center items-center bg-yellow-500 hover:bg-yellow-400 h-12 w-12 rounded-full text-gray-900 absolute top-1/3 right-3 z-10" onClick={scrollNext}>
         <Nextsvg/>
       </button>
       <div className="embla__viewport" ref={products?emblaRef:null}>
@@ -57,7 +57,7 @@ export const EmblaCarousel = () => {
 
           {products? products.map((product, idx) => (
             <div key={idx} className="embla__slide group relative flex-[0_0_320px] m-4 h-[50vh] max-h-[400px]">
-              <div className="transition-all relative w-full min-h-80 bg-sky-100 rounded-md group-hover:opacity-90 overflow-hidden h-80 aspect-none">
+              <div className="transition-all relative w-full min-h-80 bg-green-50 rounded-md group-hover:opacity-90 overflow-hidden h-80 aspect-none">
                 {/* <img  
                   src={product.colors[0].images[0]}
                   alt={product.name}
@@ -81,7 +81,14 @@ export const EmblaCarousel = () => {
                   </h3>
                   {/* <p className="mt-1 text-sm text-gray-500">{product.color}</p> */}
                 </div>
-                <p className="text-sm font-medium text-gray-900">{product.price}</p>
+                <p className="text-sm font-medium text-gray-900">₹ {
+                  product.discount.applicable ? 
+                  <span>
+                    <del className=' line-through decoration-[3px] decoration-red-600 px-1'>{product.price}</del>
+                    <span className=' font-semibold' >{product.discount.newAmount}</span>
+                  </span>
+                  : <span>{product.price}</span>
+                }</p>
               </div>
             </div>
             )): <div className=' m-auto'>Loading...</div>}

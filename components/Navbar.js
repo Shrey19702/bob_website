@@ -10,8 +10,8 @@ import Link from "next/link";
 
 const navigation = [
   { name: "Home", href: "/", current: true },
-  // { name: 'Categories',href: '#collection', current: false },
   { name: "Blogs", href: "/blog", current: false },
+  { name: 'Categories',href: '#a', current: false },
 ];
 
 export default function Navbar() {
@@ -21,7 +21,7 @@ export default function Navbar() {
   const [total, setTotal] = useState(0); //subtatal of items
   const [discounted, setDiscounted] = useState(0); //subtatal of items
   
-  const [open, setOpen] = useState(false); //Cart's open close state
+  const [cartopen, setcartOpen] = useState(false); //Cart's open close state
   //Cart functions
   const handleReduce= (productData, curr_quantity) => {
     // console.log('reducing quantity from: ', curr_quantity);
@@ -57,6 +57,7 @@ export default function Navbar() {
   //Navbar States
   const [colorChange, setColorchange] = useState(false); //colorchange: true->white, false->transparent
   const [cgList, setcgList] = useState(null); //list of collections and their categories
+  const [cgopen, setcgopen] = useState(false); //for open close cg box
   //cart's sum adder
   // const [sum, setSum] = useState(0);
   //Navbar Functions
@@ -108,8 +109,8 @@ export default function Navbar() {
   return (
     <div>
       {/* Cart */}
-      <Transition.Root show={open} as="div">
-        <Dialog as="div" className="relative z-40" onClose={setOpen}>
+      <Transition.Root show={cartopen} as="div">
+        <Dialog as="div" className="relative z-40" onClose={setcartOpen}>
           <Transition.Child
             as={Fragment}
             enter="ease-in-out duration-500"
@@ -146,7 +147,7 @@ export default function Navbar() {
                             <button
                               type="button"
                               className="-m-2 p-2 text-gray-400 cursor-pointer hover:text-gray-500"
-                              onClick={() => setOpen(false)}
+                              onClick={() => setcartOpen(false)}
                             >
                               <span className="sr-only">Close panel</span>
                               <XIcon
@@ -245,7 +246,7 @@ export default function Navbar() {
                         </p>
                         <div className="mt-6">
                           <Link href="/checkout">
-                            <a className="flex items-center justify-center rounded-md border border-transparent bg-sky-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-sky-700">
+                            <a className="flex items-center justify-center rounded-md border border-transparent bg-green-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-green-700">
                               Checkout
                             </a>
                           </Link>
@@ -255,8 +256,8 @@ export default function Navbar() {
                             or{" "}
                             <button
                               type="button"
-                              className="font-medium text-sky-600 hover:text-sky-500"
-                              onClick={() => setOpen(false)}
+                              className="font-medium text-green-700 hover:text-green-500"
+                              onClick={() => setcartOpen(false)}
                             >
                               Continue Shopping
                               <span aria-hidden="true"> &rarr;</span>
@@ -277,24 +278,20 @@ export default function Navbar() {
       <Disclosure
         as="nav"
         className={` z-30 ${
-          colorChange ? "bg-white shadow-md" : "bg-transparent"
+          colorChange ? "bg-[rgba(255,255,255,0.8)] backdrop-blur-md shadow-md" : "bg-transparent"
         } fixed w-full transition-all`}
       >
-        {({ open }) => (
+        {({ cartopen }) => (
           <>
             <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
               <div className="relative flex items-center justify-between h-16">
                 {/* Mobile menu button*/}
                 <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                   <Disclosure.Button
-                    className={`inline-flex items-center justify-center p-2 rounded-md ${
-                      colorChange
-                        ? "text-gray-800 focus:ring-black"
-                        : "text-white focus:ring-white"
-                    } focus:outline-none focus:ring-2 focus:ring-inset `}
+                    className="inline-flex items-center justify-center p-2 rounded-md text-gray-800 focus:outline-none focus:ring-2 focus:ring-inset"
                   >
                     <span className="sr-only">Open main menu</span>
-                    {open ? (
+                    {cartopen ? (
                       <XIcon className="block h-6 w-6" aria-hidden="true" />
                     ) : (
                       <MenuIcon className="block h-6 w-6" aria-hidden="true" />
@@ -303,15 +300,10 @@ export default function Navbar() {
                 </div>
                 {/* Left side of navbar */}
                 <div className="flex-1 flex items-center justify-start sm:items-stretch ml-8 sm:m-0">
-                  <div className="flex-shrink-0 flex items-center">
+                  <div className="flex-shrink-0 flex items-center pl-5">
                     <Link href="/">
                       <a className=" cursor-pointer">
-                        <Image
-                          src={logo}
-                          alt="Logo"
-                          height={64}
-                          width={205}
-                        />
+                        <span className=" text-xl font-semibold"> <span className=" text-green-700">Groceries</span> <span className=" text-yellow-600">Store</span></span>
                       </a>
                     </Link>
                   </div>
@@ -321,7 +313,7 @@ export default function Navbar() {
                       {navigation.map((item, idx) => (
                         <Link
                           key={idx}
-                          href={item.href? item.href : "#"}
+                          href={item.href}
                         >
                           <a 
                             className={
@@ -330,39 +322,11 @@ export default function Navbar() {
                                 : "text-gray-800 hover:bg-zinc-200 ") +
                               "px-3 py-2 rounded-md text-lg font-medium transition"
                             }
+                            onClick={item.name==="Categories"? ()=>{setcgopen(true)} : ()=>{}}
                             aria-current={item.current ? "page" : undefined}
                           >{item.name}</a>
                         </Link>
                       ))}
-                      {/* categories */}
-                      <a className=" text-gray-800 peer hover:bg-zinc-200 px-3 py-2 rounded-md text-lg font-medium transition cursor-pointer">
-                        Categories
-                      </a>
-                      {cgList &&
-                        (<div className={` transition-all hover:grid peer-hover:opacity-100 hover:opacity-100 peer-hover:grid hover:grid-row-${cgList.length-1} overflow-y-auto max-h-[95vh] w-7/12 gap-2 hidden opacity-0 absolute left-0 top-[54px] bg-gray-50 rounded-md shadow-lg py-8 px-10`} >
-                          {cgList.map(x=>(
-                            <div key={x.name} className="flex items-center  flex-wrap">
-                              <Link href={`${process.env.BASE_URL}collection/${x.name.replace(/\s+/g, '-')}`}>
-                                <a className=" transition w-full text-black p-2 font-bold opacity-95 hover:opacity-100 rounded-lg ">
-                                  <span className="text-xl">
-                                    {x.name}
-                                  </span>
-                                </a>
-                              </Link>
-                              {
-                                x.categories.map(y=>(
-                                  <Link href={`${process.env.BASE_URL}collection/${x.name.replace(/\s+/g, '-')}#${y.replace(/\s+/g, '-')}`} key={y} >
-                                    <a className=" max-w-[50%] transition text-white hover:opacity-90 rounded-3xl text-center bg-sky-300 px-3 py-2 m-2">
-                                      <span>{y}</span>
-                                    </a>
-                                  </Link>
-                                ))
-                              }
-                            </div>
-                        ))}
-                        </div>)
-                      }
-                        
                     </div>
                   </div>
                 </div>
@@ -375,7 +339,7 @@ export default function Navbar() {
                     type="button"
                     className=" transition bg-zinc-200 p-2 rounded-full text-gray-800 hover:text-gray-900 hover:bg-zinc-100 focus:outline-none"
                     onClick={() => {
-                      setOpen(true);
+                      setcartOpen(true);
                     }}
                   >
                     <Cart />
@@ -387,7 +351,7 @@ export default function Navbar() {
               </div>
             </div>
             {/* for mobile type  */}
-            <Disclosure.Panel className="sm:hidden opacity-90 bg-slate-700">
+            <Disclosure.Panel className="sm:hidden bg-[rgba(255,255,255,0.8)] backdrop-blur-md">
               <div className="px-2 pt-2 pb-3 space-y-1">
                 {navigation.map((item) => (
                   <Disclosure.Button
@@ -396,28 +360,100 @@ export default function Navbar() {
                     href={item.href}
                     className={
                       (item.current
-                        ? "bg-gray-900 text-white"
-                        : "text-white hover:bg-gray-900 hover:text-gray-200") +
-                      " block px-3 py-2 rounded-md text-base font-medium"
+                        ? "bg-[rgba(0,0,0,0.7)] text-white"
+                        : "hover:bg-[rgba(0,0,0,0.5)] hover:text-gray-200") +
+                      "  block px-3 py-2 rounded-md text-base font-medium"
                     }
+                    onClick={item.name==="Categories"? ()=>{setcgopen(true)} : ()=>{}}
                     aria-current={item.current ? "page" : undefined}
                   >
                     {item.name}
                   </Disclosure.Button>
                 ))}
-                 <Disclosure.Button
-                    key={'Category'}
-                    as="a"
-                    href='#'
-                    className="text-white hover:bg-gray-900 hover:text-gray-200 block px-3 py-2 rounded-md text-base font-medium"
-                  >
-                    Category
-                  </Disclosure.Button>
               </div>
             </Disclosure.Panel>
           </>
         )}
       </Disclosure>
+
+      {/* Category */}
+      <Transition.Root show={cgopen} as="div">
+        <Dialog as="div" className="relative z-10" onClose={setcgopen}>
+          <Transition.Child
+            as={Fragment}
+            enter="ease-in-out duration-500"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in-out duration-500"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity " />
+          </Transition.Child>
+
+          <div className="fixed overflow-hidden">
+            <div className="absolute overflow-hidden">
+              <div className="fixed h-fit top-0 left-1/2 -translate-x-1/2 max-w-full ">
+                <Transition.Child
+                  as={Fragment}
+                  enter="transform transition ease-in-out duration-500 sm:duration-700"
+                  enterFrom="-translate-y-full"
+                  enterTo="translate-y-[12%]"
+                  leave="transform transition ease-in-out duration-500 sm:duration-700"
+                  leaveFrom="translate-y-[12%]"
+                  leaveTo="-translate-y-full"
+                >
+                  <Dialog.Panel className="w-screen md:max-w-xl lg:max-w-2xl overflow-y-auto ">
+                    <div className=" h-[90vh]  overflow-y-auto bg-[rgba(255,255,255,0.7)] backdrop-blur-md rounded-md shadow-xl py-8 px-10">
+                      
+                      <button
+                        type="button"
+                        className="-m-2 p-2 relative left-[95%] focus-visible:outline-none text-gray-400 cursor-pointer hover:text-gray-500"
+                        onClick={() => setcgopen(false)}
+                      >
+                        {/* <span className="sr-only">Close panel</span> */}
+                        <XIcon
+                          className="h-6 w-6 cursor-pointer"
+                          aria-hidden="true"
+                        />
+                      </button>
+
+                        <div className="flow-root">
+                          {cgList &&
+                            (<div className={`grid grid-row-${cgList.length-1} gap-2`}>
+                                {cgList.map(x=>(
+                                    <div key={x.name} className="flex items-center  flex-wrap">
+                                      <Link href={`${process.env.BASE_URL}collection/${x.name.replace(/\s+/g, '-')}`}>
+                                        <a className=" transition w-full text-yellow-600 p-2 font-bold opacity-95 hover:opacity-100 rounded-lg ">
+                                          <span className="text-xl">
+                                            {x.name}
+                                          </span>
+                                        </a>
+                                      </Link>
+                                      {
+                                        x.categories.map(y=>(
+                                          <Link href={`${process.env.BASE_URL}collection/${x.name.replace(/\s+/g, '-')}#${y.replace(/\s+/g, '-')}`} key={y} >
+                                            <a className=" max-w-[50%] transition text-white hover:opacity-90 rounded-3xl text-center bg-green-700 px-3 py-2 m-2">
+                                              <span>{y}</span>
+                                            </a>
+                                          </Link>
+                                        ))
+                                      }
+                                    </div>
+                                ))}
+                            </div>)
+                          }
+                        </div>
+                    </div>
+                  </Dialog.Panel>
+                </Transition.Child>
+              </div>
+            </div>
+          </div>
+        </Dialog>
+      </Transition.Root>
+
+
     </div>
   );
 }
@@ -567,13 +603,9 @@ function Userlogin() {
         {() => (
           <>
             <Popover.Button className="focus-visible:outline-none">
-              <div className=" z-20 relative bg-gray-200 hover:bg-gray-100 h-11 w-11 flex justify-center items-center text-sm rounded-full focus:outline-none ">
-                <i className="material-icons text-3xl">person_add</i>
-                {/* <img
-                  className=" h-11 w-11 rounded-full"
-                  src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                  alt=""
-                /> */}
+              <div className=" z-20 relative bg-gray-200 hover:bg-gray-100 h-11 w-20 flex justify-center items-center text-sm rounded-md focus:outline-none ">
+                <span className=" text-base ">Login</span>
+                {/* <i className="material-icons text-3xl">person_add</i> */}
               </div>
             </Popover.Button>
             <Transition

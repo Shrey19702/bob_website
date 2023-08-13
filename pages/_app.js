@@ -8,7 +8,7 @@ function MyApp({ Component, pageProps }) {
   return (
     <>
       <Head>
-        <title>BoB the Builder</title>
+        <title>Groceries Store</title>
       </Head>
       <SessionProvider session={ pageProps.session }>
         <CartProvider>

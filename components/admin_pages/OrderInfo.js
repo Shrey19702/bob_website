@@ -48,14 +48,16 @@ const OrderInfo = ()=>{
                                             <div> <span className="text-lg font-semibold px-2">Bill :</span> ₹ {order.bill}</div>
                                             <div className="flex flex-col">
                                                 <span className="text-xl font-semibold" >Products</span>
-                                                {order.products.map((product, i)=>(
+                                                {order.products.map((product, i)=>{
+                                                    console.log(product);
+                                                    (
                                                     <div key={i} className='flex justify-between gap-10 px-4 py-2'>
                                                         <div>{i+1}.</div>
                                                         <div>{product.current_product.name}</div>
                                                         <div>Qnt- {product.quantity}</div>
                                                         <div>₹{product.price}</div>
                                                     </div>
-                                                ))}
+                                                )})}
                                             </div>
                                         </div>
                                     </div>

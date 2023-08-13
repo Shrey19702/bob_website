@@ -30,7 +30,7 @@ export default function Category({f_collection}) {
     return (
       <div className="bg-white">
         <div className=' pt-20'>
-          <h2 className="text-3xl max-w-2xl mx-auto px-4 space-x-2 sm:px-6 lg:max-w-7xl lg:px-8 font-semibold text-gray-900">{givenCollection.name}</h2>
+          <h2 className="text-3xl max-w-2xl mx-auto px-4 space-x-2 sm:px-6 lg:max-w-7xl lg:px-8 font-semibold text-green-700">{givenCollection.name}</h2>
           <div className="pt-4">
             <nav aria-label="Breadcrumb">
               <ol role="list" className="max-w-2xl mx-auto px-4 flex items-center space-x-2 sm:px-6 lg:max-w-7xl lg:px-8">
