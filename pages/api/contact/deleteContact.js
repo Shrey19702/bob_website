@@ -1,6 +1,6 @@
-import connectDB from "./../../../utils/connectDB"
+import {connectDB} from "./../../../utils/connectDB"
 // import Contact from "../../../models/ContactModel";
-import Contact from "./../../../models/contactModel";
+import contact from "./../../../models/contactModel";
 
 connectDB();
 
@@ -9,7 +9,7 @@ const delete_Contact = async (req,res)=>{
     console.log(data.name);
     if(req.method == "DELETE"){
         try{
-            let del_Contact = await Contact.findOneAndDelete({name: data.name});
+            let del_Contact = await contact.findOneAndDelete({name: data.name});
             if(del_Contact){
                 res.status(200).json({
                     success:true,

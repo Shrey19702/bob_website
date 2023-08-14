@@ -1,6 +1,6 @@
 import connectDB from "./../../../utils/connectDB";
-// import Contact from './../../../models/ContactModel';
-import Contact from "./../../../models/contactModel";
+// import Contact from "./../../../models/ContactModel";
+import contact from "./../../../models/contactModel";
 
 
 connectDB();
@@ -10,7 +10,7 @@ const getContactList = async (req, res)=>{
     if(req.method == 'GET'){
         try{
             
-            let f_Contact = await Contact.find();
+            let f_Contact = await contact.find();
             if (f_Contact) {
                 res.status(201).json({
                     success:true,
