@@ -1,5 +1,6 @@
-import connectDB from "../../../utils/connectDB";
-import Contact from "../../../models/ContactModel";
+import connectDB from "./../../../utils/connectDB"
+// import Contact from "../../../models/ContactModel";
+import Contact from "./../../../models/contactModel";
 
 connectDB();
 
