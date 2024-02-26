@@ -11,11 +11,10 @@ export default function Home() {
 
   return (
     <>
-      <Heropage/>
-      <EmblaCarousel/>
-      <Category/>
-      {/* <button onClick={makePayment}>Paynow</button> */}
-      <Blog/>
+      <Heropage />
+      <EmblaCarousel />
+      <Category />
+      <Blog />
       <Products name="Products" />
     </>
   )

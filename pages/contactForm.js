@@ -19,21 +19,7 @@ export default function contactForm() {
             </p>
             <div className="flex mb-8 max-w-[370px] w-full">
               <div
-                className="
-                     max-w-[60px]
-                     sm:max-w-[70px]
-                     w-full
-                     h-[60px]
-                     sm:h-[70px]
-                     flex
-                     items-center
-                     justify-center
-                     mr-6
-                     overflow-hidden
-                     bg-primary bg-opacity-5
-                     text-primary
-                     rounded
-                     "
+                className="max-w-[60px] sm:max-w-[70px] w-full h-[60px] sm:h-[70px] flex items-center justify-center mr-6 overflow-hidden bg-primary bg-opacity-5 text-primary rounded"
               >
                 <svg
                   width="24"
@@ -53,21 +39,7 @@ export default function contactForm() {
             </div>
             <div className="flex mb-8 max-w-[370px] w-full">
               <div
-                className="
-                     max-w-[60px]
-                     sm:max-w-[70px]
-                     w-full
-                     h-[60px]
-                     sm:h-[70px]
-                     flex
-                     items-center
-                     justify-center
-                     mr-6
-                     overflow-hidden
-                     bg-primary bg-opacity-5
-                     text-primary
-                     rounded
-                     "
+                className=" max-w-[60px] sm:max-w-[70px] w-full h-[60px] sm:h-[70px] flex items-center justify-center mr-6 overflow-hidden bg-primary bg-opacity-5 text-primary rounded "
               >
                 <svg
                   width="24"
@@ -87,21 +59,7 @@ export default function contactForm() {
             </div>
             <div className="flex mb-8 max-w-[370px] w-full">
               <div
-                className="
-                     max-w-[60px]
-                     sm:max-w-[70px]
-                     w-full
-                     h-[60px]
-                     sm:h-[70px]
-                     flex
-                     items-center
-                     justify-center
-                     mr-6
-                     overflow-hidden
-                     bg-primary bg-opacity-5
-                     text-primary
-                     rounded
-                     "
+                className=" max-w-[60px] sm:max-w-[70px] w-full h-[60px] sm:h-[70px] flex items-center justify-center mr-6 overflow-hidden bg-primary bg-opacity-5 text-primary rounded "
               >
                 <svg
                   width="28"
@@ -128,17 +86,7 @@ export default function contactForm() {
                   required
                   name="name"
                   placeholder="Your Name"
-                  className="
-                        w-full
-                        rounded
-                        py-3
-                        px-[14px]
-                        text-body-color text-base
-                        border border-[f0f0f0]
-                        outline-none
-                        focus-visible:shadow-none
-                        focus:border-primary
-                        "
+                  className=" w-full rounded py-3 px-[14px] text-body-color text-base border border-[f0f0f0] outline-none focus-visible:shadow-none focus:border-primary"
                 />
               </div>
               <div className="mb-6">
@@ -147,37 +95,17 @@ export default function contactForm() {
                   required
                   name="email"
                   placeholder="Your Email"
-                  className="
-                        w-full
-                        rounded
-                        py-3
-                        px-[14px]
-                        text-body-color text-base
-                        border border-[f0f0f0]
-                        outline-none
-                        focus-visible:shadow-none
-                        focus:border-primary
-                        "
+                  className="  w-full rounded  py-3  px-[14px]  text-body-color text-base border border-[f0f0f0]  outline-none  focus-visible:shadow-none focus:border-primary "
                 />
               </div>
               <div className="mb-6">
-         
+
                 <input
                   type="tel"
                   required
                   name="tel"
                   placeholder="Your Phone"
-                  className="
-                        w-full
-                        rounded
-                        py-3
-                        px-[14px]
-                        text-body-color text-base
-                        border border-[f0f0f0]
-                        outline-none
-                        focus-visible:shadow-none
-                        focus:border-primary
-                        "
+                  className=" w-full  rounded  py-3  px-[14px]   text-body-color text-base  border border-[f0f0f0]  outline-none  focus-visible:shadow-none focus:border-primary "
                 />
               </div>
               <div className="mb-6">
@@ -186,39 +114,19 @@ export default function contactForm() {
                   required
                   name="text"
                   placeholder="Your Message"
-                  className="
-                        w-full
-                        rounded
-                        py-3
-                        px-[14px]
-                        text-body-color text-base
-                        border border-[f0f0f0]
-                        resize-none
-                        outline-none
-                        focus-visible:shadow-none
-                        focus:border-primary
-                        "
+                  className="  w-full  rounded  py-3  px-[14px]  text-body-color text-base  border border-[f0f0f0]  resize-none  outline-none  focus-visible:shadow-none  focus:border-primary  "
                 ></textarea>
               </div>
               <div>
                 <button
                   type="submit"
-                  className="
-                        w-full
-                        text-black
-                        bg-primary
-                        rounded
-                        border border-primary
-                        p-3
-                        transition
-                        hover:bg-opacity-90
-                        "
+                  className="  w-full text-black  bg-primary  rounded  border border-primary  p-3  transition  hover:bg-opacity-90 "
                 >
                   Send Message
                 </button>
               </div>
             </form>
-           
+
           </div>
         </div>
       </div>

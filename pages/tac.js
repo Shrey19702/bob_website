@@ -5,7 +5,7 @@ export default function tac() {
     <div className="px-4 py-32">
       <h2 className=" font-bold mb-2 text-xl">Terms and Conditions</h2>
       <p>
-      These terms and conditions outline the rules and regulations for the use
+        These terms and conditions outline the rules and regulations for the use
         of Baby onBoard &#x27;s Website, located at www.babyonboard.com .
         By accessing this website we assume you accept these terms and
         conditions. Do not continue to use www.babyonboard.com if you do not
@@ -27,9 +27,9 @@ export default function tac() {
         interchangeable and therefore as referring to same.
       </p>
       <h3 className=" font-bold mb-2 text-xl">Cookies</h3>
-     
+
       <p>
-      We employ the use of cookies. By accessing www.babyonboard.com , you
+        We employ the use of cookies. By accessing www.babyonboard.com , you
         agreed to use cookies in agreement with the Baby onBoard &#x27;s Privacy
         Policy.{" "}
         Most interactive websites use cookies to let us retrieve the user’s
@@ -40,7 +40,7 @@ export default function tac() {
       </p>
       <h3 className=" font-bold mb-2 text-xl">License</h3>
       <p>
-      Unless otherwise stated, Baby onBoard and/or its licensors own the
+        Unless otherwise stated, Baby onBoard and/or its licensors own the
         intellectual property rights for all material on www.babyonboard.com .
         All intellectual property rights are reserved. You may access this from
         www.babyonboard.com for your own personal use subjected to restrictions
@@ -68,7 +68,7 @@ export default function tac() {
         any Comments which can be considered inappropriate, offensive or causes
         breach of these Terms and Conditions.
       </p>
-     <br />
+      <br />
       <p>You warrant and represent that:</p>
       <ul>
         <li>

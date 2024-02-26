@@ -188,7 +188,7 @@ const Ordersum = () => {
                                             <p className="text-base xl:text-lg leading-6">
                                             {x.discount.applicable? 
                                               <>
-                                                <del className=' line-through decoration-[3px] decoration-red-600 font-thin'>₹{x.price}</del>&nbsp;&nbsp;
+                                                <del className=' line-through decoration-[3px] decoration-red-600 font-semibold'>₹{x.price}</del>&nbsp;&nbsp;
                                                 <span className=' font-semibold'>₹{x.discount.newAmount}</span>
                                               </>
                                             :'₹'+product.price }

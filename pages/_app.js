@@ -10,15 +10,15 @@ function MyApp({ Component, pageProps }) {
       <Head>
         <title>Groceries Store</title>
       </Head>
-      <SessionProvider session={ pageProps.session }>
+      <SessionProvider session={pageProps.session}>
         <CartProvider>
           <Layout>
-              <Component {...pageProps} />
+            <Component {...pageProps} />
           </Layout>
         </CartProvider>
       </SessionProvider>
     </>
-    
+
   )
 }
 
