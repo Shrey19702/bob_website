@@ -1,4 +1,4 @@
-import {connectDB} from "./../../../utils/connectDB"
+import connectDB from "./../../../utils/connectDB"
 // import Contact from "../../../models/ContactModel";
 import contact from "./../../../models/contactModel";
 
