@@ -64,4 +64,4 @@ const orderHistory = () => {
     )
   }
 }
-export default WishList
+export default orderHistory
