@@ -4,7 +4,11 @@ import Head from 'next/head'
 import { CartProvider } from "../components/Cart";
 import { SessionProvider } from "next-auth/react"
 
+import { SpeedInsights } from '@vercel/speed-insights/react';
+import { useRouter } from 'next/router';
+
 function MyApp({ Component, pageProps }) {
+  const router = useRouter();
   return (
     <>
       <Head>
@@ -17,6 +21,7 @@ function MyApp({ Component, pageProps }) {
           </Layout>
         </CartProvider>
       </SessionProvider>
+      <SpeedInsights route={router.pathname} />
     </>
 
   )
